@@ -1,0 +1,6 @@
+{
+    "name":"Joana",
+    "lastName":"Torres",
+    "age":32,
+    "adress":[{"adress_one": "Av Brasil"}, {"adress_two":"Beco da Matanca"}]
+}

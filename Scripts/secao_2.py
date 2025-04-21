@@ -1450,9 +1450,11 @@ from math import ceil as arredondando, sqrt as raiz_quadrada
 ####uso do as
 #como dito anteriormente, o as tem o intuito de pegar o que está à esquerda dele e armazenar em uma variável que virá depois.
 #para importação de módulo, isso também funciona. Veja:
-import pandas as pd
+# import pandas as pd
+
 #fiz a importação do módulo pandas e o armazenei na variável pd.
-print(pd)
+# print(pd)
+
 #um detalhe importante é que se eu tentar usar o módulo pd através de "pandas", vai dar pau. Vai falar que pandas não foi definido, ou seja, NameError
 #É IMPORTANTE DESTACAR QUE  A PRINCIPAL DESVANTAGEM DE RENOMEAR NOME DE MÓDULO É QUE ELA PODE SAIR DO PADRÃO E DIFICULTAR O ENTENDIMENTO DE OUTROS PROGRAMADORES.
 
@@ -1842,7 +1844,7 @@ for __ in uso_count:
     print(__)
 
 ##############################################
-# uso do combinations, permutations e product do módulo interpools
+# uso do combinations, permutations e product do módulo itertools
 #lembrando que todas as funções aqui explicadas funcionam a base de interator, logo, o next, list ou iterable como o for seriam necessários para visualizar.
 #listas exemplos
 pessoas = [
@@ -2121,7 +2123,7 @@ except RecursionError:
 
 # sobre as pastas:
 # lib -> são instalações de terceiros que você fará
-# bin/scripts -> pasta de scripts do windows, que trás os executáveis 
+# bin/scripts -> pasta de scripts que trás os executáveis 
 
 #ainda comandos no Power Shell
 #comandos para verificação de local:
@@ -2172,28 +2174,244 @@ except RecursionError:
 # pip install <nome_do_modulo> --upgrade -> instala a última versão do módulo
 # pip install pyautogui --upgrade -> instala a última versão do pyautogui
 
+################uso do requirements.txt
+# o requirements será um arquivo que você irá criar para informar quais módulos serão necessários para um sistema ou projeto.
+# Por exemplo, se um projeto precisar essencialmente de uma versão em específico do pyautogui, a instalação do pyautogui estará dentro da pasta requeriments.txt
+# Isso é normalmente utilizado em um venv, já que o ambiente virtual (quando criado) vem virgem, ou seja, sem instalação nenhuma. Logo, eu precisarei instalar os módulos necessários e a depender do projeto que eu vá dar continuidade, poderei fazer o donwload de todas as dependências através de requirements
 
+# para criar esse arquivinho, basta voc~e entrar no projeto e digitar pip freeze > requirements.txt
+# pip freeze > requirements.txt -> cria o nosso arquivo que vai armazenar as nossas dependências.
+# após requirements ter sido criada, você entrará nela e vai informar o nome das dependências e suas versões. Ex:
 
+# dentro de requirements:
+# autopep8==2.0.0
+# pyautogui==1.2.0
+# PyMySQL == 1.0.2
 
+#agora, depois de ter feito isso, seu requirements para aquele projeto já tá pronto. Basta entrar na venv e executar.
+# pip install -r requirements.txt
+# -r -> referência a requirements
+# e posteriormente, informo o nome do arquivo (normalmente é requirements mesmo) 
 
-
-# ########recarregar o vscode
+#########recarregar o vscode
 # Ctrl + Shift + P -> vai abrir a janela de execução
 # digite: Reload Windows e aperte enter
 #  Logo, o vscode será recarregado.
+cls()
+
+#########################Criando arquivos com python + Context manager
+#############
+#Para criar um arquivo no python, é necessário inicialmente entender como vanevamos em um caminho.
+#Sabemos que no windows, quando queremos dedifinir um caminho, uma das possibilidades que temos é colocar duas barras, correto? caso contrário, o python entende isso como namespace.
+diretorio = 'D:\\Ghost\\Usuário\\Documents\\testaa.txt' #criação do diretório para chegar até aqui.
+print(diretorio) #como pode ver, o diretório aqui contou apenas uma barra e ficou tudo certinho.
+
+#para navegação de arquivos, é necessário fazer uso do open, que também é necessário para manipulação.
+# para utilização do open, temos que entender suas possibilidades:
+# w (escrita)     r (leitura)     x(criação)      a (escrever ao final)
+# b (binário)     t (modo de texto)       + (leitura e escrita)
+
+
+capa = open(diretorio,'w')#executei, agora o arquivo foi criado e aberto.
+#no entanto, a aprtir do primeiro momento que abrimos, temos que fechar
+capa.close() #agora sim!
+# normalmente é utilizado um try e um finally com o close para garantir seu fechamento
+
+#mais um exemplo para fixação 
+arquivo = 'jao'
+CAMINHO = f"D:\\Ghost\\Usuário\\Documents\\{arquivo}.txt" #denomino todo o diretório
+
+abertura = open(CAMINHO, 'w')#faço um arquivo de fixação.
+#caso o arquivo não exista e você colocar uma ação de leitura, tipo o r (read), vai dar pau.
+# ex: abertura = open(CAMINHO, 'r') -> isso iria gerar sérios problemas.
+abertura.close() #e como sempre, você tem que fechar o arquivo quando abrir.
 
 
 
+######context manager - abre e fecha um arquivo.
+# Se você quiser fazer algo mais breve e sem uso do close, pode ser que seja útil pra você o with open, que abre e após a execução do arquivo, ele fecha.
+
+#funciona com os mesmos princípios do duck typing (se nada e faz quaqua como pato, então é um pato.)
+#sendo que se abre arquivo e tem open, então é um open e precisa ser fechado.
+
+with open(diretorio, 'r+') as arquivando:
+    arquivando.write('Olá mundo! ') #digita olá mundo no documento
+    arquivando.write('terra') #a quebra de linha é obrigatória, caso contrário, ficará tudo coladinho
+
+######segunda prática + # métodos úteis do open:
+# write -> escreve
+with open(CAMINHO, 'w') as ARQUIVO: #como dito antes, o with tem o papel de abrir e fechar o arquivo, seguindo o conceito do context meneger, quase que uma derivação do duck typing.
+    #os comandos para o arquivo devem permanecer dentro deste escopo.
+    ARQUIVO.write('Digito algo no documento.') #este aqui serve para digitar algo no documento.
+    #lembrando que quando você utilizar o write novamente, ele vai continuar de onde parou. 
+    ARQUIVO.write('bandido \n') #ou seja, ele vai juntar o 'bandido' na mesma linha do texto anterior.
+    #LOGO, BASTA COLOCAR UMA QUEBRA DE LINHA, FICANDO:
+    ARQUIVO.write('safado') #como viu no documento, está tudo ok!
 
 
+print('é um arquivo do tipo', type(CAMINHO))
+#read
+# como o arquivo já foi criado e devidamente fechado, devido ao uso do context manager, posso abrir novamente.
+#com isso, vamos criar agora um de leitura, seguindo a mesma lógica
+with open(CAMINHO, 'r') as ARQUIVO_LEITURA:
+    print(ARQUIVO_LEITURA.read()) #e aqui, aparece para mim o que tem no arquivo.
+
+cls()
+#uso do w+ ou r+ com seek
+with open(CAMINHO, 'w+') as MISTO:
+    MISTO.write('Joao Carlos')
+    #agora vamos printar
+    print(MISTO.read())
+    #como pode ver, na printagem não deu certo, pois quando eu uso o write, ele digita nmo documento e ao finalizar, deixa o cursor do 'mouse' no final do arquivo.
+    #como, quando fazemos uso do read, ele só vai mostrar tudo que estiver a frente do cursor, mas como o python jogou o cursor para o final, devido o uso do qrite, não vamos conseguir ver nada.
+    #é por isso que o seek existe. Seu intuito é mover o cursor do mouse para alguma posição e nesse caso, podemos colcoar para o topo.
+    MISTO.seek(0,0)
+    print(MISTO.read()) #como pode ver, agora o 'Joao Carlos foi exibido. '
+    
+    ####### uso do writelines:
+    #serve para você colocar multiplas linhas!
+    MISTO.writelines(
+        ('\n','linha2\n', 'linha3\n')
+    )
+    MISTO.seek(0,0)
+    print(MISTO.read()) #como pode ver, tres linhas foram inseridas! sendo que uma era pra efetuar a quebra. 
+
+    cls()
+    ######uso do readline
+    #como você viu, o read ler de uma vez, correto? mas você também poderia colocar ele para ler or partes.
+    MISTO.seek(0,0)#coloca no topo da página
+    print(MISTO.readline())
+    print(MISTO.readline())
+    print(MISTO.readline())
+    print(MISTO.readline())
+    #como pode ver, ele executou um a um. Nesse quesito, ele parecido com o next, a diferença é que se você estrapolar, ele não dará erro de stop iteration.
+    #mas um problema que vemos ali é que os arquivos executa também a quebra de linha, o que as vezes pode ser o que não queremos, né? pois colocamos a quebra de linha pensando em utilizar o read, para executar tudo de uma vez.
+    #para resolver isso, basta colocar um end='', eliminando as quebras de linha ou
+    # .strip, que removerá todos os espaços, incluindo as quebras de linha., ficando:  
+    
+    print('problema da quebra corrigido')
+    MISTO.seek(0,0)#coloca no topo da página
+    print(MISTO.readline().strip())
+    print(MISTO.readline(), sep='')
+    print(MISTO.readline()) #essa aqui é a própria quebra de linha
+    print(MISTO.readline(), sep='')
+
+    #ou pra resolver isso podemos iterar
+    print('\noutra forma')
+    MISTO.seek(0,0)
+    for linhaa in MISTO.readlines():
+        print(linhaa.strip())
+    
+#um muito importante é o a+, pois o w apaga tudo que estiver no arquivo para escrever de novo.
+# o a já vai para o final, e possibilita a escrita também. Ex:
+with open(CAMINHO, 'a+') as add:
+    for number in range(0, 21, 2):
+        add.write(f'{number} \n') #como pode ver, segue a mesma lógica das demais e não apagou nada.
+        #segundo o Otávio, é uma boa forma de gerar loggers.
+    add.write('gayzão\n')
+    #como pode ver, um acento ou caracter especial vai ocasionar em um transtorno na execução, que é uma palavra incorreta.
+    #isso ocorre porque a codificação do linux/mac é diferente do windows, ocasinando em uma decodificação inusitada.
+
+# para resolver isso, basta incremntar um argumento no open, que no caso, é o enconding e logo após, informar o formato de codificação.
+with open(CAMINHO, 'a+', encoding='utf8') as adicionado:
+    adicionado.write('gayzãooo')
+    #dentro do arquivo está certinho e problema resolvido!
+
+############### apagando ou renomeando arquivo
+def uso_do_os():
+    import os
+    os.remove(CAMINHO) 
+    os.unlink(CAMINHO)
+    # as duas funções da os servem para apagar o arquivo.
+    os.rename('D:\\Ghost\\Usuário\\Documents\\cursopy2025\\Scripts\\apagar.py',
+            'naoAagueporEnquanto.py'
+            )  #renomeia ou move um arquivo. Nesse caso, eu renomeei
+#se eu quiser mover, bastava eu apontar um outro caminho como segundo argumento.
+#coloquei dentro do def para não dar pau
+
+cls()
+#####################introdução ao Json
+# Json - > javascript object notation
+#json é um banco de dados local
+import json
+#para fazer uso do json, inicialmente é necesário criá-lo. Uma das formas mais fáceis de criar o json, é através do próprio context maneger
+#mas primeiro, precisamos criar uma lista que será salva
+pessoas_novas = [
+    {'nome':'Carlos', 'idade':15 , 'sexo':'M'},
+     {'nome':'Joana', 'idade':10 , 'sexo':'F'},
+     {'nome':'Maria', 'idade':35 , 'sexo':'F'},
+     {'nome':'João', 'idade':17 , 'sexo':'M'},
+    
+]
+
+print(*pessoas_novas, sep='\n') #como pode ver, o nosso dict foi criado tudo certinho.
+#agora, vamos inseri-lo em um json. E para isso, vamos começar criando um json
+
+with open('arquivojson.json', 'w', encoding='utf8') as arquivojson:
+    json.dump(pessoas_novas, arquivojson) 
+#nesse momento, as informações do dicionário pessoas_novas se encontra em um arquivo json que também acabamos de criar.
+
+with open('arquivojson.json','r', encoding='utf8') as jsonleitura: #encoding para informar a codificação
+    #como pode ver, é uma estrutura similar a criação de um arquivo qualquer através do context maneger  
+    leitura = json.load(jsonleitura)
+    print(leitura)
+
+#no entanto, quando você coloca alguma pontuação em alguma vogal, consequentemente, vai ocorrer algo semelhante com a questão da codificação.
+#porém, como se trata de um banco de dados, é interessante você deixar dessa forma para não gerar algum conflito no futuro.
+#mas, se mesmo assim corrigir isso for muito importante para você, basta informar false para argumento para o parâmetro ensure_ascii no dump.
+with open('arquivojson.json', 'w', encoding='utf8') as arquivojson:
+    json.dump(pessoas_novas, arquivojson, ensure_ascii=False) 
+#como pode ver, o joão agora foi corrigidio.
+#ademais, temo sum outro problema, que no caso, é a visualização.
+#como pode ver ao entrar no json, todos os dados estão em uma linha só e podemos resolver isso com o argumento indent = numero de linhas
+with open('arquivojson.json', 'w', encoding='utf8') as arquivojson:
+    json.dump(pessoas_novas, arquivojson, ensure_ascii=False, indent=2) 
+    #como pode ver, agora ele está bem organizadinho!!
+
+#uma informação útil:
+# O Json não suporta métodos complexos como funções, sets, classes, etc (tem como forçar) por padrão, mas objetos que você consegue converter de python para json, podem ser inseridas, como str, int + float (number no json), dict (objeto no js), list (array), bool, etc.
+
+cls()
+############################
+# Criação de lista qualquer evitando colocar valor imutável como argumento padrão.
+#isso é mais um execício que um conceito, mas vou explicar.
+def adiciona_clientes(nome, lista=None):
+    #se em lista tivesse um valor mutável como list [], quando eu fosse criar uma outra lista, tipo clientes dois, ele iria agregar esse valor juntamente com os que eu já tinha passado.
+    if lista is None:
+        lista = [] #e se caso o cidadão realmente não digitar nada, posso aproveitar esse none que ele vai retornar para fazeruma função.
+        lista.append(nome)
+        return lista
+    lista.append(nome)
+    return lista
 
 
+cliente1 = ['carlos']
+cliente2 = ['joão']
+cliente3 = ['danilo']
 
+capa = 0
+for add in [cliente1, cliente2, cliente3]:
+    capa+=1
+    adiciona_clientes(capa, add)
+#aqui eu faço a criação de lista s individuais e abaixo, printo elas
+#fora que nelas eu faço uso da função que criei para mostrar eficácia.
 
+print(cliente1,'\n',cliente2,'\n',cliente3)
+#e como pode ver, deu certo
 
+# Rubber Duck Debugging -> uma técnica utilizada para explicar um problema em específico - normalmente utilizada com patinhos.
+# Essa técnica consiste em pegar o patinho e explicar o que você precisa fazer para ele e qual seria a melhor forma de fazer. 
+# É importante que você faça isso falando em voz alta, para fazer com que você compreenda com mkais facilidade o que você está dizendo.
+# Com isso, quando você explica seu problema e como pode resolver para o patinho ou qualquer outra coisa que você estiver, vai ser mais fácil resolver.
 
+cls()
+dicionaryy = {
+    'nome':'carlos',
+    'idade':14
+}
+dicionaryy['fds'] = 14
 
-
+print(dicionaryy)
 
 
 

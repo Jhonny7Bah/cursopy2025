@@ -2405,15 +2405,93 @@ print(cliente1,'\n',cliente2,'\n',cliente3)
 # Com isso, quando você explica seu problema e como pode resolver para o patinho ou qualquer outra coisa que você estiver, vai ser mais fácil resolver.
 
 cls()
-dicionaryy = {
-    'nome':'carlos',
-    'idade':14
+########
+#a condicional é algo que é utilizado por padrão na programação para realizar ações quando algo é verdadeiro ou falso.
+#aparentemente, não há problema em utilizar condicionais, no entanto, é algo que deve ser utilizado com moderação (sem exageros)
+#Ou seja, sempre que você puder, conseguir e for possível evitar condicionais, faça. Caso não, use condicionais. 
+# guard  clause -> é uma estrutura condicional utilizada para evitar a redundância do código, fazendo com que o programador utilize else ou acabe estendendo 
+# a condição em alguns casos específicos. 
+# ex:
+def demons(x, y):
+    if isinstance((x, y), tuple):
+        return x+y
+    else:
+        return 'vai te lascar'
+
+print(demons(10,20))
+
+#no caso acima, não era necessário utilizar o else, pois o return já daria conta, ficando:
+def demons(x, y):
+    if isinstance((x, y), tuple):
+        return x+y
+    return 'vai te lascar'
+
+print(demons(10,20)) #agora, o código ficou mais eficiente e menos redundante.
+
+cls()
+################################
+# Abaixo, há uma demosntração rápida de um dicionário que pode ajudar a evitar o if.
+valore = ['listar', 'desfazer', 'refazer', 'clear', 'adicionar']
+tarefa = valore[2] #aqui é para evitar o input, pois eu estava testando. no entanto, o correto é sem a variavel valore e sem isso aqui.
+#tarefa = input('digite o comando: ') #esse é o correto
+comandos = {
+    'listar': lambda: 1,
+    'desfazer': lambda: 2,
+    'refazer': lambda: 3,
+    'clear': lambda: 4,
+    'adicionar': lambda: 5
 }
-dicionaryy['fds'] = 14
+#no dicionário, temos como keys os comandos em si, que vão ser utilizados como parâmetros de comparação.
+#Quando o código é executado, tantos as keys como values são executados igualmente, fazendo com que haja alterações na lista principal sem querer. 
+#Por isso, precisamos de algo que atrase a execução dos comandos, como um closure da vida. O
+#uso do lambda é essencial para utilizar o closure, pois o lambda por padrão é uma função que não executa. Mas você poderia utilizar um def com aninhada também!
+#
 
-print(dicionaryy)
+comando = comandos.get(tarefa)() #o método get vai buscar uma key no dicionário, que esta key será com base no que o usuário digitar em tarefa.
+#e além do get, vemos ali dois parênteses, que farão com que o lambda dentro da key, presente em value seja finalmente executado, realizando assim o que ele precisa fazer. 
+print(comando) #e aqui você pode ver o funcionamento.
 
 
+
+####################################
+# PEP 570 -> Python Position only arguments
+#no geral, não argumentos que são impedidos de serem chamados como argumentos nomeados.
+def Some(x, y):
+    return x+y
+print(Some(10, 20)) #adicionei argumentos não-noemados ou posicionais.
+print(Some(x=20, y=40)) #aqui eu fiz uso de argumentos nomeados. 
+#vamos usar o positional only-arguments agora.
+
+def multiplique(x, y, /):
+    return x*y
+print(multiplique(10, 2)) #como pode ver, vai normal
+#vou usar o try pq o codigo vai dar pau
+try:
+    print(multiplique(x=20, y=4)) #como pode ver, vai normal
+except TypeError:
+    print('como pode ver, deu pau ao eu tentar fazer uso de um arg nomeado.')
+
+#como o position only-arguments funciona? Simples! Na definição dos parâmetros, basta colocar uma barra '/' depois do parâmetro que você quer que seja posicional.
+#ou seja, tudo que estiver antes da '/', na hora de chamar a função, tenho que argumentar como argumento posicional (não-nomeado).
+# tudo que estiver depois da barra, posso argumentar como argumento nomeado. Ex:
+
+def listaNomes(n1, n2, /, n3, n4):
+    print(n1, n2, n3, n4)
+    return
+listaNomes('joao', 'maria', n4='carlos', n3='almeida') #como pode ver, funcionou certinho!
+#se eu tentar chamar um argumento nomeado para n1 ou n2, vai dar pau.
+
+# PEP 3102 - Keyword-Only arguments -> no geral, é quando você tem parâmetros junto com args. A diferença é que por algum motivo, o programador decidiu definir um parâmetro depois de args. EX:
+def Somando(a, *args, b):
+    print(args)
+    return a + b
+#no caso acima, se digitarmos valores seguindo uma lógica posicional, não chegará no parâmetro b nunca, pois depois do argumento a, todos os argumentos posteriores serão empacotados.
+#para aplicar o conceito de Keyword-only arguments, é necessário trabalhar com argumentos nomeados. Veja:
+print(Somando(10, 'eu sou args aqui', 'ainda sou args', b=20)) #como pode ver, funcionou direitinho. Pois, enquanto os valores soltos foram sendo empacotados em args depois da definição de a, chamamos o b de forma noemada e atribuimos valor.
+#agora, funciona normalmente!!!
+
+######################################################################################################################
+####Parabéns, Módulo 2 finalizadoooooooooo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 

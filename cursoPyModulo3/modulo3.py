@@ -244,8 +244,107 @@ print(p4.descobrir_ano_nascimento()) #como pode ver, consegui replicar o ano de 
 p4.idade = 10 #aqui eu faço uma alteração da idade 
 print(p4.__dict__) #como pode ver, a idade da pessoa foi alterada.
 
+cls()
 
+##############################
+# métodos de classe + @classmethod + factories methods (métodos de fábrica)
+class Pessoinha:
+    anoatual = 2025 #aqui é um exemplo de atribuição de classe
+    #vou conseguir acessar o ano atual de qualquer lugar do escopo dessa classe e até mesmo fora quando a classe for chamada.
+    
+    def __init__(self, nome, idade): #-> esse é o método convencional
+        self.nome = nome
+        self.idade = idade
+    ######
+        staticmethod #-> uma função/método que não utiliza self ou cls como primeiro argumento.
+    # ou seja, é uma função convencional, considerada unútil pelo próprio Otávio, que aparentemente a única utilidade é quando você quer por algum motivo proteger o escopo da classe.
+   
+   
+    @staticmethod
+    def funcaoEstatica(*args, **kwargs):
+        print('oiiii')
+    ###que vai ser aq mesma coisa que isso
+    def FuncaoEstatica(*args, **kwargs):
+        print('oiiii')
+    #coloquei args e kwargs para simbolizar os argumentos nomeados e não-nomeados, pois independente do caso ou uso, não fará diferença.
+    #No entanto, vale ressaltar que uma utilidade extra para o staticmethod é para anotação.
+    #por exemplo, quando uma pessoa for analisar o método, se ver o nome staticmethod lá, já vão identificar quem é estático, quem é método de instância e quem não é com mais facilidade.
 
+    ##############
+    #o class méthod é um decorator que não vai precisar de argumentos para sua execução em alguns casos.
+    #ou seja, quando eu fizer a chamada da função saudação e não passar nenhum argumento, ele vai executar normalmente.
+    #por padrão, é definido cls(que é o nome da classe) para sua execução. Como o class method é utilizado no escopo da própria classe, o parâmetro cls é preenchido com o respectivo. 
+    # Ademais, o class method é algo trabalhado juntamente com hard coded e factory methods em alguns casos.
+    ######USO:
+    @classmethod  #-> aqui já fazemos uso do classmethod
+    def saudacao(cls):
+        #cls faz referência a própria classe, que nesse caso, é Pessoinha.
+        print('seu bandido!!!') #e aqui é o que ele irá executar!
 
+    #vamos tentar deixar esse negócio mais explicativo com um exemplo.
+    #supunhamos que temos uma aba de dados para inserir pessoas que possuem 50 anos e precisamos de todas juntas.
+    @classmethod
+    def criar_com_50_anos(cls, nome): 
+        return cls(nome, 50)#retorna a própria classe Pessoinha recebendo dois argumentos: o nome e a idade
+    #o que fizemos acima é um factorie method, que é um método que cria um novo objeto com alguma lógica ou algo arbitrário.
 
+#########
+###factory method
+# o factory pode ser utilziado em conjunto com o classe method. O que ele vai fazer é retornar um novo objeto.
+# por exemplo:
+
+class Dados:
+    #InstanceMethods
+    def __init__(self, nome=None, idade=None):
+        self.nome = nome
+        self.idade = idade
+    
+    #ClassMethods sem Factory
+    @classmethod
+    def saudacionar(cls):
+        return 'tudo bem? '
+    
+    #ClassMethods com Factory
+    # Cria um novo objeto
+    @classmethod
+    def retornar(cls, nome):
+        idade = 50
+        return cls(nome , idade) #agora, eu pego um parâmetro que é o nome, que será dito pelo usuário
+        #e utilizo hard coded para o parâmtro idade, pois será sempre 50!!
+    
+    @staticmethod
+    #staticmethod
+    def saudacaodnv():
+        return'opaaa'
+
+pessoa1 = Dados('Carlos', 45) #definindo o objeto
+###
+print(pessoa1.nome, pessoa1.idade) #instancemethods
+print(pessoa1.saudacionar()) #classmethods sem factory
+
+#sobre os classmethod com factory, posso chamar dessas duas formas:
+pessoa2 = pessoa1.retornar('Carlos') #chamando classmethods com factory diretamente de pessoa1
+pessoa3 = Dados.retornar('Mário') #chamando classmethods com factory diretamente da classe.
+print(pessoa2.nome, pessoa2.idade) #Classmethos com Factory
+print(pessoa3.nome, pessoa3.idade) #Classmethos com Factory
+print(pessoa1.saudacaodnv()) #staticmethod
+####
+"""
+method ou instancemethod ou método de instância -> self
+classmethod ou método de classe -> cls(abreviação de classe)
+staticmethod ou método estático -> não tem cls e nem self. 
+"""
+        
+#EXECUÇÔES!!!!!!!
+# p1 = Pessoinha('Carlos',14) #a criação de um objeto
+# print(p1.nome)
+# print(p1.idade)
+# ######################
+# p2 = Pessoinha.criar_com_50_anos('Mário') #a criação de outro objeto, porém aqui eu não preciso digitar a idade, que será sempre 50
+# print(p2.nome, p2.idade)
+# # o class method é como se fosse uma extensão da própria classe, pois ele não conflita com elementos que nela já estiverem. é tanto que nem self ele tem.terracota
+# # Pra entender com facilidade, é como se eu tivesse fazendo: Pessoinha(argumento1, argumento2), porém dentro da própria instâcia da classe.
+
+# Pessoinha.FuncaoEstatica()
+# Pessoinha.funcaoEstatica()#como pode ver, não houve diferença.
 

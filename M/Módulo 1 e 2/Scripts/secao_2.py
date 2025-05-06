@@ -1143,6 +1143,7 @@ cls()
 # Generetor expression -> funções que sabem pausar
 from sys import getsizeof #o módulo sys possui uma função chamada getsizeof para saber o tamanho de um código em bytes.
 
+
 #o generetor é similar ao iterator no python. Por exemplo:
 primeira_lista = [n for n in range(101)] #com esse list comprehension, vou gerar, números de 0 até 100
 print(primeira_lista) 
@@ -1615,7 +1616,7 @@ print(round(cara, 1)) #agora tenho até uma casa decimal.
 
 
 #################varivaveis livres e nonlocal
-##Variávis livres - fre values
+##Variávis livres - free values
 #As variáveis livres normalmente são declaradas em um escopo anterior em relação as próximas funções (função tem escopo diferente)
 #Se você consegue acessar uma variável que não foi criada dentro de uma determinada função, e sim em um escopo diferente, significa que essa á uma free value.
 #No exemplo abaixo, no escopo fora, foi declarado a variável a, e esta variável foi acessada na subfunção do escopo fora, que no caso, foi dentro. Tendo assim certeza que a é uma free value.
@@ -2454,7 +2455,7 @@ print(comando) #e aqui você pode ver o funcionamento.
 
 
 ####################################
-# PEP 570 -> Python Position only arguments
+# PEP 570 -> Python Position only arguments (argumentos apenas por posição)
 #no geral, não argumentos que são impedidos de serem chamados como argumentos nomeados.
 def Some(x, y):
     return x+y
@@ -2481,7 +2482,7 @@ def listaNomes(n1, n2, /, n3, n4):
 listaNomes('joao', 'maria', n4='carlos', n3='almeida') #como pode ver, funcionou certinho!
 #se eu tentar chamar um argumento nomeado para n1 ou n2, vai dar pau.
 
-# PEP 3102 - Keyword-Only arguments -> no geral, é quando você tem parâmetros junto com args. A diferença é que por algum motivo, o programador decidiu definir um parâmetro depois de args. EX:
+# PEP 3102 - Keyword-Only arguments ("argumentos apenas por palavra-chave") -> no geral, é quando você tem parâmetros junto com args. A diferença é que por algum motivo, o programador decidiu definir um parâmetro depois de args. EX:
 def Somando(a, *args, b):
     print(args)
     return a + b

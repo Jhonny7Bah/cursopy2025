@@ -9,8 +9,8 @@
 
 
 #limpeza
+from os import system
 def cls():
-    from os import system
     return system('cls')
 
 ###############################################
@@ -41,8 +41,8 @@ bombadao = MinhaClasse() #tudo ok até aqui.
 
 print(bombadao)#se printarmos a nossa classe, vamos ver informações sobre o módulo main, nome da classe, localização do objeto, etc.
 #mas o que vai nos interessar agora são as instâncias! para criar uma instância com atributos, basta criar uma variavel com o nome do objeto, adicionar namespace e atribuir um valor!
-bombadao.carai = 20 #acabei de criar uma instância atributiva!
-print(bombadao.carai) #quando printamos, recebemos um valor padrão na tela, como esperado!
+bombadao.caramba = 20 #acabei de criar uma instância atributiva!
+print(bombadao.caramba) #quando printamos, recebemos um valor padrão na tela, como esperado!
 
 #diferença entre instância atributiva e ações/funções/métodos:
 # dados dentro da classe = atributos
@@ -283,16 +283,16 @@ class Pessoinha:
 
     #vamos tentar deixar esse negócio mais explicativo com um exemplo.
     #supunhamos que temos uma aba de dados para inserir pessoas que possuem 50 anos e precisamos de todas juntas.
+    
+    ###factory method
+    # o factory pode ser utilziado em conjunto com o classe method. O que ele vai fazer é retornar um novo objeto.
+    # por exemplo:
     @classmethod
     def criar_com_50_anos(cls, nome): 
         return cls(nome, 50)#retorna a própria classe Pessoinha recebendo dois argumentos: o nome e a idade
     #o que fizemos acima é um factorie method, que é um método que cria um novo objeto com alguma lógica ou algo arbitrário.
 
 #########
-###factory method
-# o factory pode ser utilziado em conjunto com o classe method. O que ele vai fazer é retornar um novo objeto.
-# por exemplo:
-
 class Dados:
     #InstanceMethods
     def __init__(self, nome=None, idade=None):
@@ -348,3 +348,104 @@ staticmethod ou método estático -> não tem cls e nem self.
 # Pessoinha.FuncaoEstatica()
 # Pessoinha.funcaoEstatica()#como pode ver, não houve diferença.
 
+
+cls()
+#################################
+# property - um getter no modo pythônico!
+# getter é um método para obter ou retornar um atributo.
+#modo pythônico - modo de fazer as coisas utilizado funções, métodos, decoradores mais específico do próprio python! 
+class Caneta:
+    def __init__(self, cor):
+        self.cor = cor
+    #aqui eu crio um getter que irá receber o valor da cor e posteriormente, retornar.
+    def getter(self):
+        return self.cor
+ 
+caneta = Caneta('azul')
+print(caneta.getter()) #e aqui eu utilizo o método getter, que vai exibir na tela a cor!
+#o método getter é útil para casos que você precise trocar o nome do atrinuto na classe.
+# Porém, quando o programa é muito grande, o dev vai ter o trabalho de alterar tudo também!
+#se houver código cliente, aí que complica mais ainda. 
+# código cliente - é o código que usa o seu código
+#Por isso, eu poderia criar um método com o nome do atributo e dentro, retornar o valor do atributo(com o nome dele em si já alterado na variável, deixando o código mais legível!!!)
+
+###uso do property
+#o getter é um exemplo de modo não-pythônico, pois ele é clássico para outras linguagens de programação.
+#já o property faz a mesma coisa do getter, porém é um decorador exclusivo do python.
+# Ademais, o property faz um método(função) se comportar como atributo (já executa na hora)
+# property é um modo pythônico!
+
+class Lapis:
+    def __init__(self, cor):
+        self.corTintaSLK = cor #considere que o antigo nome desse atributo era cor
+    
+    @property #aqui ele já vai executar a função cor quando chamada.
+    #como o antigo nome do outro atributo era cor, se eu mudasse ele lá, iria ter que mudar em todo o código.
+    #para agilizar, eu simplemente posso criar uma função com o antigo nome e fazer ela retornar a cor com base no novo nome do atributo.
+    #com a ajuda do property, ele vai executar o método(função) assim que chamado!
+    def cor(self):
+        return self.corTintaSLK
+
+l1 = Lapis('branco')
+print(l1.cor)
+print(l1.cor)
+print(l1.cor)
+print(l1.cor)
+print(l1.cor)
+
+cls()
+################################
+#####aula 213
+# property + setter no modo pythônico!
+#como dito anteriormente, o property vai inicializar uma função a partir do momento que é chamada.
+#normalmente, o property é utilizado como como um getter, que no caso, é como valor atributivo no uso de um método.
+#No entanto, o property acaba sendo um método que se comporta como um atributo durante a prática.
+#Já o setter é um decorador que irá fazer a modificação em algum elemento do property, podendo também ser utilizado um controle para a ocorrência de algo. Na minha visão, parece muito com um decorator com syntax sugar.
+class Canetaa:
+    def __init__(self, cor):
+        self._cor = cor
+    #aqui acima inicializamos os atributos
+
+    @property
+    #já aqui, chamamos o property
+    def cor(self):
+        print('property')
+        return self._cor
+    #####
+    #abaixo, chamamos o setter. O setter precisa ser chamado com o nome do método presente no property, como ilustrado abaixo.
+    @cor.setter
+    #com isso, podemos reutilizar o nome da property.
+    def cor(self, valor): #-> aqui vemos um tal de valor, que nesse caso, vamos utilizar o setter para fazer uma alteração na cor.
+        print('estou no setter, finalmenteeeee,', valor) 
+        if valor == 'Amarelo': #aqui ele faz a verificação se o valor é amarelo
+            raise TypeError('Não aceito essa cor! ') #se for amarelo, o código quebra
+        self._cor = valor #se não for amarelo, o código aceita e atribui a nova cor.
+
+caneta_azul = Canetaa('Azul') #inicialmente eu digo que a cor é azul 
+print(caneta_azul.cor) #aqui será imprimido o azul na tela
+caneta_azul.cor = 'Rosa' # e aqui eu faço uma reatribuição do valor, através do setter.
+print(caneta_azul.cor) #antes era azul e agora é rosa
+
+#######outra forma útil de fazer uso do setter é definir a atribuição de cara
+cls()
+class TamanhoCamisa:
+    def __init__(self, tamanho):
+        self.tamanho = tamanho
+
+    @property
+    def tamanho(self):
+        return self._tamanho
+    
+    @tamanho.setter
+    def tamanho(self, valor):
+        print('ESTOU NO SETTERRR')
+        self._tamanho = valor
+        
+#com o método acima, o SETTER é inicializado juntamente do init
+camisa_polo = TamanhoCamisa('P')
+print(camisa_polo.tamanho)
+
+#lembrando que vou ter que dar uma olhada nesse método depois!!!
+
+# Por convenção, atributos que começam com um ou dois underline(s) não devem ser utilizados fora da classe, ou seja, fora do escopo da classe. ex: lapis._cor ou lapis.__cor
+# método que é utilizado para a configuração de um determinado atributo

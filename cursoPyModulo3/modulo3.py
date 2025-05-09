@@ -449,3 +449,99 @@ print(camisa_polo.tamanho)
 
 # Por convenção, atributos que começam com um ou dois underline(s) não devem ser utilizados fora da classe, ou seja, fora do escopo da classe. ex: lapis._cor ou lapis.__cor
 # método que é utilizado para a configuração de um determinado atributo
+
+cls()
+##################################################################
+# abstração, herança, encapsulamento e poliformismo -> 4 pilares da poo
+
+#Encapsulamento (modificadores de acesso) -> public, protected e private
+#### public (público) -> é um método ou atributo público, que você pode acessar de dentro e de fora da classe. EX:
+class Demontracao1:
+    def __init__(self, valor1):
+        self.valor1 = valor1 #se vai ser público, privado ou protegido, é aqui que eu defino.
+        #quando a instância é declarada sem underline algum, ela é public (pública.)
+
+    def metodo_publico(self): #aqui eu também defino o tipo do método.
+        print('eu também sou público!!!')
+        return self.valor1
+    ###
+demons1 = Demontracao1('valor')
+print(demons1.valor1) #e aqui eu posso acessar o atributo normalmente.
+print(demons1.metodo_publico()) #assim como também posso acessar o método.
+
+cls()
+##### protected (protegido) -> é um método ou atributo que pode ser acessado apenas dentro da classe ou de sua subclasse
+class Demonstracao2:
+    def __init__(self, valor2):
+        self._valor2 = valor2 #veja que antes de declarar o atributo, eu coloquei um underline. Isso significa que é um atributo protegido.
+
+    def _metodo_protegido(self): #aqui eu também faço a proteção do meu método incrementando o underline antes de sua nomeação.
+        print(self._valor2) #como estou dentro da classe, posso fazer uso do atributo valor2 tranquilamente! 
+        return 'sou um método hahaha!!'
+
+demons2 = Demonstracao2('sou o protegigo!!')
+print(demons2._valor2) #aqui eu estou fora da classe, logo, não era para eu ter conseguido acessar o atributo valor2 fora da classe.
+#por padrão, o python não tem esse tipo de proteção. Por isso, foi definido na comunidade que atributos ou métodos que iniciassem com underline, não deveriam ser chamados fora da classe.
+# Ou seja, por mais que o python não quebre o código ou algo assim, é uma regra da comunidade de desenvolvedores em python que deve ser comprida
+#Portanto, o feito acima serve apenas para demonstração, pois está totalmente errado na prática. 
+
+print(demons2._metodo_protegido()) #-> e só para constar, o python também não faz a inibição do uso do método com underline fora da classe. 
+#Com isso, ele segue a mesma lógica do atributo, que por mais que funcione no código, por convenção da comunidade e inclusive, da pep8, o feito acima está errado. 
+
+cls()
+####private(privado) -> é um método ou atributo caracterizado por dois underlines que podem ser utilizados apenas dentro da classe.
+class Demonstracao3:
+    def __init__(self, valor3):
+        self.__valor3 = valor3 #cacterizei um atributo privado
+    def __metodo_privado(self): #já aqui eu caracterizei um método privado
+        print('Estou no privado!!!')
+        print(self.__valor3) #como ainda estou dentro da classe, segundo a comunidade, eu posso usar normalmente.
+demons3 = Demonstracao3('aobaaaa')
+###name mangling (desconfiguração de nome)
+#no caso de um valor privado, o python se encarregou de fazer uma leve proteção, que é o name mangling. 
+#por padrão, é dado como privado o valor que possui dois underlines. Se eu tentar chamar o método ou atributo privado, vai dar pau.
+try:
+    print(demons3.__valor3)
+except AttributeError:
+    print('Como viu, deu pau. Essa é a proteção do python.') #o python faz uma desconfiguração no nome do atributo, tirando um dos underlines.
+#porém, o indivíduo consegue ainda acessar através da utilização de apenas 1 underline e o nome da classe. Veja:
+print(demons3._Demonstracao3__valor3)
+#devido ao name mangling, essa renomeação ocorre fora da classe para privar o valor, porém como pode ver, com alguns ajustes, ainda é possível acessar.
+#Estou informando isso com o intuito de repassar a informação, pois é INDEVIDO O USO DE UM ATRIBUTO/MÉTODO PRIVADA fora da CLASSE. 
+
+cls()
+#Herança -> Composição
+######relações entre classes: associação, agregação e composição
+#associação é uma relação fraca entre duas classes, que liga uma a outra no mesmo sistema.
+# Normalmente há uma associação quando um objeto temos um atributo que faz referencia a outro objeto. Ex:
+class Escritor:
+    def __init__(self, nome):
+        self.nome = nome
+        self._ferramenta = None #primeiro vamos declarar o valor que vamos receber 
+
+    @property
+    def ferramenta(self):
+        return self._ferramenta #aqui ele vai retornar a função ferramenta
+
+    @ferramenta.setter
+    def ferramenta(self, valor):
+        self._ferramenta = valor #porém, para ele retornar sem erro, é necessario utilizar um setter que irá pegar o nome exato da classe e irá inicializar.
+
+class FerramentaDeEscrever:
+    def __init__(self, nome):
+        self.nome = nome
+    def escrever(self):
+        return f'{self.nome} está escrevendo!'
+
+escritor = Escritor('jão') #aqui eu informo atributos nas classes
+caneta = FerramentaDeEscrever('Caneta Bic')
+escritor.ferramenta = caneta #aqui eu efetivo a associação, fornecendo um argumento ao setter
+print(caneta.escrever()) #agora, ele informa que a caneta está escrevendo!
+print(escritor.ferramenta.escrever()) #se eu quiser fazer direto, posso fazer assim também, pois dará no mesmo resultado!!
+
+maquina = FerramentaDeEscrever('máquina de escrever') #caso eu queira alternar, também é possível
+escritor.ferramenta = maquina #atribuo novamente um valor ao setter
+print(escritor.ferramenta.escrever()) #e aqui você percebe o funcionamento!
+
+
+##

@@ -512,7 +512,7 @@ print(demons3._Demonstracao3__valor3)
 cls()
 #Herança -> Composição
 ######relações entre classes: associação, agregação e composição
-#associação é uma relação fraca entre duas classes, que liga uma a outra no mesmo sistema.
+#associação é uma relação fraca entre duas classes, que liga uma a outra no mesmo sistema. Relação fraca significa pouca dependência.
 # Normalmente há uma associação quando um objeto temos um atributo que faz referencia a outro objeto. Ex:
 class Escritor:
     def __init__(self, nome):
@@ -543,5 +543,11 @@ maquina = FerramentaDeEscrever('máquina de escrever') #caso eu queira alternar,
 escritor.ferramenta = maquina #atribuo novamente um valor ao setter
 print(escritor.ferramenta.escrever()) #e aqui você percebe o funcionamento!
 
+#####Agregação -> Agregação é uma forma mais especializada entre duas ou mais classes, porém ainda é uma relação fraca e na teoria, não é dependente uma da outra.
+#Para entender com mais facilidade, é só pensar no exemplo do carrinho. O carrinho de compras não precisa exclusivamente dos produtos, não dependem dos produtos.
+#E os produtos também não precisam do carrinho, mas quando estão juntos, acabam trabalhando melhor. É como se fosse uma protocooperação no mundo da programação. EX:
+class Carrinho:
+    def __init__(self):
+        pass
 
-##
+cls()

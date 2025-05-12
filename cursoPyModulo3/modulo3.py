@@ -543,11 +543,35 @@ maquina = FerramentaDeEscrever('máquina de escrever') #caso eu queira alternar,
 escritor.ferramenta = maquina #atribuo novamente um valor ao setter
 print(escritor.ferramenta.escrever()) #e aqui você percebe o funcionamento!
 
+cls()
 #####Agregação -> Agregação é uma forma mais especializada entre duas ou mais classes, porém ainda é uma relação fraca e na teoria, não é dependente uma da outra.
 #Para entender com mais facilidade, é só pensar no exemplo do carrinho. O carrinho de compras não precisa exclusivamente dos produtos, não dependem dos produtos.
 #E os produtos também não precisam do carrinho, mas quando estão juntos, acabam trabalhando melhor. É como se fosse uma protocooperação no mundo da programação. EX:
 class Carrinho:
     def __init__(self):
-        pass
+        self.produtos = []
+    ###
+    def total(self):
+        return sum([p.preco for p in self.produtos])
+    ###
+    def inserir_produtos(self, *produtos):
+        self.produtos.extend(produtos)
+    ###
+    def listar_produtos(self):
+        print()
+        for produto in self.produtos:
+            print(produto.nome, produto.preco)
+        print()
 
-cls()
+class Produto:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+carrinho = Carrinho()
+p1 = Produto('Lapis', 2)
+p2 = Produto('Lapas', 2)
+
+carrinho.inserir_produtos(p1)
+carrinho.listar_produtos()
+print(carrinho.total())

@@ -549,7 +549,7 @@ cls()
 #E os produtos também não precisam do carrinho, mas quando estão juntos, acabam trabalhando melhor. É como se fosse uma protocooperação no mundo da programação. EX:
 class Carrinho:
     def __init__(self):
-        self.produtos = []
+        self.produtos = [] #aqui eu armazeno os produtos
     ###
     def total(self):
         return sum([p.preco for p in self.produtos])

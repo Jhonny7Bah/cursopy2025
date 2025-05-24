@@ -53,7 +53,7 @@ combinacao = datetime(2025, 5, 23, 21, 35, 0, tzinfo=timezone('Asia/Tokyo'))
 #ou seja, informo a data, depois a hora e por fim, chamo o parâmetro tzinfo e coloco o datetime respectivo como argumento.
 print(combinacao) #fazendo isso ele entende que essa data e hora é correspondente a data e hora lá de Tokyo em si. No entanto, nesse exato momento, eu tinha colocado a data e hora do Brasil.
 
-#fora isso, também existe o timestamp ()marca temporal), tendo início em 1970, onde os segundos começaram a ser contados daquela data e são até hoje.
+#################fora isso, também existe o timestamp (marca temporal), tendo início em 1970, onde os segundos começaram a ser contados daquela data e são até hoje.
 #é útil para servidores, base de dados, windows, etc.
 criado_data = datetime.now()
 print(criado_data.timestamp()) #1748047417.558204 #isso é no momento que executei o código

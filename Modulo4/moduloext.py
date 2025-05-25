@@ -114,6 +114,39 @@ print(data_fim + relativedelta(microseconds=2000))
 #se você for no meio dos () do relativedelta e apertar ctrl + espaco, irá ver mais opções.
 diferenca_exata = relativedelta(data_fim,data_inicio) 
 print(diferenca_exata) #aqui ele irá descrever com exatidão a diferença de anos, meses, dias, horas, minutos, etc.
-
 print(diferenca_exata.days) #posso filtrar tbm para ver apenas a diferença em dias.
 
+cls()
+######uso do strftime
+#esse método, da biblioteca datetime, é utilizado quando você quer formatar uma data ou hora. Ou seja, você já tem o time definido e quer fazer uma alteração 
+# no formato. Ex:
+horario_atual = datetime.now() #essa é uma situação que o horário já vem definido.
+print(horario_atual) #como pode ver, veio com microsegundos e seguindo o padrão americano, correto? mas e se eu quisesse alterar o formato para ptbr?
+horario_fmt_ptbr = horario_atual.strftime('%d/%m/%Y %H:%M:%S')
+#acima eu utilizei o horário atual como referência e chamei o método strftime. Com isso, o argumento que irei passar lá dentro é o formato que eu desejo. Esteja ele em uma variável ou definido com hard coded, como no código acima. 
+print(horario_fmt_ptbr) #como pode ver, alterei o formato.
+#algo importante a constar é que através do uso do strftime, o objeto deixará de ser um inteiro e passará a ser uma string. Com isso, ficarei impossibilitado de realizar cálculos de tempo.
+print(type(horario_atual)) #apontando para o objeto que não sofreu com o strftime, o tipo dele é dado como class.
+print(type(horario_fmt_ptbr)) #já o objeto que sofreu com o strftime, ele é dado como str.
+
+print(horario_atual + timedelta(hours=2)) #Logo, aqui eu posso fazer cálculo de tempo.
+try:
+    print(horario_fmt_ptbr + timedelta(hours=2)) #E como aqui passou a ser str, se eu tentar fazer a soma, o código quebra.
+except TypeError:
+    ...
+#Caso eu queira fazer a remoção de uma diretiva, mantendo seu padrão inteiro, basta:
+horario_int_fmt_ptbr = datetime(horario_atual.year, horario_atual.month, horario_atual.day)
+#acima eu removi três diretivas em relação ao objeto horario_atual.
+print(horario_int_fmt_ptbr) #veja na prática
+cls()
+caso2 = datetime(2025, 5, 24)
+fmt_brl = '%d/%m/%Y %H:%M:%S' 
+#acima eu declaro uma variável com o formato brl
+print(caso2.strftime(fmt_brl))
+#e uso o strftime para alterar o formato
+caso3 = datetime.strptime('2025/05/19','%Y/%m/%d') 
+print(caso3.strftime(fmt_brl))
+#e no caso três eu faço também. 
+print(caso3.strftime('%Y'))
+#acima eu faço para se caso eu queira apenas o ano no formato str.
+print(caso3.year) #caso eu queira o ano no formato int

@@ -191,3 +191,30 @@ for mont in mes_atual:
             continue
         print(dia)
         #agora eu tratei. 
+
+######################
+#uso da biblioteca locale para tradução
+#documentação da biblioteca:
+# https://docs.python.org/3/library/locale.html
+import locale #locale também é um módulo nativo do python
+#vamos fazer um exemplo prático do locale
+print(calendar.calendar(2025)) #imprimo o calendario do ano que me encontro, que como pode ver, está em inglês.
+locale.setlocale(locale.LC_ALL, '') #agora faço uso do locale, onde:
+#setlocale é o método que irá fazer a conversão.
+# locale.LC_ALL é o que irei converter, é a Categoria. Nesse caso, será tudo, como monetário, tempo, número, etc.
+# '' -> é o locale que ele vai utilizar. Ou seja, como nesse caso está vazio, ele vai fazer uso do locale padrão do sistema.
+print()
+print(calendar.calendar(2025)) #e como pode ver, agora está 
+#caso eu queira saber qual é o locale que estou utilizando no momento, basta:
+localee, codificacao_de_caracteres = locale.getlocale()
+print(localee)#esse é o locale
+print(codificacao_de_caracteres) #e essa é a configuração de caracteres, que sempre é recomendado colocar utf8, que não é o caso desse cara. 
+#vamos reestruturar então:
+locale.setlocale(locale.LC_ALL,'pt_BR.utf8')
+print(locale.getlocale()) #como pode ver, agora está utf8. Porém, ele não pega mais uma locale ou configuração padrão do sistema, pois eu defini na mão.
+
+##não sei no Windows, mas no MAC e Linux, para saber as locales disponíveis no sistema, basta utilizar o seguinte comando:
+# locale -a
+#esse -a indica para pegar todas. 
+#intercionalização -> ver depois
+#ainda tem muito a testar desse módulo.

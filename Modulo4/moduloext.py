@@ -150,3 +150,44 @@ print(caso3.strftime(fmt_brl))
 print(caso3.strftime('%Y'))
 #acima eu faço para se caso eu queira apenas o ano no formato str.
 print(caso3.year) #caso eu queira o ano no formato int
+
+
+cls()
+###############
+# Módulo calendar (calendário) e algumas de suas funcionalidades
+## Usando calendar para calendários e datas
+# Documentação do calendar: 
+# https://docs.python.org/3/library/calendar.html
+
+import calendar #o calendar é um módulo nativo do pyhton, ou seja, para utilizar, basta importar.
+print(calendar.calendar(2025)) #o método calendar é utilizado quando eu quero ver no meu terminal o calendário do ano fornecido como argumento, que nesse caso, é o calendário de 2025.
+#caso você queira saber apenas os dias de um mês em específico, basta:
+print(calendar.month(2025, 5)) #agora irá aparecer no meu terminal o calendário de maio de 2025.
+#caso eu queira o último dia do mês
+print(calendar.monthrange(2025, 5)) #também informo o ano e o mês desejado.
+#por fim, ele irá me retornar na tela o dia da semana onde o mês deu-se início e posteriormente, o dia do mês que mês vai acabar/acabou. 
+#caso eu queira saber com exatidão o dia da semana, basta:
+primeiro_dia, ultimo_dia = calendar.monthrange(2025, 5)
+print(calendar.day_name[calendar.weekday(2025, 5, 31)])
+#ou
+print(calendar.day_name[calendar.weekday(2025, 5, ultimo_dia)])
+#nesse caso, weekday vai pegar o último dia da semana.
+#mas e se eu quiser o primeiro dia?
+print(calendar.day_name[primeiro_dia]) # e aqui ele mostra o primeiro dia da semana.
+#weekday vai retornar o dia da semana de uma determinada data, começando do 0, sendo 0 segunda e finalizando em 6, sendo 6 domingo.
+cls()
+###por fim, temos também o monthcalendar, que é retornado os dias de um mês especifico
+mes_atual = calendar.monthcalendar(year=2025, month=5) #aqui ele vai retornar os dias do mes que escrevo esse codigo. 
+print(mes_atual) #como viu, ele retornou uma lista dentro de uma lista, correto? juntamente com uns 0.
+#a primeira tupla é equivalente a um mês
+#a segunda tupla é equivalente aos dias da semana, é tanto que se você contar, vai perceber que há 7 dígitos.
+for mes in mes_atual:
+    print(mes) 
+#E os zeros são dias do mês passado. Lembre-se que tem meses que não começam do 1 no calendário, pois maio no calendário começa dia 27. E como abril vai até 30, 30-27 = 3. É por isso que há 3 zeros ali no início. E como maio vai até 31 e essas tabelas tem 32 dígitos, ele acabou pegando o primeiro dia de junho e por isso que é 0.
+#se eu quiser tratar, basta eu fazer o seguinte:
+for mont in mes_atual:
+    for dia in mont:
+        if dia == 0:
+            continue
+        print(dia)
+        #agora eu tratei. 

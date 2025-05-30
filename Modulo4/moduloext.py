@@ -218,3 +218,45 @@ print(locale.getlocale()) #como pode ver, agora está utf8. Porém, ele não peg
 #esse -a indica para pegar todas. 
 #intercionalização -> ver depois
 #ainda tem muito a testar desse módulo.
+
+###########################módulo os
+# o módulo os é um módulo nativo do python. Ele fornece funções para que o python possa se comunicar com o sistema operacional.
+# Documentação: https://docs.python.org/3/library/os.html
+import os #é assim que eu faço a importação desse módulo.
+os.system('cls') #a função system executa um código escrito em batch script, que é a linguagem utilizada pelo cmd. Caso você esteja no Shell ou no Bash, ele também vai executar, porém, tu vai ter que usa a linguagem nativa do ambiente. 
+
+##uso do os.path
+#já o os.path trabalha apenas com caminhos e não faz nenhuma operação de entrada/saida
+caminho = os.path.join("D:\\","Ghost", "Usuário", "Pictures", "AnyDesk") #aqui ele reconhece o sistema operacional e junta todo mundo, como um caminho mesmo.
+print(caminho) #como pode ver, o meu so é windows e por isso a barra utilizada foi "\"
+
+#caso eu queira dividir novamente, basta utilizar o path.split()
+print(os.path.split(caminho)) #nesse caso, será retornado uma tupla, sendo que o primeiro índice simboliza o diretório e o último índice simoliza o arquivo.
+#posso fazer assim tbm:
+dire, arq = os.path.split(caminho) #aqui eu desempacoto a tupla nas variáveis
+print(dire, arq) #com isso, consigo segregar.
+
+print(os.path.splitext(caminho)) #caso houvesse aqui um arquivo de fato, esse comando iria segregar o arquivo e o formato.
+#Ou seja, através do código acima, se houvesse um arquivo.txt, este código iria retornar o arquivo junto com o diretório, no índice 0 da tupla e no índice 1 iria retornar apenas o formato (nesse caso seria .txt)
+
+print(os.path.exists(caminho)) #verifica se o caminho existe. Se existir, retorna true. Se não, retorna false.
+
+print(os.path.abspath('.')) #retorna o caminho absoluto de uma pasta. Nesse caso eu coloquei o '.' para fazer referência a pasta que me encontro no momento.
+
+print(os.path.basename(caminho)) #retorna a parte final de um caminho, seja ele um arquivo ou pasta. é como se você fizesse um [-1] no diretório, pra pegar a última parte.
+
+print(os.path.dirname(caminho)) #vai retornar apenas o diretório de um arquivo. Se houver um arquivo no final do diretório, esse arquivo não será retornado. 
+
+print(os.path.isdir(caminho)) #retorna verdadeiro se essa pasta for um diretório
+cls()
+####uso do os.listdir
+# é utilizado para navegar em caminhos
+caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') #primeiro eu faço o caminho até a pasta que quero modificar
+for item in os.listdir(caminho_da_pasta): #aqui eu já posso iterar dentro dela, através do lisdir(caminho)
+    print(item) #aqui ele retornou o nome das pastas
+    #no entanto, é perceptível que para entrar na outra pasta, vamos precisar fazer um outro for, ou quem sabe, uma função recursiva. Essa questão dele ter acessado apenas a primeira pasta é denominada de primeiro nível.
+    #ademais, vou ter que criar um novo caminho com base no nome da pasta também, já que o caminho anterior é com base no caminho inicial da pasta.
+    caminho_da_pasta_noutra_pasta = os.path.join(caminho_da_pasta, item)
+    #e agora vamos iterar
+    for pastas in os.listdir(caminho_da_pasta_noutra_pasta):
+        print(pastas)

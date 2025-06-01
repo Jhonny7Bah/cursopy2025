@@ -168,7 +168,7 @@ print(calendar.monthrange(2025, 5)) #também informo o ano e o mês desejado.
 #por fim, ele irá me retornar na tela o dia da semana onde o mês deu-se início e posteriormente, o dia do mês que mês vai acabar/acabou. 
 #caso eu queira saber com exatidão o dia da semana, basta:
 primeiro_dia, ultimo_dia = calendar.monthrange(2025, 5)
-print(calendar.day_name[calendar.weekday(2025, 5, 31)])
+print(calendar.day_name[calendar.weekday(2025, 5, 31)]) #hard coded
 #ou
 print(calendar.day_name[calendar.weekday(2025, 5, ultimo_dia)])
 #nesse caso, weekday vai pegar o último dia da semana.
@@ -259,4 +259,22 @@ for item in os.listdir(caminho_da_pasta): #aqui eu já posso iterar dentro dela,
     caminho_da_pasta_noutra_pasta = os.path.join(caminho_da_pasta, item)
     #e agora vamos iterar
     for pastas in os.listdir(caminho_da_pasta_noutra_pasta):
-        print(pastas)
+        print(pastas) #e agora eu consifo ver o caminho que nelas estão!
+
+cls()
+####uso do os.walk
+#O walk é uma função que permite uma recursão dentro da pasta. Ou seja, ela consegue percorrer por todos os itens que nela estiver,
+# sendo utilizada no lugar do listdir em alguns casos, quando é necessário percorrer por tudo. 
+# Quando utilizada, ela gera uma sequência de tuplas, tuplas essas que são compostas por: Diretório Atual (root), uma lista de subdiretórios (dirs)
+# e uma lista de arquivos com o diretório atual. (files.)
+#no exemplo anterior para o listdir, ela acaba sendo mais útil.
+##aula 284
+caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') 
+for root, dirs, files in os.walk(caminho_da_pasta):
+    print('Pasta atual ',root) #mostra o caminho atual
+    print('Pastas: ',dirs) #mostra as pastas
+    print('Arquivos: ',files) #mostra os arquivos
+    #como viu, através de um for e para iterar por cada uma das pastas e arquivos, o walk foi mais útil
+
+
+    

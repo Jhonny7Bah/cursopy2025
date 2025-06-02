@@ -248,7 +248,11 @@ print(os.path.basename(caminho)) #retorna a parte final de um caminho, seja ele 
 print(os.path.dirname(caminho)) #vai retornar apenas o diretório de um arquivo. Se houver um arquivo no final do diretório, esse arquivo não será retornado. 
 
 print(os.path.isdir(caminho)) #retorna verdadeiro se essa pasta for um diretório
+
+home = os.path.expanduser("~") #mostra a home/raiz no momento em que ele foi executado.
+print(home)
 cls()
+
 ####uso do os.listdir
 # é utilizado para navegar em caminhos
 caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') #primeiro eu faço o caminho até a pasta que quero modificar
@@ -276,5 +280,23 @@ for root, dirs, files in os.walk(caminho_da_pasta):
     print('Arquivos: ',files) #mostra os arquivos
     #como viu, através de um for e para iterar por cada uma das pastas e arquivos, o walk foi mais útil
 
+cls()
+###################os + shutil para copiar aquivos.
+# Abaixo, irei demonstrar um exemplo prático de boa parte dos comandos que aprendemos ultimamente com a combinação de outro módulo - shutil 
+
+#Como o objetivo é copiar os arquivos de uma pasta para outra, primeiro vamos definir o caminho da pasta que vamos copiar os arquivos. 
+CAMINHO_ORIGINAL = os.path.join(os.path.abspath('.'), 'listdirdemonstracao_imagens') 
+#agora, vamos criar uma outra pasta para mandar os arquivos copiados. Para isso, podemos usar o makedirs do os, no entanto, precisamos passar o caminho da nova pasta com seu nome como argumento.
+#Logo, vamos definir o caminho da nova pasta.
+NOVA_PASTA = os.path.join(os.path.abspath('.'), 'NOVA_PASTA')
+#e por fim, criar a nova pasta.
+os.makedirs(NOVA_PASTA, exist_ok=True) #este comando serve para criar uma nova pasta. ele apenas vai precisar do caminho como argumento.
+#esse exist_ok vai servir para informar ao python se esta pasta já existe. Pois assim, o código não iria dar pau e nem tentar criar aquela pasta toda vez que o compilador passasse por essa linha. 
+
+#para iterar pelos arquivos de forma fácil, podemos utilizar o walk, juntamente com um for.
+for root, dirs, files in os.walk(CAMINHO_ORIGINAL):
+    for file in files:
+        print(file)
+#ainda não completo. rever aulas 285 e 286.
 
     

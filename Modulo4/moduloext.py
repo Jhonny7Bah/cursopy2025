@@ -251,6 +251,9 @@ print(os.path.isdir(caminho)) #retorna verdadeiro se essa pasta for um diretóri
 
 home = os.path.expanduser("~") #mostra a home/raiz no momento em que ele foi executado.
 print(home)
+
+def prevencao(): #coloquei dentro de uma função para não correr o risco de apagar alguma coisa.
+    os.unlink('') #apaga o arquivo que você colocar aqui dentro
 cls()
 
 ####uso do os.listdir
@@ -276,27 +279,48 @@ cls()
 caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') 
 for root, dirs, files in os.walk(caminho_da_pasta):
     print('Pasta atual ',root) #mostra o caminho atual
-    print('Pastas: ',dirs) #mostra as pastas
+    print('Pastas:  ',dirs) #mostra as pastas
     print('Arquivos: ',files) #mostra os arquivos
     #como viu, através de um for e para iterar por cada uma das pastas e arquivos, o walk foi mais útil
 
 cls()
-###################os + shutil para copiar aquivos.
-# Abaixo, irei demonstrar um exemplo prático de boa parte dos comandos que aprendemos ultimamente com a combinação de outro módulo - shutil 
+##########uso do os.path.getsize() e os.stat
+##os.start por padrão pode lhe retornar a data da última modificação do arquivo, data de criação, tamanho, dentre outras coisas.
+##documentação: https://docs.python.org/3/library/stat.html
 
-#Como o objetivo é copiar os arquivos de uma pasta para outra, primeiro vamos definir o caminho da pasta que vamos copiar os arquivos. 
-CAMINHO_ORIGINAL = os.path.join(os.path.abspath('.'), 'listdirdemonstracao_imagens') 
-#agora, vamos criar uma outra pasta para mandar os arquivos copiados. Para isso, podemos usar o makedirs do os, no entanto, precisamos passar o caminho da nova pasta com seu nome como argumento.
-#Logo, vamos definir o caminho da nova pasta.
-NOVA_PASTA = os.path.join(os.path.abspath('.'), 'NOVA_PASTA')
-#e por fim, criar a nova pasta.
-os.makedirs(NOVA_PASTA, exist_ok=True) #este comando serve para criar uma nova pasta. ele apenas vai precisar do caminho como argumento.
-#esse exist_ok vai servir para informar ao python se esta pasta já existe. Pois assim, o código não iria dar pau e nem tentar criar aquela pasta toda vez que o compilador passasse por essa linha. 
+#inicialmente, vamos iterar por cada elemento da pasta datravés do os.walk.
+for bot, diret, arq in os.walk(caminho_da_pasta):
+    for arquivo in arq:
+        print(arquivo) #iterando por cada arquivo separadamente.
+        caminho_completo = os.path.join(bot, arquivo) #definindo o caminho completo, juntando root atual com o arquivo atual no for.
+        #para pegar o tamanho do arquivo
+        print(os.path.getsize(caminho_completo)) # e aqui eu passo como argumento o caminho completo. Logo, descubrirei o tamanho do arquivo. 
 
-#para iterar pelos arquivos de forma fácil, podemos utilizar o walk, juntamente com um for.
-for root, dirs, files in os.walk(CAMINHO_ORIGINAL):
-    for file in files:
-        print(file)
-#ainda não completo. rever aulas 285 e 286.
+        #agora, para utilizar o os.stat, basta:
+        arquivo_info = os.stat(caminho_completo) # o argumento que você geralmente vai precisar passar aqui é o diretório completo.
+        print(arquivo_info.st_size) #st_size vai pegar o tamanho do arquivo. Mas você também pode coletar outras coisas referente ao arquivo.
+        # exemplos:
+        print(datetime.fromtimestamp(arquivo_info.st_mtime)) #st_mtime mostra o timestamp da última modificação
+        print(datetime.fromtimestamp(arquivo_info.st_atime)) #st_atime mostra o timestamp do último acesso
+        print(arquivo_info.st_uid) #id do usuário dono do arquivo.
 
-    
+
+
+# ###################os + shutil para copiar aquivos.
+# # Abaixo, irei demonstrar um exemplo prático de boa parte dos comandos que aprendemos ultimamente com a combinação de outro módulo - shutil 
+
+# #Como o objetivo é copiar os arquivos de uma pasta para outra, primeiro vamos definir o caminho da pasta que vamos copiar os arquivos. 
+# CAMINHO_ORIGINAL = os.path.join(os.path.abspath('.'), 'listdirdemonstracao_imagens') 
+# #agora, vamos criar uma outra pasta para mandar os arquivos copiados. Para isso, podemos usar o makedirs do os, no entanto, precisamos passar o caminho da nova pasta com seu nome como argumento.
+# #Logo, vamos definir o caminho da nova pasta.
+# NOVA_PASTA = os.path.join(os.path.abspath('.'), 'NOVA_PASTA')
+# #e por fim, criar a nova pasta.
+# os.makedirs(NOVA_PASTA, exist_ok=True) #este comando serve para criar uma nova pasta. ele apenas vai precisar do caminho como argumento.
+# #esse exist_ok vai servir para informar ao python se esta pasta já existe. Pois assim, o código não iria dar pau e nem tentar criar aquela pasta toda vez que o compilador passasse por essa linha. 
+
+# #para iterar pelos arquivos de forma fácil, podemos utilizar o walk, juntamente com um for.
+# for root, dirs, files in os.walk(CAMINHO_ORIGINAL):
+#     for file in files:
+#         print(file)
+# #ainda não completo. rever aulas 285 e 286.
+

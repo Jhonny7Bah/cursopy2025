@@ -348,7 +348,25 @@ def apagar_pasta_demontracao():
     #como vimos antes, para você apagar uma pasta, você precisaria do os.unlink. No entanto, se nessa pasta houver subdiretorios, eu teria que fazer isso recursivamente.
     # é por isso que existe uma função shutil que resolve todo esse esquema. o nome dela é rmthree. Fazemos assim:
     from shutil import rmtree
-    rmtree(NOVA_PASTA)
+    rmtree(NOVA_PASTA, ignore_errors=True) #E esse ignore erros não vai quebrar o código caso a pasta não exista.
+    #a partir de agora, a pasta já foi apagada.
+# apagar_pasta_demontracao()
+
+def copiar_pasta_demonstracao():
+    #e se eu quisesse copiar uma pasta de um lugar para outro de uma forma muitoooooooo mais fácil, bastaria eu utilizar um método da shutil tbm
+    from shutil import copytree
+    #e através do copythree, realizo a cópia.
+    copytree(CAMINHO_ORIGINAL, NOVA_PASTA)
+    #é importante notar que caso a pasta já tenha sido criada, o código vai quebrar.
+
+#para renomear ou mover shutil.move ou shutil.rename
+#renomear e mover é a mesma coisa.
+def renomear_demonstracao():
+    from shutil import move
+    #no primeiro argumento eu coloco a pasta anterior e posteriomente o novo nome/caminho que ela vai ficar. 
+    move(NOVA_PASTA, NOVA_PASTA + 'CASAA')
+# renomear_demonstracao()
+
 
 
 

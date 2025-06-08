@@ -305,22 +305,59 @@ for bot, diret, arq in os.walk(caminho_da_pasta):
         print(arquivo_info.st_uid) #id do usuário dono do arquivo.
 
 
+cls()
 
 # ###################os + shutil para copiar aquivos.
 # # Abaixo, irei demonstrar um exemplo prático de boa parte dos comandos que aprendemos ultimamente com a combinação de outro módulo - shutil 
+#Como o objetivo é copiar os arquivos de uma pasta para outra, primeiro vamos definir o caminho da pasta que vamos copiar os arquivos. 
+CAMINHO_ORIGINAL = os.path.join(os.path.abspath('.'), 'listdirdemonstracao_imagens') 
 
-# #Como o objetivo é copiar os arquivos de uma pasta para outra, primeiro vamos definir o caminho da pasta que vamos copiar os arquivos. 
-# CAMINHO_ORIGINAL = os.path.join(os.path.abspath('.'), 'listdirdemonstracao_imagens') 
-# #agora, vamos criar uma outra pasta para mandar os arquivos copiados. Para isso, podemos usar o makedirs do os, no entanto, precisamos passar o caminho da nova pasta com seu nome como argumento.
-# #Logo, vamos definir o caminho da nova pasta.
-# NOVA_PASTA = os.path.join(os.path.abspath('.'), 'NOVA_PASTA')
-# #e por fim, criar a nova pasta.
-# os.makedirs(NOVA_PASTA, exist_ok=True) #este comando serve para criar uma nova pasta. ele apenas vai precisar do caminho como argumento.
-# #esse exist_ok vai servir para informar ao python se esta pasta já existe. Pois assim, o código não iria dar pau e nem tentar criar aquela pasta toda vez que o compilador passasse por essa linha. 
+#agora, vamos criar uma outra pasta para mandar os arquivos copiados. Para isso, podemos usar o makedirs do os, no entanto, precisamos passar o caminho da nova pasta com seu nome como argumento.
+#Logo, vamos definir o caminho da nova pasta.
+NOVA_PASTA = os.path.join(os.path.abspath('.'), 'NOVA_PASTA')
+#e por fim, criar a nova pasta.
+os.makedirs(NOVA_PASTA, exist_ok=True) #este comando serve para criar uma nova pasta. ele apenas vai precisar do caminho como argumento.
+#esse exist_ok vai servir para informar ao python se esta pasta já existe. Pois assim, o código não iria dar pau e nem tentar criar aquela pasta toda vez que o compilador passasse por essa linha. 
 
-# #para iterar pelos arquivos de forma fácil, podemos utilizar o walk, juntamente com um for.
-# for root, dirs, files in os.walk(CAMINHO_ORIGINAL):
-#     for file in files:
-#         print(file)
-# #ainda não completo. rever aulas 285 e 286.
+#para iterar pelos arquivos de forma fácil, podemos utilizar o walk, juntamente com um for.
+def realizar_copia():
+    for root, dirs, files in os.walk(CAMINHO_ORIGINAL):
+        
+        #como as pastas (dirs) estão empacotadas, para cria-las indivualmente, vamos precisar desempacotar.
+        for dir_ in dirs:
+            #como estamos no mesmo diretório que a pasta que iremos copiar, basta pegar as informações diretamente dela. No sentido que que como as pastas e subpastas serão as mesmas, bastaria utilizar um replace para segregar.
+            caminho_novo_diretorio = os.path.join(root.replace(CAMINHO_ORIGINAL, NOVA_PASTA), dir_)
+            #após isso, basta utilizar o método do makedirs para criar uma pasta já com o diretório e nome definidos
+            os.makedirs(caminho_novo_diretorio, exist_ok=True)
+        
+        ##como os files vinheram empacotados, vamos precisar desempacotar. Por isso, vamos chamar outro for
+        for file in files:
+            #agora que os files já foram desempacotados, como o intuito é copiar um arquivo para outro lugar, vamos precisar coletar o caminho.
+            caminho_e_arquivo = os.path.join(root, file) #o caminho completo será a concatenação do root com o nome do arquivo atual
+            print(caminho_e_arquivo)     
+            #para realizar a cópia completa de todos os arquivos, vamos precisar utilizar uma lógica com o replace
+            #nesta lógica, pegamos todo o caminho que a antiga pasta tinha e incrementamos na nova, coletando assim os arquivos dos subdiretórios e todo o resto.
+            caminho_novo_arquivo = os.path.join(root.replace(CAMINHO_ORIGINAL, NOVA_PASTA), file)
+        
+            #como o nosso intuito é copiar, vamos agora chamar o módulo shutil, lembrando que também é possível fazer isso com o módulo os.
+            import shutil
+            #e agora vamos chamar o método de cópia
+            shutil.copy(caminho_e_arquivo, caminho_novo_arquivo) #vamos pegar de camiho_e_arquivo para mandar para caminho_novo_arquivo
+
+def apagar_pasta_demontracao():
+    #como vimos antes, para você apagar uma pasta, você precisaria do os.unlink. No entanto, se nessa pasta houver subdiretorios, eu teria que fazer isso recursivamente.
+    # é por isso que existe uma função shutil que resolve todo esse esquema. o nome dela é rmthree. Fazemos assim:
+    from shutil import rmtree
+    rmtree(NOVA_PASTA)
+
+
+
+
+
+
+
+
+
+
+
 

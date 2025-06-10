@@ -252,6 +252,8 @@ print(os.path.isdir(caminho)) #retorna verdadeiro se essa pasta for um diretóri
 home = os.path.expanduser("~") #mostra a home/raiz no momento em que ele foi executado.
 print(home)
 
+print(os.path.dirname(__file__)) #pega o nome completo do arquivo atual.
+
 def prevencao(): #coloquei dentro de uma função para não correr o risco de apagar alguma coisa.
     os.unlink('') #apaga o arquivo que você colocar aqui dentro
 cls()
@@ -267,6 +269,7 @@ for item in os.listdir(caminho_da_pasta): #aqui eu já posso iterar dentro dela,
     #e agora vamos iterar
     for pastas in os.listdir(caminho_da_pasta_noutra_pasta):
         print(pastas) #e agora eu consifo ver o caminho que nelas estão!
+
 
 cls()
 ####uso do os.walk
@@ -367,15 +370,85 @@ def renomear_demonstracao():
     move(NOVA_PASTA, NOVA_PASTA + 'CASAA')
 # renomear_demonstracao()
 
+#################################
+# json.dumps e json.loads com strings + typing.TypedDict
+# O módulo json já vimos antes. Porém, agora vamos aprofundar mais um pouco.
+# 
+# para importar o json:
+import json
+#  
+# Ao converter de Python para JSON:
+# Python        JSON
+# dict          object
+# list, tuple   array
+# str           string
+# int, float    number
+# True          true
+# False         falseAdd commentMore actions
+# None          null
 
+#uso do loads
+#lembre-se que o load serve para fazer a leitura de um arquivo json. 
+# Já o load também irá fazer a mesma coisa, porém, todo arquivo json deve ter sua tipagem como str. Ex:
 
+#Aqui vou utilizar docstrings para facilitar a minha vida. Apesar da variável abaixo não ser um json, ela vai simular um.
 
+#por enquanto, pule a importação abaixo e a classe.
+from typing import TypedDict #inicialmente, vamos importar a tipagem
+class Movie(TypedDict): #colocamos a tipagem na base da classe
+    #e aqui, vamos passar o nome das chaves (key) e a tipagem esperada
+    
+    title: str #key = title e tipagem = str 
+    original_title: str
+    is_movie: bool
+    imdb_rating: float
+    year: int
+    characters: list[str]
+    budget: None | float #essa barra significa "OU" OR. Ou seja, a tipagem aqui será None ou float
 
+string_json = '''
+{
+  "title": "O Senhor dos Anéis: A Sociedade do Anel",
+  "original_title": "The Lord of the Rings: The Fellowship of the Ring",
+  "is_movie": true,
+  "imdb_rating": 8.8,
+  "year": 2001,
+  "characters": ["Frodo", "Sam", "Gandalf", "Legolas", "Boromir"],
+  "budget": null
+}
+'''
+print(type(string_json)) #aqui ele vai acusar que é um str
+try:
+    json.load(string_json)
+except AttributeError:
+    print('Como viu, não podemos fazer com o load normal, pois todo o conteúdo é uma str')
+    # perceba que o comando chama-se loads, onde "load" significaria carregar e o "s" significaria string
+novo_tipo = json.loads(string_json)
+print(type(novo_tipo)) #e agora, ele se torna um dicionário.
 
+print(novo_tipo['title']) #quando fazemos algo do tipo, o vscode não consegue nos mostrar as keys presentes no dicionário
+#é por isso que há um meio para conseguir resolver essa questão, através do módulo typing. Vá lá para cima, na declaração da classe.
+#viu a lógica da classe? então agora vamos fazer o loads novamente, mas de uma forma diferente.
 
+loads_com_tipagem : Movie = json.loads(string_json) #aqui indicamos a classe que a variável vai seguir
+print(loads_com_tipagem['title']) # e agora já aparece, facilitando nossa vida.
 
+#agora vamos para o dumps, que é semelhante ao dump.
+#O intuito do dumps é pegar todo o arquivo e converter para o formato json.
 
+json_string_new = json.dumps(loads_com_tipagem, indent=2)
+print(json_string_new) #como pode ver, foi tudo convertido.
 
+ 
+#um breve resumo sobre o dump e os load.
+# O dump basicamente converte um arquivo que está em uma variável para json. Posteriormente,
+# ele armazena aquela conversão em algum lugar, que no caso, vai ser em um arquivo json. Ou seja,
+# ele abre um arquivo em modo de escrita para armazenar
 
+# O load faz a conversão de um arquivo json para um código python, podendo ser dicionário, lista, str, etc.
+# Considere que esse arquivo json se encontrará fora do python, abrindo um arquivo json em modo de leitura (famoso with open) 
 
+# ou seja, pra ficar bem fácil: Se não tem um "s" no final, você está trabalhando com arquivo (o json vai ser lido ou escrito em algum arquivo)
+# se tiver, você vai trabalhar com o json diretamente no código 
 
+#Eu não fiz exemplo de uso porque já tem no código, tanto nesse módulo como em algum outro.

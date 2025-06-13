@@ -452,3 +452,31 @@ print(json_string_new) #como pode ver, foi tudo convertido.
 # se tiver, você vai trabalhar com o json diretamente no código 
 
 #Eu não fiz exemplo de uso porque já tem no código, tanto nesse módulo como em algum outro.
+
+cls()
+############################################################################
+##path também é um módulo que trabalha com caminho, sendo semelhante ao submódulo de os.path
+from pathlib import Path
+caminho_projeto = Path()
+print(caminho_projeto) #mostra o caminho relativo
+print(caminho_projeto.absolute()) #mostra o caminho absoluto
+print(caminho_projeto.resolve()) #também mostra o caminho absoluto, porém pode dar pau quando de trata de soft link (caminho de atalhos)
+
+CAMINHO_ARQUIVO = Path(__file__) #mostra o caminho absoluto e também o arquivo. Isso ocorre por conta do __file__, pois a classe Path vai apenas dar a possibilidade de manipular o caminho posteriormente.
+print(CAMINHO_ARQUIVO)
+#IMAGINE PARENT COMO PASTA ACIMA
+print(CAMINHO_ARQUIVO.parent) #Navega até a mãe do caminho. Ou seja, inicia a navegação do início e seu ponto de parada será final -1
+print(CAMINHO_ARQUIVO.parent.parent) #Esse aqui é a mãe da mãe do arquivo. Ou seja, vai navegar até cursopy2025, que é o equivalente a final -2
+print(Path.home()) #aqui eu consigo adquirir a home do usuário.
+
+# _true_div_ -> verificar depois
+
+#como se trata de um path, eu consigo também manipular caminhos
+ideia = CAMINHO_ARQUIVO.parent
+print(ideia / 'casa') #a barra da divisão pode ser utilizada para mostrar uma nova pasta
+#Até aqui eu apenas manupulei o diretorio, sem criar pasta ou arquivo algum.
+arquivo = ideia / 'comando.txt' #posso fazer isso para arquivos tbm
+print(arquivo) 
+#vamos criar esse caminho de acordo com o diretório acima
+arquivo.touch() #com o método touch sobre a variável, ele vai criar o arquivo.
+arquivo.unlink() #isso aqui vai apagar o arquivo.

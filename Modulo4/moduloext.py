@@ -456,6 +456,8 @@ print(json_string_new) #como pode ver, foi tudo convertido.
 cls()
 ############################################################################
 ##path também é um módulo que trabalha com caminho, sendo semelhante ao submódulo de os.path
+# referência: https://www.youtube.com/watch?v=T17BTNKBeJY&ab_channel=Ot%C3%A1vioMiranda
+
 from pathlib import Path
 caminho_projeto = Path()
 print(caminho_projeto) #mostra o caminho relativo
@@ -479,4 +481,68 @@ arquivo = ideia / 'comando.txt' #posso fazer isso para arquivos tbm
 print(arquivo) 
 #vamos criar esse caminho de acordo com o diretório acima
 arquivo.touch() #com o método touch sobre a variável, ele vai criar o arquivo.
-arquivo.unlink() #isso aqui vai apagar o arquivo.
+def apagar():
+    arquivo.unlink() #isso aqui vai apagar o arquivo.
+#coloquei dentro de uma função porque eu vou precisar dele 
+arquivo.write_text("Olá mundo!!") #aqui eu consigo escrever dentro do arquivo.
+print(arquivo.read_text()) #aqui eu consigo ler o que tem dentro do arquivo.
+
+#o método de escrita acima só consegue escrever uma única vez. Ou seja, se você precisar escrever mais de uma
+# coisa, ele vai apagar o que tinha antes no arquivo.
+#nesse caso, seria mais interessante abrir um arquivo em modo de escrita através de um context manager
+with arquivo.open('+a') as pd: #abrindo o arquivo em modo de leitura e escrita
+    arquivo.write_text('\nMundo crueeeel!!!')
+    print(arquivo.read_text()) # e assim iria seguindo!
+
+#para criar um diretório, primeiramente temos que definir um caminho
+CAMINHO_PASTA = ideia / 'demonstracao'
+print(CAMINHO_PASTA) #como pode ver, inicialmente eu criei o diretório
+# e com o método mkdir, eu consigo criar uma pasta a partir de um caminho.  
+CAMINHO_PASTA.mkdir(exist_ok=True) # e mais uma vez, o método exist_ok é um meio para tratar o transtorno que vai ocorrer caso a pasta já exista.
+#agora eu também posso criar uma subpasta
+subpasta = CAMINHO_PASTA / 'vejafunfar'
+print(subpasta) #subpasta criada na memória ram
+#e agora vamos criar ela na memória rom
+subpasta.mkdir(exist_ok=True) #tudo ok 
+#e agora, vou criar um arquivo dentro da subpasta
+novo_arquivo = subpasta / 'arquivo.txt'
+print('novo_arquivo.txt') #acabo de criar o arquivo na memória 
+#e agora vamos materializar
+novo_arquivo.touch(exist_ok=True)
+#vou colocar um conteúdo dentro dele 
+novo_arquivo.write_text('Hey mano, suave na nave? ')
+#e vou exibir pra você
+print(novo_arquivo.read_text()) #como viu, tudo certinho!!
+
+#tá, mas e se você agora quiser apagar a pasta demosntração, considerando que há subpastas e arquivos dentro dela?
+#Utilizaria unlink, ou rmdir, correto? o unlink não iria funcionar por problemas de permissão e o rmdir também não porque a pasta não está vazia.
+#ou seja, para apagar uma pasta dessa natureza, é necessário apagar seus subitens de forma recursivas, apagando cada elemento um a um e a última seria a pasta em si. 
+#e um detalhe importante é que o unlink é comumente utilizado para apagar um arquivo.
+
+#comentei porque não vai funcionar. 
+# CAMINHO_PASTA.unlink()
+# CAMINHO_PASTA.rmdir()
+
+def removendo(root: Path, remover_root= True):
+    #aqui eu vou iterar dentro do diretório do arquivo
+    for file in root.glob('*'): #glob como'*' vai selecionar a todos
+        #se na hora que o for estiver passando, file for uma pasta
+        if file.is_dir():
+            #apago a pasta
+            file.rmdir()
+        #se não for uma pasta, é um arquivo
+        else:
+            #aí eu apago o arquivo
+            file.unlink()
+    #e se você quiser apagar a raiz também, basta deixar como True e ele fará o serviço.
+    if remover_root:
+        file.rmdir()
+#e aqui eu chamo a função.
+# removendo(novo_arquivo)
+
+# No entanto, se eu quisesse apagar isso da forma mais fácil do mundo, bastaria eu chamar a função shutil
+def outro_meio():    
+#um dos meios é através do shutil.
+    from shutil import rmtree
+    rmtree(CAMINHO_PASTA, ignore_errors=True) #isso aqui vai apagar de uma vez.
+outro_meio() # e agora ela foi de arrasta

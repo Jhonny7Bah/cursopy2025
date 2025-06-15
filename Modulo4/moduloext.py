@@ -546,3 +546,98 @@ def outro_meio():
     from shutil import rmtree
     rmtree(CAMINHO_PASTA, ignore_errors=True) #isso aqui vai apagar de uma vez.
 outro_meio() # e agora ela foi de arrasta
+
+cls()
+
+####################################
+# Introdução ao CSV
+# CVS -> Comma Separeted Values - Valores Separados Por Vírgulas
+# é uma extensão que separa os dados em forma de tabela. Sendo que cada linha (i) representa uma linha da tabela
+# e as colunas são separadas por vírgulas. 
+#  Utilizada comumente em programas como excel, calc, sheets, etc. Para exportação ou importação de dados.
+#Um arquivo .csv pode ser aberto em uma planilha eletrônica e também em um editor de texto.
+#Quando você quer utilizar uma virgula dentro de uma célula, aspas duplas normalmente são inseridas para não gerar transtornos. 
+# exemplo:
+
+'''
+nome, idade, sexo
+Victor, 17, M
+Joana, 19, F
+
+'''
+
+#agora com aspas:
+
+'''
+nome, idade, localidade, ocupação
+João, 22, "Avenida D, 111", policial
+Maria, 19, "Rua João da Mata, 110"
+
+'''
+
+#e na presença de aspas duplas, será necessários implementar duas aspas antes da palavra, ficandoa assim:
+'''
+nome, idade, endereço_completo
+Pedro, 45, "Av.452, 18, ""Centro"""
+Julieta, 56, Rua.110, 96, ""Interior""" 
+
+'''
+##################### Agora vamos praticar
+#inicialmente, vamos criar um arquivo csv
+from pathlib import Path #importar o path para apontar o caminho
+caminho_atual = Path(__file__).parent / 'aula293.csv' #aqui eu pego o caminho absoluto, volto uma casa e aponto um arquivo
+print(caminho_atual) #veja
+caminho_atual.touch() #aqui eu faço a criação do arquivo.
+#para manipular meu csv, vou precisar importar o módulo csv
+import csv
+
+######uso em casos de uma lista de dicionários
+#essa será a minha lista de dicionários
+lista_clientes = [
+    {'Nome': 'Luiz Otávio', 'Endereço': 'Av 1, 22'},
+    {'Nome': 'João Silva', 'Endereço': 'R. 2, "1"'},
+    {'Nome': 'Maria Sol', 'Endereço': 'Av B, 3A'},
+]
+#abro o arquivo em modo de escrita 
+with open(caminho_atual, 'w') as arq_dict:
+    nome_das_colunas = lista_clientes[0].keys() #primeiro eu pego as keys de cada dicionário pelo índice
+    escrever_no_csv = csv.DictWriter(arq_dict, 
+    fieldnames=nome_das_colunas) # e em fieldnames, eu passo as keys. Esse fieldnames é o parâmetro para o cabeçalho.
+    
+    escrever_no_csv.writeheader() #e agora incrementamos o cabeçalho.
+
+    #porm fim, vamos incrementar os valores agr
+    for clientes in lista_clientes:
+        escrever_no_csv.writerow(clientes)
+        # e tudo jóia!
+
+#para escrever alguma coisa no meu csv, primeiramente eu vou precisar abrir o csv em modo de escrita.
+with open(caminho_atual, 'w', newline='') as arq: #esse newline vazio vai prevenir que haja quebras de linha desnecessárias.
+    #após isso, vou precisar informar os nomes das colunas de forma empacotadas, seja de lista, tupla, etc.
+    nome_colunas = ['Nome', 'Idade', 'Sexo']
+    #depois eu vou ter que apontar o arquivo em aberto, indicando que vou escrever
+    escritor = csv.writer(arq, delimiter=',') #utiliza a vírgula como delimitador/separador padrão.
+    #e agora utilizo o wirterow para escrever uma nova linha, informando o que quero escrever como argumento.
+    escritor.writerow(nome_colunas)
+    escritor.writerow(('Erick', 19, 'M'))
+    escritor.writerow(('Joana', 18, 'F'))
+    # e assim vai, inserindo dados.
+
+####por fim, vamos ler os arquivos!
+#para isso, basta abrir o csv em modo de leitura, sendo:
+with open(caminho_atual, 'r') as read_csv:
+    leitor = csv.reader(read_csv) #utilizo o reader para retornar em lista
+    #mas como isso é um iterator, vou precisar utilizar um next ou iterar de uma vez com um for.
+    #vamos chamar um next
+    print(next(leitor))
+    #agora vamos iterar:
+    cls()
+    for linha in leitor:
+        print(linha) #aqui eu vejo os dados que lá dentro tem.
+    #no caso acima, o retorno será em um formato de lista.
+
+#no entanto, eu consigo fazer com que o retorno seja um dicionário também, sendo: 
+with open(caminho_atual, 'r') as read_csv_dicionario:
+    leitor_dict = csv.DictReader(read_csv_dicionario) #dictreader serve para indicar o retorno em dict
+    for linha in leitor_dict:
+        print(linha) #e como pode ver, ele também retornou os dados, porém no formato dict. 

@@ -653,6 +653,9 @@ cls()
 # doc: https://docs.python.org/pt-br/3/library/random.html
 import random #assim importamos o módulo random
 
+# o random funciona a base do random.seed com base nos segundos. Desse modo, ele consegue gerar valores de forma "aleatoria"
+#porém, mesmo assim ainda é possível prever a saída, já que funciona com base nos segundos. É por isso que não é interessante utilizar para fins de segurança, como gerador de senhas ou algo do tipo.
+
 #####uso do randrange
 # random.randrange(inicio, fim, passo) é tipo o range, tendo início, fim e o pulo. Ou seja, se em pássp tivesse 2, o programa iria sortear os números pulando de dois em dois, que consequentemente haveria apenas números pares.
 print(random.randrange(10, 20)) #vai sortear números aleatórios entre 10 e 20
@@ -685,3 +688,41 @@ print(random.choices(novos_nomes, k=2)) #uma hora ou outra ele vai repetir.
 #uso do choice
 #o choice vai pegar um iterável de uma lista. 
 print(random.choice(novos_nomes)) #pega apenas um valor aleatoraimente
+
+cls()
+###############################################################
+#o módulo secrets é bem semelhante ao módulo random. No entanto, ele não funciona a base do seed, como o random
+import secrets #importanto o secrets, que é nativo do python
+
+print(secrets.randbelow(100)) #sorteia um número aleatório entre 0 e 99
+print(secrets.choice([1,2,3])) #escolhe um único valor de uma lista
+
+#para trabalhar diretamente com alguns métodos random, o secrets oferece o seguinte meio:
+aleatorio = secrets.SystemRandom() #agora eu posso utilizar os métodos do módulo respectivo
+#a partir de agora, posso utilziar qualquer método da função random. Ex:
+print(aleatorio.randint(10, 20)) #como viu, deu certinho.
+# Pesquisar depois -> time attack
+
+#bom, mas e para gerar uma senha, que é o foco desse módulo?
+#para facilitar, vamos importar a biblioteca string e obter todas as letras e pontuações possíveis do alfabeto.
+import string
+print(string.ascii_letters) #aqui você percebe a presença de todas as letras do alfabeto maiúsculas e minúsculas. 
+print(string.punctuation) #aqui eu pego todas as pontuações possíveis
+print(string.digits) # e aqui eu pego todos os números a base 10
+#eu poderia ter feito tudo isso na mão, mas para agilizar, é melhor importar string que já dá isso pronto.
+
+#agora, vamos juntar todos eles
+juncao = string.ascii_letters + string.punctuation + string.digits
+print(juncao)
+#vamos definir a quantidade de dígitos que queremos
+numero_de_digitos = 10 
+#vamos colocar para pegar valores aleatórios
+senha_list = aleatorio.choices(juncao, k=numero_de_digitos)
+print(senha_list) #como viu, isso retornou como uma lista
+#agora vamos juntar isso
+senha_final = ''.join(senha_list)
+print(senha_final) # e agora a senha está sendo gerada de forma aleatória.
+#o código abaixo, quando colocada em um terminal, vai gerar uma senha alfanumerica de forma aleatória.
+# python -c "import string as s;from secrets import SystemRandom as Sr; print(''.join(Sr().choices(s.ascii_letters + s.punctuation + s.digits,k=12)))"
+
+####################################################################################

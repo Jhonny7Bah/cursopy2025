@@ -641,3 +641,47 @@ with open(caminho_atual, 'r') as read_csv_dicionario:
     leitor_dict = csv.DictReader(read_csv_dicionario) #dictreader serve para indicar o retorno em dict
     for linha in leitor_dict:
         print(linha) #e como pode ver, ele também retornou os dados, porém no formato dict. 
+
+cls()
+##################################################################
+# random tem geradores de números pseudoaleaórios
+# Obs.: números pseudoaleatórios significa que os números
+# parecem ser aleatórios, mas na verdade não são. Portanto,
+# este módulo não deve ser usado para segurança ou uso criptográfico.
+# O motivo disso é que quando temos uma mesma entrada e um mesmo algorítimo,
+# a saída pode ser previsível.
+# doc: https://docs.python.org/pt-br/3/library/random.html
+import random #assim importamos o módulo random
+
+#####uso do randrange
+# random.randrange(inicio, fim, passo) é tipo o range, tendo início, fim e o pulo. Ou seja, se em pássp tivesse 2, o programa iria sortear os números pulando de dois em dois, que consequentemente haveria apenas números pares.
+print(random.randrange(10, 20)) #vai sortear números aleatórios entre 10 e 20
+print(random.randrange(10, 20, 2)) #vai sortear números aleatórios entre 10 e 20 pulando de 2 em 2
+
+#caso eu não precise do step(passo), posso utilizar o randint
+print(random.randint(10, 20)) #é a mesma lógica do randrange, porém é sem o step (passo.)
+
+#caso eu quera gerar um número de ponto flutuante aleatório, basta:
+print(random.uniform(10, 20)) #vai gerar um número aleatório com ponto flutuante entre 10 e 20
+
+#caso você queira mudar a ordem de uma lista de forma aleatória
+lista = [x for x in range(10)] #gera valores de 0 à 9 de forma crescente 
+print(lista) #veja a ordem como tá agora
+random.shuffle(lista) #utilizando o shuffle para embaraçar a lista original 
+print(lista) #e como pode ver, a ordem agora é diferente
+#Ou seja, pra ficar bem calro: O shuffle pode não ser uma boa as vezes por modificar a lista original.
+
+#uso do sample, para coletar uma certa quantidade de valores aleatórios em uma lista 
+lista2 = [x for x in range(10)] #gera valores de 0 à 9 de forma crescente 
+novos_nomes = random.sample(lista2, k=2) #o parâmetro k é responsável por coletar o número de itens aleatórios que você quer pegar na lista
+print(novos_nomes) #sempre que o código executar, ele vai pegar dois valores diferentes.
+#e o retorno sempre será um outro iterável, sem repetição!
+
+#uso do choices 
+#o choices faz a mesma coisa que o sample. A única diferença é que o choices vai repetir valores.
+#como a lista original não foi modificada no cod anterior, vou usar ela!
+print(random.choices(novos_nomes, k=2)) #uma hora ou outra ele vai repetir.
+
+#uso do choice
+#o choice vai pegar um iterável de uma lista. 
+print(random.choice(novos_nomes)) #pega apenas um valor aleatoraimente

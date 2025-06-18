@@ -726,3 +726,49 @@ print(senha_final) # e agora a senha está sendo gerada de forma aleatória.
 # python -c "import string as s;from secrets import SystemRandom as Sr; print(''.join(Sr().choices(s.ascii_letters + s.punctuation + s.digits,k=12)))"
 
 ####################################################################################
+# Falando um pouco mais sobre a library string
+#string.Template para substituir facilmente varivaveis em texto. É como se fosse uma forma de fazer mala direta em python
+# doc: https://docs.python.org/3/library/string.html#template-strings
+
+from string import Template #importamos o submódulo
+
+#criamos os dados que vamos passar no texto
+dados = {
+    'nome':'Pedro',
+    'data_nascimento':'32/02/2000'
+}
+
+#depois criamos o texto
+# Lembrando que se o texto estivesse dentro de um arquivo, seria possível pegar o contexto de lá,
+#  abrindo o arquivo em modo leitura
+#para colocar os espaços que serão substituídos, basta colocar cifrão ($) e posteriormente, o nome da key no dicionário
+#para deixar mais organizado, posso colocar cifrão e chaves, sendo: ${key}
+texto_pronto = '''
+Olá, senhor ${nome}, nascido em ${data_nascimento}, 
+Tudo bem com sua pessoas?
+'''
+
+#agora, basta criar uma variável, chamar a classe e apontar para o texto
+template = Template(texto_pronto)
+
+#e por fim, para fazer a substituição, basta chamar o método substitute e apontar o dicioário.
+print(template.substitute(dados))
+
+#no entanto, se houver algum campo no texto que não foi preenchido ou o contrário, o código quebrará.
+#para garantir que isso não aconteça, temos o método safe_substitute, que vai tratar caso isso aconteça.
+print(template.safe_substitute(dados))
+
+#O delimitador padrão é o cifrão (#), mas se houver algum motivo muito esquisito, posso mudar o delimitador.
+# Para isso, vou ter que criar uma classe recebendo como base a classe Template
+class MyTemplate(Template):
+    delimiter = '!'
+
+#agora, vamos fazer um replace para trocar o cifrão pela exclamação
+novo_texto = texto_pronto.replace('$','!')
+print(novo_texto) #veja o texto trocado
+
+#e vamos criar um novo template com base na nossa classe
+Temp = MyTemplate(novo_texto)
+#e por fim, vamos realizar o substitute. 
+print(Temp.substitute(dados)) #agora, você fez a mala direta com o limitador exclamação ou de negação (!)
+#Não é comum a troca do limitador. 

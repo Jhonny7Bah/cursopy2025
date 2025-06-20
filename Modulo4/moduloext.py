@@ -773,14 +773,36 @@ Temp = MyTemplate(novo_texto)
 print(Temp.substitute(dados)) #agora, você fez a mala direta com o limitador exclamação ou de negação (!)
 #Não é comum a troca do limitador. 
 
-# Trocar abaixo depois
 ###############################################################
+# Variáveis de ambiente são variáveis que se remete ao sistema operacional, como usuário, senha, host, etc.
+#Normalmente temos três tipos de ambientes para o código, sendo o local, o de testes/produção (que normalmente é separado para testar algumas coisas) e o de desenvolvimento (quando o de teste dar certo e é enviado para o projeto principal).
+#Digo isso, para se conectar a uma api, servidor ou a qualquer outra coisa que precise de credenciais, para não deixar isso exposto no código,
+#  podemos fazer uma configuração através de uma variável de ambiente. SE ISSO FICASSE EXPOSTO NO CÓDIGO, QUALQUER PESSOA PODERIA LOGAR NO SERVIDOR OU API 
+
+#-------------------------------------
+#COMANDOS SHELL
+
+#No windows, para criar uma variável de ambiente no powershell, basta digitar o seguinte comando:
+'env:VARIAVEL="VALUE"'
+#Posteriormente, basta colocar:
+'dir env:' #e você vai ver todas as variáveis de ambiente, principalmente a sua
+#detalhe -> como são variáveis de ambiente salva em memória ram, quando o terminal for fechado, essa variável de ambiente se perderá.
+#-------------------------------------
+
+#Para fazer isso em python, vamos precisar da biblioteca os.
+import os
+#para consultar uma variável de ambiente:
+print(os.getenv('NOME_DA_VARIAVEL')) #caso ele não encontrar a variável de ambiente, será retornado None.
+#considerando que essa variavel de ambiente está funcionando, para usar em um programa, bastaria aramzenar em uma variável do python. ex:
+valor_ficticio = os.getenv('NOME_DA_VARIAVEL')
+
+#para ver todas as variáveis de sistema, basta: 
+print(os.environ)
+
+#No entanto, fazer isso toda vez acaba sendo chato. É por isso que o dotenv do python existe!
 # Doc: https://pypi.org/project/python-dotenv/
 # python-dotenv é uma biblioteca Python que permite que você faça uso de arquivos de configuração para armazenar e acessar 
 # as suas variáveis de ambiente de forma mais fácil e segura em seus projetos.
-
-# As variáveis de ambiente são valores que podem ser usados em seu código e que podem variar dependendo do ambiente 
-# em que o seu código está sendo executado (por exemplo, o ambiente de produção ou o ambiente de desenvolvimento).
 
 # Para utilizar o python-dotenv, basta instalá-lo com o pip e, em seguida, adicionar um arquivo chamado 
 # .env na raiz do seu projeto.
@@ -793,6 +815,46 @@ print(Temp.substitute(dados)) #agora, você fez a mala direta com o limitador ex
 # VARIAVEL_DE_AMBIENTE_1=valor
 # VARIAVEL_DE_AMBIENTE_2=valor
 # VARIAVEL_DE_AMBIENTE_3=valor
+
+#Após instalar o dovenv, basta fazer a chamada do módulo
+import dotenv
+
+#acabei de criar na mão um arquivo denominado de .env
+#acabei de colocar alguns arquivos no dotenv
+
+#se você for mandar para um repositório no github, coloque esse .env no .gitignore
+
+#agora vamos buscar o .env e carregar as variáveis de ambiente com base no arquivo
+dotenv.load_dotenv() 
+
+cls() #limpeza
+
+#por fim, vamos exibir um valor que lá tem na tela:
+print(os.getenv("DB_PASSWORD")) # e agora eu pego a minha senha.
+
+#MAIS UMA VEZ, SE VOCÊ FOR COLOCAR ISSO NO GITHUB, O .ENV NÃO DEVE IR JUNTO.
+# Nesse caso, você vai criar um .env de exemplo, colocar as mesmas variaveis e valores quaiquer. Vou fazer isso agora.
+
+#Criei o .env-example
+#coloquei o dotenv no gitignore
+#coloquei valores no .env-example 
+
+os.environ['nome'] = 'jao' #crio uma variavel de ambiente com python
+
+###########################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Em seu código, você pode acessar essas variáveis usando o módulo os e a função os.getenv(), por exemplo:
 
 # import os

@@ -840,32 +840,3 @@ print(os.getenv("DB_PASSWORD")) # e agora eu pego a minha senha.
 #coloquei valores no .env-example 
 
 os.environ['nome'] = 'jao' #crio uma variavel de ambiente com python
-
-###########################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Em seu código, você pode acessar essas variáveis usando o módulo os e a função os.getenv(), por exemplo:
-
-# import os
- 
-# valor_da_variavel_1 = os.getenv("VARIAVEL_DE_AMBIENTE_1")
-# O python-dotenv funciona lendo o arquivo .env e adicionando as variáveis de ambiente ao ambiente do sistema operacional, de forma que elas fiquem disponíveis para seu código usando a função os.getenv().
-
-# Isso é útil, por exemplo, para não expor senhas ou outras informações confidenciais em seu código ou em 
-# repositórios de código compartilhados, pois o arquivo .env pode ser adicionado ao .gitignore para não 
-# ser incluído nos commits. Crie um .env-example para exemplificar como usar o seu programa com valores fictícios.
-
-# Além disso, o python-dotenv também permite que você use um arquivo .env para armazenar valores de configuração
-#  específicos de cada ambiente, o que pode ser útil quando você estiver trabalhando em um projeto com diferentes 
-# ambientes de desenvolvimento, teste e produção.

@@ -840,3 +840,38 @@ print(os.getenv("DB_PASSWORD")) # e agora eu pego a minha senha.
 #coloquei valores no .env-example 
 
 os.environ['nome'] = 'jao' #crio uma variavel de ambiente com python
+
+###############################################
+# Compactando arquivos com python
+#Primeiro, vamos criar um arquivo. Como aqui já há inúmeros package de exemplo, vou reaproveitar o NOVA_PASTA (que nesse momento está vazia.)
+#para iterar, vamos importar o módulo pathlib
+import pathlib
+DIRETORIO_ATUAL = pathlib.Path(__name__)
+pasta_reaproveitada = DIRETORIO_ATUAL.absolute().parent / 'NOVA_PASTA' / 'arquivo.txt'
+
+#agora, vamos escrever alguma coisa dentro dela.
+with open(pasta_reaproveitada, 'w') as arq:
+    arq.write('Olá, meu caro amigo!')
+
+#Agora, vamos importar o módulo zipfile
+import zipfile
+
+#vamos criar um lugar para o nosso zip com o formato zip
+CAMINHO_COMPACTADO = pasta_reaproveitada.parent / 'arquivo.zip'
+
+#e vamos fazer um context de abertura com o zip
+with zipfile.ZipFile(CAMINHO_COMPACTADO, 'w') as zip: #no primeiro argumento para o context, eu coloco o caminho para o meu zip
+    def naotranstorno():
+        zip.write(pasta_reaproveitada)#aqui eu coloco a pasta que ele vai compactar.
+        #no entanto, fazer da forma acima pode gerar um transtorno. Pois, ele vai pegar e criar um caminho completo, desde a raiz até o final,ou seja, o meu zip
+        # vai ter a mesma estrutura de arquivos que o meu.
+    
+    #para resolver isso, bastaria passar o nome do arquivo como segundo argumento.
+    zip.write(pasta_reaproveitada, 'arquivo.txt') #agora vai aparecer normal.
+
+#para descompactar, basta abrir em modo leitura
+with zipfile.ZipFile(CAMINHO_COMPACTADO, 'r') as zip_read:
+    print(zip.namelist()) #se eu quiser ver oq tem dentro do arquivo
+    #para desempacotar, primeiro vamos fazer um caminho para ele
+    DESEMPACOTAR_CAMINHO = pasta_reaproveitada.parent / 'desempacotar'
+    zip.extractall(DESEMPACOTAR_CAMINHO)#e agora ele está desempacotado. 

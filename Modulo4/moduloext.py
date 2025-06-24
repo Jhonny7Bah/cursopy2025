@@ -874,4 +874,77 @@ with zipfile.ZipFile(CAMINHO_COMPACTADO, 'r') as zip_read:
     print(zip.namelist()) #se eu quiser ver oq tem dentro do arquivo
     #para desempacotar, primeiro vamos fazer um caminho para ele
     DESEMPACOTAR_CAMINHO = pasta_reaproveitada.parent / 'desempacotar'
-    zip.extractall(DESEMPACOTAR_CAMINHO)#e agora ele está desempacotado. 
+    def descompactar():
+        #LEMBRE-SE DE OLHAR ISSO AQUI DEPOIS
+        zip.extractall(DESEMPACOTAR_CAMINHO)#e agora ele está desempacotado.
+
+#########curiosidade interessante:
+# Se você digitar o caminho do ambiente virtual e depois der um pip install, você já automaticamente instala as dependências
+# necessárias dentro dele. Ex:
+# .venv\Scripts\activate -m pip install pandas
+
+
+
+########################usualidade do sys.argv
+#o método argv do módulo sys é útil para quando há um script que funciona com base na execução do módulo atual.
+#Ou seja, se eu executar esse código em um cmd, eu precisaria navegar até a pasta e colocar moduloexp.py, logo este módulo iria executar.
+#é aí que entra o argv, pois se ao invés de eu digitar apenas o nome do módulo, digitasse um argumento em conjunto? ex: moduloexp.py -a
+# por padrão, nada iria acontecer. Mas eu posso fazer um código com o argv que fará com que algo aconteça se isso for feito.  
+
+#primeiro, vamos importar diretamente o método
+from sys import argv
+
+def argsvdemonstracao():
+    #abaixo, vamos printar o conteúdo em argv.
+    print(argv) #percebemos que primeiro vem o móduloexp.py
+
+    #vou para o terminal e digitar algo como "aoba"
+
+    #o argv captorou e agora:
+    print(argv)
+
+    #como argv é uma lista, posso fazer da seguinte forma:
+    if argv[1] == 'aoba':
+        print("Vou apagar o seu system32!!")
+    #logo, o código executa normalmente e essa condição será atendida! Daí, eu posso fazer n coisas. 
+    #e assim vai, passando os argumentos para o script python.
+
+####################################################
+# No caso acima, foi explicada uma forma de passar argumentos de forma simples. Baixo, vou mostrar outra forma, forma essa que será mais robusta.
+# https://docs.python.org/pt-br/3/howto/argparse.html
+#Aula 307
+
+#Importando o módulo, que por sinal, já é nativo.
+from argparse import ArgumentParser
+
+#inicializando a variavel que será responsável por armazenar a classe
+parseamento = ArgumentParser()
+
+# Denominando os argumentos, passando os parâmtros necessários para a execução do comando 
+parseamento.add_argument('-b', #abreviação
+                        '--basico', #nome
+                        help='Olá mundo na tela!',
+                        type=str, #tipo esperado pelo código
+                        metavar='STRING', #informação de tipo para o usuário
+                        default=None, #passando valor padrão
+                        required=False, #Se true, o usuário é forçado a passar esse argumento.
+                        #OS DOIS PARÂMTROS E ARGUMENTOS A SEGUIR IRÃO RETORNAR UMA LISTA
+                        # nargs='+', #recebe mais de um valor. ex: moduloext -b "a" "b" "c"
+                        # action='appned' #recebe o valor mais de uma vez ex: moduloext -b "a" -b "b" -b "c"
+                        )
+
+#inicializando os parâmetros, passando a possibilidade de receber argumentos
+argumentos = parseamento.parse_args()
+
+#Agora, eu posso manipular oq vai rolar
+print(argumentos.basico) #por padrão, se o argumento não for inserido, é retornado none. Esse padrão pode ser alterado na definição do parâmetro.
+
+#com isso, posso fazer um controle.
+if argumentos.basico == None:
+    print('nada digitado')
+else:
+    print('O valor que você digitou foi: ',argumentos.basico)
+
+# ESSE é apenas o basicão doq dá pra fazer com esse módulo!
+##################################################################################
+

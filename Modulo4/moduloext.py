@@ -946,5 +946,27 @@ else:
     print('O valor que você digitou foi: ',argumentos.basico)
 
 # ESSE é apenas o basicão doq dá pra fazer com esse módulo!
-##################################################################################
 
+
+##################################################################################
+# Procolo HTTP - HyperText Transfer Protocol (Protocolo de Transferência de Hiper Texto) é um protocolo utilizado
+# para enviar e receber mensagens na internet. 
+# Web scarping (Raspagem de dados) - busca de dados na internet
+
+#Mensagem de requesição do Cliente pode ter:
+# Método http:
+    # leitura (safe): get, head, options
+    # escrita: post, put, patch, delete
+#Normalmente, os modos de escrita vão com um corpo.
+# 
+# Para fazer uma requesição get, basta colocar a url (endereço) do servidor em um navegador (exemplo) e o que retorna será os dados enviados pelo servidor.
+# Quando acessamos um site e vamos navegando dentro dele, a url vai mudando com uma / lá em cima. Essa / é a rota
+# 
+# Há casos também em que vamos acabar precisando de um cabeçalho, principalmente se for para mandar uma chave para acessar as informações que lá estão. 
+# Cabeçalho -> (Content-Type, Authorization)
+
+# A mensagem de resposta do servidor deve incluir dados como:
+# - código de status HTTP (200 success, 404 Not found, 301 Moved Permanently)
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+# - Os cabeçalhos HTTP (Content-Type, Accept)
+# - O corpo da mensagem (Pode estar em vazio em alguns casos)

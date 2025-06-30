@@ -970,3 +970,61 @@ else:
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 # - Os cabeçalhos HTTP (Content-Type, Accept)
 # - O corpo da mensagem (Pode estar em vazio em alguns casos)
+
+########################################
+#Agora, vamos fazer isso na prática. Inicialmente, é necessário criar um arquivo html qualquer e colocar em uma pasta (por questão de organização)
+#Eu também irei colocar um css, que é o da aula. 
+
+# Agora, se eu tentar abrir o arquivo , vai funcionar normalmente. Porém, isso será no módulo atual.
+# No entanto, se eu quiser servir http para fazer um get, basta fazer uso de uma função do próprio python, sendo:
+# -m http.server -d <nome_da_pasta> <porta> (a porta é opcional, roda por padrão na porta 8000) 
+#se quiser, pode executar o python do próprio ambiente virtual, basta colocar o venv antes.
+    #caso algo já esteja sendo servida na porta 8000, vai ter que colocar outra porta.
+
+#no meu caso: py -m http.server -d aula190_site 3333 
+
+#agora, para acessar o arquivo no navegador, basta colocar o seguinte comando:
+    # localhost:<porta_escolhida> -> localhost:3333
+    # acessar pelo ip:
+    # 127.0.0.1:3333
+
+########################################################
+# Módulo requests 
+#Para instalar o requests, juntamente com sua tipagem, basta:
+# -m pip install requests types-requests
+
+#informação relevante:
+# http -> por padrão, roda na porta 80
+# https -> por padrão, roda na porta 443
+
+#Para fazer uma requesição, primeiro, vamos criar uma outra aba no nosso terminal e colocar pra rodar. Ele será o nosso servidor.
+    # py -m http.server -d aula190_site 3333 (colocando servidor para rodar)
+
+#Já o nosso código que irá fazer a requesição será o servidor.
+
+#vamos importar o módulo agora
+import requests
+#####GET
+url = 'http://127.0.0.1:3333/' #vamos colocar a url do nosso servidor
+
+#agora que o nosso servidor está servindo o site, vamos fazer um get nele.
+response = requests.get(url)
+
+#agora, posso verificar o status do site (200, 404, 303...)
+print(response.status_code)
+
+#posso revificar o cabeçalho
+print(response.headers)
+
+#posso verificar o conteúdo (em formato de bytes)
+print(response.content)
+
+#posso verificar também o texto (nesse caso, o html da página)
+print(response.text)
+
+#caso o retorno fosse em json, seria:
+# print(response.json) -> não executei porque esse site não tem retorno em json, logo, iria quebrar o código.
+
+cls()
+########################################################################
+# Continuação: https://www.youtube.com/watch?v=Qd8JT0bnJGs&ab_channel=Ot%C3%A1vioMiranda

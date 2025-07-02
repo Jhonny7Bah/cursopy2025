@@ -258,17 +258,18 @@ def prevencao(): #coloquei dentro de uma função para não correr o risco de ap
     os.unlink('') #apaga o arquivo que você colocar aqui dentro
 cls()
 
-####uso do os.listdir
-# é utilizado para navegar em caminhos
-caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') #primeiro eu faço o caminho até a pasta que quero modificar
-for item in os.listdir(caminho_da_pasta): #aqui eu já posso iterar dentro dela, através do lisdir(caminho)
-    print(item) #aqui ele retornou o nome das pastas
-    #no entanto, é perceptível que para entrar na outra pasta, vamos precisar fazer um outro for, ou quem sabe, uma função recursiva. Essa questão dele ter acessado apenas a primeira pasta é denominada de primeiro nível.
-    #ademais, vou ter que criar um novo caminho com base no nome da pasta também, já que o caminho anterior é com base no caminho inicial da pasta.
-    caminho_da_pasta_noutra_pasta = os.path.join(caminho_da_pasta, item)
-    #e agora vamos iterar
-    for pastas in os.listdir(caminho_da_pasta_noutra_pasta):
-        print(pastas) #e agora eu consifo ver o caminho que nelas estão!
+def garantia():
+    ####uso do os.listdir
+    # é utilizado para navegar em caminhos
+    caminho_da_pasta = os.path.join('D:\\','Ghost','Usuário','Desktop','cursopy2025','Modulo4','listdirdemonstracao_imagens') #primeiro eu faço o caminho até a pasta que quero modificar
+    for item in os.listdir(caminho_da_pasta): #aqui eu já posso iterar dentro dela, através do lisdir(caminho)
+        print(item) #aqui ele retornou o nome das pastas
+        #no entanto, é perceptível que para entrar na outra pasta, vamos precisar fazer um outro for, ou quem sabe, uma função recursiva. Essa questão dele ter acessado apenas a primeira pasta é denominada de primeiro nível.
+        #ademais, vou ter que criar um novo caminho com base no nome da pasta também, já que o caminho anterior é com base no caminho inicial da pasta.
+        caminho_da_pasta_noutra_pasta = os.path.join(caminho_da_pasta, item)
+        #e agora vamos iterar
+        for pastas in os.listdir(caminho_da_pasta_noutra_pasta):
+            print(pastas) #e agora eu consifo ver o caminho que nelas estão!
 
 
 cls()
@@ -1004,27 +1005,54 @@ else:
 
 #vamos importar o módulo agora
 import requests
-#####GET
-url = 'http://127.0.0.1:3333/' #vamos colocar a url do nosso servidor
+def caspservidorinativo():
+    #####GET
+    url = 'http://127.0.0.1:3333/' #vamos colocar a url do nosso servidor
 
-#agora que o nosso servidor está servindo o site, vamos fazer um get nele.
-response = requests.get(url)
+    #agora que o nosso servidor está servindo o site, vamos fazer um get nele.
+    response = requests.get(url)
 
-#agora, posso verificar o status do site (200, 404, 303...)
-print(response.status_code)
+    #agora, posso verificar o status do site (200, 404, 303...)
+    print(response.status_code)
 
-#posso revificar o cabeçalho
-print(response.headers)
+    #posso revificar o cabeçalho
+    print(response.headers)
 
-#posso verificar o conteúdo (em formato de bytes)
-print(response.content)
+    #posso verificar o conteúdo (em formato de bytes)
+    print(response.content)
 
-#posso verificar também o texto (nesse caso, o html da página)
-print(response.text)
+    #posso verificar também o texto (nesse caso, o html da página)
+    print(response.text)
 
-#caso o retorno fosse em json, seria:
-# print(response.json) -> não executei porque esse site não tem retorno em json, logo, iria quebrar o código.
+    #caso o retorno fosse em json, seria:
+    # print(response.json) -> não executei porque esse site não tem retorno em json, logo, iria quebrar o código.
 
 cls()
 ########################################################################
 # Continuação: https://www.youtube.com/watch?v=Qd8JT0bnJGs&ab_channel=Ot%C3%A1vioMiranda
+#Inicialmente, vamos configurar a nossa endpoit. Para isso, vou criar uma planilha e linkar no sheety.
+# É necessário que haja uma planilha qualquer com informações que poderão ser usadas para o CRUD. 
+# Vou inserir informações aleatórias dos alunos de uma escola. Não irei disponibilar a planilha aqui, mas é só adaptar. 
+
+#de início, vamos importar o requests.
+import requests
+#depois o os, com o intuito de pegar as variáveis de ambiente (é lá que a endpoint estará.)
+import os
+#importo o módulo dotenv para segurança
+# Detalhe: Já coloquei a endpoint lá no dotenv.
+import dotenv
+#e carrego as variáveis de ambiente.
+dotenv.load_dotenv()
+
+#chamo a endpoit aqui
+endpoint = os.getenv("ENDPOINT_SHEETS")
+
+#faço um get, onde o get vai coletar as informações da planilha e retornar em json.
+response = requests.get(endpoint)
+
+#pprint vai servir para visualizar um print melhor (com quebra de linha)
+from pprint import pprint
+#e por fim, vemos o nosso retorno.
+pprint(response.json())
+
+###########parei no minuto 26:00

@@ -1055,4 +1055,38 @@ from pprint import pprint
 #e por fim, vemos o nosso retorno.
 pprint(response.json())
 
-###########parei no minuto 26:00
+#############################
+# Verbos http: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Methods
+    #DELETE(apaga), PUT(atualiza todos os dados de algo),PATCH(atualiza os dados parcialmente)
+    #POST(cria um dado), GET(retorna dados)
+
+# Respostas Informativas (100 – 199)
+# Respostas bem-sucedidas (200 – 299)
+# Mensagens de redirecionamento (300 – 399)
+# Respostas de erro do cliente (400 – 499)
+# Respostas de erro do servidor (500 – 599)
+# Referência: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status
+import requests
+
+endpost = 'https://api.sheety.co/41fab5117b47eeeda9a569a0f9d8a96d/alunos2025/pg'
+
+body = {
+    "pg": {
+        "Cod_do_aluno": 1234,
+        "Matrícula": "20251234",
+        "Nome_do_Aluno": "Maria Silva",
+        "Data_de_Nascimento": "2005-08-20",
+        "CPF": "123.456.789-00",
+        "Celular": "(11) 91234-5678",
+        "Turma": "3A"
+    }
+}
+
+headers = {
+    "Content-Type": "application/json"
+}
+
+response = requests.post(url=endpost, json=body, headers=headers)
+
+print(response.status_code)
+print(response.text)

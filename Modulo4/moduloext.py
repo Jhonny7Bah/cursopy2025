@@ -63,9 +63,12 @@ print(datetime.fromtimestamp(1748047417))
 
 #####################
 def cls():
-    from os import system
-    system('cls')
-    ##limpandno
+    ##limpando terminal
+    from os import system, name
+    if name == 'posix':
+        return system('clear')
+    return system('cls')
+    
 # aula 276
 #é possível comparar com operadores lógicos as datas.
 fmt = '%d/%m/%Y %H:%M:%S'
@@ -1034,59 +1037,90 @@ cls()
 # É necessário que haja uma planilha qualquer com informações que poderão ser usadas para o CRUD. 
 # Vou inserir informações aleatórias dos alunos de uma escola. Não irei disponibilar a planilha aqui, mas é só adaptar. 
 
-#de início, vamos importar o requests.
-import requests
-#depois o os, com o intuito de pegar as variáveis de ambiente (é lá que a endpoint estará.)
-import os
-#importo o módulo dotenv para segurança
-# Detalhe: Já coloquei a endpoint lá no dotenv.
-import dotenv
-#e carrego as variáveis de ambiente.
-dotenv.load_dotenv()
+def precaucao():
+    #de início, vamos importar o requests.
+    import requests
+    #depois o os, com o intuito de pegar as variáveis de ambiente (é lá que a endpoint estará.)
+    import os
+    #importo o módulo dotenv para segurança
+    # Detalhe: Já coloquei a endpoint lá no dotenv.
+    import dotenv
+    #e carrego as variáveis de ambiente.
+    dotenv.load_dotenv()
 
-#chamo a endpoit aqui
-endpoint = os.getenv("ENDPOINT_SHEETS")
+    #chamo a endpoit aqui
+    endpoint = os.getenv("ENDPOINT_SHEETS")
 
-#faço um get, onde o get vai coletar as informações da planilha e retornar em json.
-response = requests.get(endpoint)
+    #faço um get, onde o get vai coletar as informações da planilha e retornar em json.
+    response = requests.get(endpoint)
 
-#pprint vai servir para visualizar um print melhor (com quebra de linha)
-from pprint import pprint
-#e por fim, vemos o nosso retorno.
-pprint(response.json())
+    #pprint vai servir para visualizar um print melhor (com quebra de linha)
+    from pprint import pprint
+    #e por fim, vemos o nosso retorno.
+    pprint(response.json())
 
-#############################
-# Verbos http: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Methods
-    #DELETE(apaga), PUT(atualiza todos os dados de algo),PATCH(atualiza os dados parcialmente)
-    #POST(cria um dado), GET(retorna dados)
+    #############################
+    # Verbos http: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Methods
+        #DELETE(apaga), PUT(atualiza todos os dados de algo),PATCH(atualiza os dados parcialmente)
+        #POST(cria um dado), GET(retorna dados)
 
-# Respostas Informativas (100 – 199)
-# Respostas bem-sucedidas (200 – 299)
-# Mensagens de redirecionamento (300 – 399)
-# Respostas de erro do cliente (400 – 499)
-# Respostas de erro do servidor (500 – 599)
-# Referência: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status
-import requests
+    # Respostas Informativas (100 – 199)
+    # Respostas bem-sucedidas (200 – 299)
+    # Mensagens de redirecionamento (300 – 399)
+    # Respostas de erro do cliente (400 – 499)
+    # Respostas de erro do servidor (500 – 599)
+    # Referência: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status
+    import requests
 
-endpost = 'https://api.sheety.co/41fab5117b47eeeda9a569a0f9d8a96d/alunos2025/pg'
+    endpost = 'https://api.sheety.co/41fab5117b47eeeda9a569a0f9d8a96d/alunos2025/pg'
 
-body = {
-    "pg": {
-        "Cod_do_aluno": 1234,
-        "Matrícula": "20251234",
-        "Nome_do_Aluno": "Maria Silva",
-        "Data_de_Nascimento": "2005-08-20",
-        "CPF": "123.456.789-00",
-        "Celular": "(11) 91234-5678",
-        "Turma": "3A"
+    body = {
+        "pg": {
+            "Cod_do_aluno": 1234,
+            "Matrícula": "20251234",
+            "Nome_do_Aluno": "Maria Silva",
+            "Data_de_Nascimento": "2005-08-20",
+            "CPF": "123.456.789-00",
+            "Celular": "(11) 91234-5678",
+            "Turma": "3A"
+        }
     }
-}
 
-headers = {
-    "Content-Type": "application/json"
-}
+    headers = {
+        "Content-Type": "application/json"
+    }
 
-response = requests.post(url=endpost, json=body, headers=headers)
+    response = requests.post(url=endpost, json=body, headers=headers)
 
-print(response.status_code)
-print(response.text)
+    print(response.status_code)
+    print(response.text)
+
+#######################################################################################
+# Continuando pelo curso principal
+#######################################################################################
+
+# Web Scraping com Python usando requests e bs4 BeautifulSoup
+# Web Scraping é o ato de "raspar a web" buscando informações de forma
+# automatizada, com determinada linguagem de programação, para uso posterior.
+# O módulo requests consegue carregar dados da Internet para dentro do seu
+# código. Já o bs4.BeautifulSoup é responsável por interpretar os dados HTML
+# em formato de objetos Python para facilitar a vida do desenvolvedor.
+# Doc: https://www.crummy.com/software/BeautifulSoup/bs4/doc.ptbr/
+# Instalação
+# pip install requests types-requests bs4
+
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://https://www.ubisoft.com/pt-br/game/assassins-creed'
+response = requests.get(url) #busco o html
+raw_html = response.text #faço o retorno
+#e aqui eu já começo a fazer a raspagem
+parsed_html = BeautifulSoup(raw_html, 'html.parser')
+
+if parsed_html.title is not None:
+    #e aqui eu pego o título do texto da página
+    print(parsed_html.title.text)
+
+#continuará...
+

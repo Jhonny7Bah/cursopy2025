@@ -1,3 +1,10 @@
+#####################
+def cls():
+    ##limpando terminal
+    from os import system, name
+    if name == 'posix':
+        return system('clear')
+    return system('cls')
 # Continuação...
 
 # Web Scraping com Python usando requests e bs4 BeautifulSoup
@@ -26,7 +33,30 @@ def exemplo():
         #e aqui eu pego o título do texto da página
         print(parsed_html.title.text)
 
+
 selecao_qualquer = parsed_html.select_one('#default > div > div > div > div > div.page-header.action > h1')
 # print(selecao_qualquer)
 #se eu quiser saber quem é a tag mãe dele:
 print(selecao_qualquer.parent) # é o div a tag mãe.
+
+####################Explicação de termo
+# Dangling comma	(vírgula pendurada) ou Trailling comma (virgula final) nada mais é que uma prática realizada
+# para deixar uma vírgula após o último elemento de uma lista, tupla, etc... EX:  
+v0 = (1,2,3,4,)
+v1 = [0,1,2,]
+#como pode ver, funcionou normalmente.
+# Dizem que deixa o código mais organizado e facilita na hora da leitura,
+# Na hora de duplicar, ajuda também. 
+print(v0,'\n',v1)
+
+
+####### Selenium
+# Primeiro, vou precisar instalar um driver para uso. Como utilizarei o compre, com base nos requesitos do meu sistema,
+# devo fazer a procura no seguinte site: https://developer.chrome.com/docs/chromedriver/downloads
+# Agora, preciso instalar o selenium com o seguinte cmd:
+# pip install selenium
+
+#agora, vamos chamar o módulo selenium
+from selenium import webdriver
+
+cls()

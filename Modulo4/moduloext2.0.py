@@ -58,5 +58,36 @@ print(v0,'\n',v1)
 
 #agora, vamos chamar o módulo selenium
 from selenium import webdriver
+# Além do selenium, vamos precisar do service, que é um outro módulo complementar do selenium
+from selenium.webdriver.chrome.service import Service
 
-cls()
+#agora, vamos precisar definir o caminho da pasta atual. Para isso, precisaremos do módulo path inicialmente
+from pathlib import Path
+#agora, vamos definir esse diretório
+PASTA_ATUAL = Path(__file__).parent
+#agora, vamos criar uma para o chromedrive
+CHROMEDRIVER = PASTA_ATUAL / 'M4Selenium' / 'chromedriver'
+
+#agora, vamos definir algumas opções.
+# Quando queremos abrir o chrome com algumas opções a mais ou a menos, fazemos uso de uma variável 
+# que guardará ChromeOptions. Essas opções faz parte do que você quer que o nevegador faça quando abrir. Por exemplo,
+# se você passa --headless, você não verá a interface do navegador. Se houvesse --disable-gpu, a gpu não seria utilizada durante o processo.
+chrome_opcoes = webdriver.ChromeOptions()
+#para indicar o serviço (driver) que estamos fazendo uso:
+chrome_servico = Service(executable_path=CHROMEDRIVER)
+#e para isso funcionar, precisamos passar todos os parâmetros anteriores em um lugar só:
+chrome_navegador = webdriver.Chrome(
+    service=chrome_servico,
+    options=chrome_opcoes,
+)
+
+#agora, para fazer uma simples demonstração, vou abrir um site qualquer
+chrome_navegador.get('https://youtube.com') #como pode ver, o site abre e após milésimos, ele fecha.
+#se fosse passado algo em options, como '--headless', a interface do navegador não iria abrir.
+
+from time import sleep
+# sleep(10)
+
+
+
+# cls()

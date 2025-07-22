@@ -69,3 +69,51 @@ aluno1 = Alunos('Carlos', '2° Ano')#e no parênteses, eu passo os argumentos (c
 #e por fim, vamos exibir na tela:
 print(aluno1.nome)
 print(aluno1.turma)#como pode ver, bem mais simples e mais fácil!!!
+
+
+#############################################################################
+#Aula 200 e 201
+# Um método é uma função que se encontra dentro da classe, normalmente tendo um 'self' como primeiro
+# argumento, com o intuito de referenciar instâncias. Ex:
+
+class Carro(): #aqui é a classe
+    def __init__(self, nome_do_carro): #aqui é o construtor e o nome do veículo
+        self.nome = nome_do_carro #quando eu denominar um objeto e chamar essa classe, o argumento que ele passar virá para cá.
+    
+    #bom, sabemos que um carro acelera e freia, né? para fazer com que isso ocorra, vamos precisar de um método.
+    # Pois, um método ocasiona em uma ação e não consiste em exibir strings pré-definidas nos argumentos da classe, como um atributo
+
+    #isso aqui é um método (uma função dentro da classe) e se realmente houvesse um carro correndo, bastaria mexer na variável que guarda sua velocidade em determinada situação.
+    def acelerar(self):
+        print(f'O {self.nome} acelerou e está a 100km/h')
+
+fusca = Carro('Fusquinha')
+print(fusca.nome) #aqui chamamos o atributo nome, que definimos na chamda da classe
+fusca.acelerar() #e aqui o método, que fez com que o carro andasse mais rápido.
+
+'''
+Em resumo, o self é utilizado como referência para a instância. É de fato como se fosse uma variável que será 
+substituída pelo nome do objeto que você declarar fora da classe.
+
+Método é uma função dentro da classe, que ocasiona em ações. Ex: Upper ou lower da class str
+
+atributo são valores pré-definidos que são inseridos na criação de um objeto.
+
+curiosidade: o parâmetro self foi definido assim por conveção entre os programadores. Ou seja,
+se você quisesse colocar qualquer outro nome no lugar de self como primeiro parâmetro e não usasse ele,
+funcionaria.
+'''
+
+#um exemplo prático do self seria chamar a classe diretamente de seu molde.
+try:
+    #como a classe é um molde, ela necessitaria da instância. 
+    Carro.acelerar()
+except TypeError as e:
+    print(e) #e como ela necessita da instância, vai dar pau se chamamos ela dessa forma.
+
+#no entanto, poderiamos passar esse argumento que ela necessita.
+Carro.acelerar(fusca) # e assim, ela não dará pau, pois agora ela tem a instância como argumento.
+# Segundo o Luiz Otávio, esse não é um jeito comum de uso, mas é bom para entendimento e demonstração de seu funcionamento
+
+###########################################################################################
+# Aula 202

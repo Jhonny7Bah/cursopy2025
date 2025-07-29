@@ -116,4 +116,79 @@ Carro.acelerar(fusca) # e assim, ela não dará pau, pois agora ela tem a instâ
 # Segundo o Luiz Otávio, esse não é um jeito comum de uso, mas é bom para entendimento e demonstração de seu funcionamento
 
 ###########################################################################################
-# Aula 202
+# Aula 202, 203 e 204 
+# Diferença entre atributo de classe e atributo de instância
+class Animal:
+    #abaixo, defini um atributo de classe, que não precisa necessariamente de uma instância para funcionar
+    # Além disso, o atributo de classe pode ser utilizado em qualquer lugar da classe, ou seja, método.
+    area = 'Terrestre' #Aqui será utilizado apenas para animais terrestres.
+
+    def __init__(self, nome):
+        #aqui, definiremos um atributo de instância, ou seja, que é protegido pelo namespace (escopo da função)
+        #o atributo de isntância poderá ser utilizado apenas quando a função que o guarda ser acessada. 
+        self.nome = nome
+
+        #para acessar um atributo de classe, precisamos primeiro acessar o namespace da classe.
+        #para isso, podemos fazer de duas formas: Através do próprio self ou do nome da classe em si. Ex:
+        print(self.area) #acessando pelo self
+        print(Animal.area) #acessando diretamente pela classe.
+        #segundo o luiz otávio, é mais recomendado que você faça o acesso diretamente pela classe para evitar transtornos no futuro.
+        #e realmente é melhor fazer uso através do escopo da classe, pois se houver um atributo de instância e um atributo de classe com os mesmos nomes, um iria sobreescrever o outro.
+
+    #Agora, vamos decidir um método, ou seja, uma ação.     
+    def comer(self, alimento):
+        #realizando ação e ainda assim, utilizando atributo de classe e de instância
+        return f'O {self.nome} , animal {Animal.area}, está comendo {alimento}'
+
+#agora, vamos inicializar a classe com um objeto
+leao = Animal(nome='Leão')
+print(leao.nome)
+print(leao.comer('Maçã')) 
+
+#e para pura demonstação e diferentemente de um atributo de instância, eu consigo acessar tranquilamente um atributo de classe estando fora da classe e sem necessitar de objeto algum.
+print(Animal.area)
+
+#e como previsível, eu consigo alterar o valor do meu atributo de classe daqui
+Animal.area = 'aéreo'
+print(Animal.area) #como viu, houve alteração.
+
+#focalizando na aula 203
+##Em poo, as classes tem estado, como high ou low em C+. Ou seja, podemos habilitar uma série de ações com base nela. Ex:
+class Camera:
+    def __init__(self, nome, estado_filmando=False):#como eu liguei a camera agora, é evidente que significa que ela não está filmando
+        #vamos inicializar as instâncias
+        self.nome = nome
+        self.filmando = estado_filmando
+    
+    #agora, vamos fazer as ações. Primeiro, para filmar
+    def filmar(self):
+        #mas antes de apertar no botão de filmar, precisamos verificar se ela não está filmando
+        if self.filmando:
+            return f'a câmera {self.nome} já está filmando!'
+        #caso ela não esteja filmando, vamos colocar ela pra filmar
+        self.filmando = True
+        return f'a câmera {self.nome} agora está filmando!'
+
+    #vamos agora fazer um método que irá encerrar a gravação,
+    #verificando antes se a câmera realmente está em uso.
+    def parar_gravacao(self):
+        #se realmente estiver em uso:
+        if self.filmando:
+            self.filmando = False
+            return f'A câmera {self.nome} parou de filmar! '
+            
+        #caso ela não esteja filmando:
+        return f'a câmera {self.nome} não está em uso!'
+
+#agora, vamos inicializar o nosso objeto com uma camera!
+C1 = Camera('Canon')
+#vamos colocar ela pra filmar
+print(C1.filmar())
+#e agora, vamos colocar ela para filmar de novo
+print(C1.filmar()) #como pode ver, ela guardou o estado anterior.
+#agora, vamos parar de filmar
+print(C1.parar_gravacao()) 
+#e por fim, vamos colocar pra filmar novamente
+print(C1.filmar()) #e agora ela pode filmar novamente!
+
+###################################################################

@@ -148,7 +148,77 @@ def SeleniumWW():
     '''
 
 #############################################################################################
+# Resuminho do Luiz:
+# 
+# Usando subprocess para executar e comandos externos
+# subprocess é um módulo do Python para executar
+# processos e comandos externos no seu programa.
+# O método mais simples para atingir o objetivo é usando subprocess.run().
+# Argumentos principais de subprocess.run():
+# - stdout, stdin e stderr -> Redirecionam saída, entrada e erros
+# - capture_output -> captura a saída e erro para uso posterior
+# - text -> Se True, entradas e saídas serão tratadas como texto
+# e automaticamente codificadas ou decodificadas com o conjunto
+# de caracteres padrão da plataforma (geralmente UTF-8).
+# - shell -> Se True, terá acesso ao shell do sistema. Ao usar
+# shell (True), recomendo enviar o comando e os argumentos juntos.
+# - executable -> pode ser usado para especificar o caminho
+# do executável que iniciará o subprocesso.
+# Retorno:
+# stdout, stderr, returncode e args
+# Importante: a codificação de caracteres do Windows pode ser
+# diferente. Tente usar cp1252, cp852, cp850 (ou outros). Linux e
+# mac, use utf_8.
+# Comando de exemplo:
+# Windows: ping 127.0.0.1
+# Linux/Mac: ping 127.0.0.1 -c 4
+
+#importando módulo
+import subprocess
+
+#vamos listar um comando que ele vai executar (caso linux)
+comando = ['ping', '127.0.0.1', '-c', '4']
+
+#e agora, vamos executar o comando acima
+processo = subprocess.run(
+    comando,
+    #esse cmd abaixo não tinha antes
+    capture_output=True, #o intuito desse cmd é capturar e exibir a saída
+    #aqui eu posso passar:
+    # text=True -> ele iria pegar automaticamente a codificação do seu SO, evitando o uso do decode (No windows pode não funcionar bem)
+
+    #e poderia passar também
+    # encoding='utf_8' -> isso evitaria o uso dos comandos acima, já que a saída já iria utilizar, por padrão,o nome da codificação que vocẽ informar como argumento.
+)
+
+#agora, vamos fazer a visualização
+print(processo) #aqui ele mostra todas as informações referente ao processo. 
+# No entanto, caso eu queira filtrar, bastaria digitar o nome do atributo
+print(processo.args) #para visualizar os argumentos
+print(processo.stdout) #para visualizar a saída
+print(processo.stderr) #mostra os erros erro (se não houver, o retorno será vazio)
+print(processo.returncode) #retorna um bool em caso de ocorrência de erro
+
+cls()
+#vou colocar um argumento no parâmetro capture_output
+# Agora, quando eu fizer uso do strout, ele vai retornar o texto formatado de forma estranha.
+print(processo.stdout)
+
+# É por isso que vamos ter que tratar, seja através a inserção de um segundo parâmetro, que é o caso do text=True
+# Ou  fazemos uso do método decode, sendo:
+
+cls()
+print(processo.stdout.decode('utf_8'))#aqui você deve colocar o nome do encoding (codificação) que o seu SO utiliza
+#no windows, a codificação utf8 pode não funcionar bem e com base nos testes do Luiz, o que mais funcionou foi a codificação cp850
+
+#Caso você tente fazer alguma coisa através do módulo sobprocess e começar a dar pau, mesmo estando com a syntax correta, volte na aula 321
+
+############### curiosidade à parte
+'''Outra forma de descobrir qual SO estou usando, com base no kernel'''
+import sys
+print(sys.platform) #no meu caso, retornou linux
 
 
+####################################################################################################################
 
 

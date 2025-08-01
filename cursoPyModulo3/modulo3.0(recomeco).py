@@ -134,6 +134,7 @@ class Animal:
         print(Animal.area) #acessando diretamente pela classe.
         #segundo o luiz otávio, é mais recomendado que você faça o acesso diretamente pela classe para evitar transtornos no futuro.
         #e realmente é melhor fazer uso através do escopo da classe, pois se houver um atributo de instância e um atributo de classe com os mesmos nomes, um iria sobreescrever o outro.
+        
 
     #Agora, vamos decidir um método, ou seja, uma ação.     
     def comer(self, alimento):

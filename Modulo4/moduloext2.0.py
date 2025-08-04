@@ -220,5 +220,35 @@ print(sys.platform) #no meu caso, retornou linux
 
 
 ####################################################################################################################
+# Aula 323 e 324
+#Jupyter notebook -> uma ide, assim como o vs code, porém é mais adequado para cientistas de dados.
+#é recomendado SEMPRE fazer a instalação do Jupyter em um ambiente virtual devido a possibilidade do uso de texto, markdown, html, etc.
 
+# Comando de instalação:
+# pip install notebook
 
+#após a instalação, basta digitar o seguinte comando: 
+#jupyter notebook
+#após digitar esse comando, será aberto uma instância local da sua máquina na porta 8888. Esse é o Jupyter.
+
+#após salvar um arquivo, vai perceber que ele foi salvo num formato ipynp. É do jupyter
+
+#pesquisar sobre matplotlib, numpy + pandas e dataframe depois
+
+#Esse tal de notebook realmente é bem útil quando se trata de execução e exemplificação de código.
+
+#o próprio vscode consegue carregar notebooks.
+
+""" 
+Alguns comandos:
+
+    # -> significa <h1> (texto de título maior no html)
+    ## -> h2 
+    ### ...
+    <h1>conteudo</h1> -> html também funciona
+    <code> print("olá mundo!")</code> -> para código
+    '''print("opa")''' -> para codigo também.
+
+Basicamente, você pode utilizar markdown e html para isso. 
+
+"""

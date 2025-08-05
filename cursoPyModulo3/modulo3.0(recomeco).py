@@ -116,7 +116,7 @@ Carro.acelerar(fusca) # e assim, ela não dará pau, pois agora ela tem a instâ
 # Segundo o Luiz Otávio, esse não é um jeito comum de uso, mas é bom para entendimento e demonstração de seu funcionamento
 
 ###########################################################################################
-# Aula 202, 203 e 204 
+# Aula 202, 203, 204 e 205
 # Diferença entre atributo de classe e atributo de instância
 class Animal:
     #abaixo, defini um atributo de classe, que não precisa necessariamente de uma instância para funcionar
@@ -193,3 +193,41 @@ print(C1.parar_gravacao())
 print(C1.filmar()) #e agora ela pode filmar novamente!
 
 ###################################################################
+# Aula 206
+#__dict__ e vars -> fazem a mesma coisa com uma leve diferença, onde um é método e o outro é uma função.
+#O objetivo deles é acessar um atributo de instância e retornar um dicionário, contendo como chave o nome da instância e como valor o seu atributo.
+# Ex:
+#inicializando o objeto
+p3 = Pessoa()
+#declarando um atributo de instância
+p3.nome = 'Marcos'
+#mostrando a saída normal
+print(p3.nome) 
+#agora, vou usar o dict.
+print(p3.__dict__) #retorna chave e valor
+#agora com vars
+print(vars(p3)) #chave e valor também.
+
+#e um detalhe importante é que isso não é apenas leitura. Ou seja, através de um deles
+# posso alterar, incrementar ou remover valores, como um dicionário mesmo. ex:
+
+#incrementando um novo
+p3.__dict__['idade'] = 14
+#agora o atributo de instância existe!
+print(p3.idade)
+
+#alterando atributo
+p3.__dict__['nome'] = 'João'
+print(p3.nome)
+
+#apagando valores
+del p3.__dict__['idade']
+try:
+    print(p3.idade)
+except AttributeError:
+    print('Como viu, o atributo de instância foi deletado!')
+
+#e para deixar claro, esse tipo de manipulação não é comum. Mas mesmo assim, é bom saber pra saber que existe!
+
+
+

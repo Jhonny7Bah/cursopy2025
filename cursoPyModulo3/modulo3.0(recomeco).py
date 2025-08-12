@@ -193,7 +193,7 @@ print(C1.parar_gravacao())
 print(C1.filmar()) #e agora ela pode filmar novamente!
 
 ###################################################################
-# Aula 206
+# Aula 206, 207 e 208
 #__dict__ e vars -> fazem a mesma coisa com uma leve diferença, onde um é método e o outro é uma função.
 #O objetivo deles é acessar um atributo de instância e retornar um dicionário, contendo como chave o nome da instância e como valor o seu atributo.
 # Ex:
@@ -230,4 +230,63 @@ except AttributeError:
 #e para deixar claro, esse tipo de manipulação não é comum. Mas mesmo assim, é bom saber pra saber que existe!
 
 
+####Aula 209
+# Como você viu na aula anterior, usamos certas convenções para nomes de variáveis, funções, classes e assim por diante.
+# Essas convenções tem um nome que podemos usar para nos referir ao modo como estamos nomeando determinados objetos em nosso
+# programa: PascalCase, camelCase e snake_case.
 
+# PascalCase - significa que todas as palavras iniciam com letra maiúscula e nada é usado para separá-las, como em:
+# MinhaClasse, Classe, MeuObjeto, MeuProgramaMuitoLegal. Essa á a convenção utilizada para classes em Python;
+
+# camelCase - a única diferença de camelCase para PascalCase é a primeira letra. Em camelCase a primeira letra sempre será
+# minúscula e o restante das palavras deverá iniciar com letra maiúscula. Como em: minhaFuncao, funcaoDeSoma, etc... Essa
+# conversão não é usada em Python (apesar de eu confundir as duas e às vezes acabar chamando camelCase de PascalCase ou
+# vice-versa, mas agora você sabe a diferença);
+
+# snake_case - este é o padrão usado em Python para definir qualquer coisa que não for uma classe. Todas as letras serão
+# minúsculas e separadas por um underline, como em: minha_variavel, funcao_legal, soma.
+
+# Os padrões usados em Python são: snake_case para qualquer coisa e PascalCase para classes.
+
+##########################################################################
+# Aula 210 - classmethods + factories methods
+
+class Pessoa2:
+    ano_atual = 2025 #-> lembrando que isso aqui é um atributo de classe, ou seja, eu consido acessar fora da classe sem
+    #necessitar definir uma instância
+
+    #abaixo, estará o molde do objeto, necessitando de instância e de dois atributos.
+    def __init__(self, nome, idade):
+        self.nome = nome 
+        self.idade = idade
+    
+    #ou seja, acessar atributos, temos o dois meios, sendo um através da classe (molde) e outro através de uma instância.
+
+    #Para métodos, temos a mesma lógica. Exemplo, vamos criar um método abaixo:
+    def exibir_nome(self):
+        return f'seu nome é {self.nome}'
+    
+    #mas... você pode até perguntar: todo método precisa necessariamente de uma instância? NÃO!
+    # Basicamente, temos um decorador denominado de classmethod (método de classe), que é bem semelhante a um 
+    # atributo de classe. Ou seja, você poderá executar o método sem necessitar da instância, acessando somente pelo
+    #namespace da classe.
+
+    @classmethod
+    def exibir_ola(cls): #enquanto self faz referência a instância, cls faz referência a própria classe (molde). 
+        #Pra você entender bem, imagine a seguinte atribuição:-> cls = Pessoa2 <- Considernando que o nome da classe é pessoa2
+        return 'ola'
+    
+    #factories methods
+    @classmethod
+    def criar_sem_nome(cls, idade):
+        return cls('Anônima', idade)
+
+
+print(Pessoa2.ano_atual) #acessando o atributo de classe sem instância
+EP1 = Pessoa2('Pedro', 19) #definindno a instância e os atributos necessários para a classe
+print(EP1.exibir_nome()) #aqui, conseguimos executar o método em questão devido a existência da instância.
+print(Pessoa2.exibir_ola()) #demonstrando o uso do classmethod
+
+#ainda falta anotar. Esse é o factories methods
+EP2 = Pessoa2.criar_sem_nome(15)
+print(EP2.idade)

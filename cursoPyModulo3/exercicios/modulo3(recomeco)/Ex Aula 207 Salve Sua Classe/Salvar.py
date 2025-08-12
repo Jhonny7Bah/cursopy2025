@@ -18,8 +18,10 @@ if __name__ == '__main__':
     print(p1.nome)
     print(p1.idade)
 
+    compactacao = [p1.__dict__]
+
     #context manager para salvar em json
     with open('dados.json', 'w') as pd:
-        json.dump(p1.__dict__, pd)
+        json.dump(compactacao, pd)
 
 

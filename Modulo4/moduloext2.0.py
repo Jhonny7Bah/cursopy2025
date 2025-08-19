@@ -252,3 +252,178 @@ Alguns comandos:
 Basicamente, você pode utilizar markdown e html para isso. 
 
 """
+
+##############################################################
+# Módulo Thread: Trabalhando com múltiplos processos
+#Vamos supor que você precisa fazer duas ou mais execuções no código ao mesmo tempo, como faria isso?
+# Thread é um módulo que permite fazer uso das threads do seu processador para executar mais de um processo, que no nosso caso,
+# será um código
+from time import sleep
+
+#problema: quero executar uma contagem até 10 e quero que em paralelo, aconteça uma outra coisa sem interferir diretamente
+#na contagem.
+for __ in range(10):
+    print(__)
+    #eu poderia colocar a ação aqui, mas em alguns casos, isso iria interferir na contagem
+    # sleep(1)
+
+#Por isso, podemos utilizar um thread para dividir os processos.
+from threading import Thread #importo a classe Thread
+
+#uma maneira de criar um Thread é através de uma classe, aplicando o conceito de Herança em POO
+class MeuThread(Thread):
+    #inicializamos o nosso construtor e definimos os parâmetros que vamo precisar
+    def __init__(self, nome, tempo):
+        #definimos agora os atributos de instância
+        self.nome = nome
+        self.tempo = tempo
+        #e por fim, inicializamos o construtor da classe Thread
+        super().__init__()
+    
+    #na classe thread, há um método denominado run. Após aplicar a Herança, vamos aplicar o polimofirsmo para realizar
+    #a ação que desejamos no código.
+    def run(self):
+        #no caso, eu quero que apareça o nome de uma pessoa durante aquele intervalo de 0 à 10 fazendo uso do multitarefa.
+        # sleep(self.tempo) 
+        print(self.nome)
+
+#agora, vamos criar um objeto e passar os argumentos para a classe
+t1 = MeuThread('jao', 5)
+#e para inicializar a classe, fazemos uso do método start.
+t1.start()
+
+#por fim, repitimos o for. 
+for __ in range(10):
+    print(__)
+    # sleep(1)
+# e como pode ver, durante a contagem, ele dxecutará o print do nome do indivíduo na tela.
+#Se quiser realizar o teste efetivo, basta tirar os comentários do sleep.
+
+"""
+######----------
+# Outra forma de executar a thread:
+def vai_demorar(texto, tempo):
+    sleep(tempo)
+    print(texto)
+
+#agora, vamos chamar a thread
+thread1 = Thread(target=vai_demorar, args=('Hello worlds', 2))
+thread1.start()
+#target é o nome da func que será executada
+#args são os argumentos da função.
+# Detalhe: Se a função tiver apenas um argumento, deverá utilizar o conceito de Dangling comma para prevenir bugs. 
+
+#-Agora, vamos fazer um for que vai executar junto com a thread
+for __ in range(10):
+    print(__)
+    sleep(.5)
+
+#basicamente, é isso.
+#mas e como eu sei se a thread ativou ou não?
+
+thread2 = Thread(target=vai_demorar, args=('Aoba', 2))
+thread2.start()
+while thread2.is_alive(): #enquanto a thread não estivar, o código abaixo executará
+    sleep(2)
+    print('thread ainda não ativou')
+
+""" #-> vou fazer uso de docs-strings para continuar usando este módulo.
+
+#####Thread é um módulo muito interessante para trabalhar com multitarefas, mas também ter que saber trabalhar. 
+#vou trazer um exemplo de um caso:
+
+class Ingresso:
+    #no nosso construtor, vamos colocar a quantidade de estoque que temos para vender
+    def __init__(self, estoque):
+        self.estoque = estoque
+    
+    #agora, quando alguém quiser comprar, precisaremos vender.
+    def comprar(self, quantidade):
+        self.quantidade = quantidade
+    
+        #agora, temos que ver se temos estoque antes de vender.
+        if self.estoque < self.quantidade:
+            print('não temos ingresso suficiente!')
+            return
+        
+        sleep(1) #comente essa linha e o código vai normalizar. (logo vocẽ vai entender o porquê.)
+
+        #se tivermos estoque, bora vender com base na quantidade!
+        self.estoque -= quantidade
+
+        #informa ao usuário a transação
+        print(f'você comprou {self.quantidade} ingresso(s)!\nAinda temos {self.estoque} ingressos!')
+
+#inicializamos o objeto
+ingressos = Ingresso(estoque=20)
+
+#e por fim, bora comprar com thread.
+if __name__ == 'underfined': #se quiser testar, troque underfined para __main__
+    for i in range(20):
+        t = Thread(target=ingressos.comprar, args=(5,)).start() #aqui, ele vai comprar em loop com todas as threads
+        #contanto que não haja um tempo de espera devido a uma consulta no banco de dados, requesição ou algo do tipo, vai 
+        #funcionar perfeitamente.
+
+        #no entanto, se houver alguma espera, o código gera transtornos silenciosos. Vamos simular isso colocando um sleep.
+        #após colocar o sleep, percebeu que começou a vir números negativos? então. Isso é porque todas as threads passaram 
+        #juntas pelo if.
+
+        #Como todas passaram juntas pelo if e tiveram de esperar no sleep, as outras continuaram passando (pois não houve 
+        #decremento)
+        
+        #isso é apenas uma simulação doq pode ocorrer em um banco de dados online real, tipo supabase.
+        #por isso, temos que tratar e uma das soluções para isso é fazer uso do módulo lock, que seu obejtivo é guardar 
+        #estados.'
+
+
+'''
+Eu vou repetir o mesmo código para exemplificar o uso do Lock. Sei que poderia utilizar herança + polimofrismo para esse 
+exemplo, mas acho que ficaria um pouco complexo para visualizaar. Logo, vou reutilizar o mesmo modelo da classe Integresso.
+'''
+from threading import Thread, Lock #agora,vamos importar o Lock.
+class Ingresso2: #criar um nome semelhante para a classe
+    #no nosso construtor, vamos colocar a quantidade de estoque que temos para vender
+    def __init__(self, estoque):
+        self.estoque = estoque
+        self.lock = Lock() #criamos uma instância para o lock (para facilitar a nossa vida)
+    
+    #agora, quando alguém quiser comprar, precisaremos vender.
+    def comprar(self, quantidade):
+        #agora,vamos inibir a passagem de mais de uma thread ao mesmo tempo
+        
+        self.lock.acquire() #com isso, quando uma thread passar por aqui, as outras ficarão aqui aguardando.
+        
+        self.quantidade = quantidade 
+        #agora, temos que ver se temos estoque antes de vender.
+        if self.estoque < self.quantidade:
+            print('não temos ingresso suficiente!')
+            #e quando a quantidade de ingressos se esgostarem, devemos deixar outra thread passar
+            self.lock.release()
+            return
+        
+        sleep(1)
+
+        #se tivermos estoque, bora vender com base na quantidade!
+        self.estoque -= quantidade
+
+        #informa ao usuário a transação
+        print(f'você comprou {self.quantidade} ingresso(s)!\nAinda temos {self.estoque} ingressos!')
+
+        #agora, vamos liberar a entrada de um outro thread
+        self.lock.release()
+
+#inicializamos o objeto
+ingressos = Ingresso2(estoque=20)
+if __name__ == '__main__': #agora, vamos executar normalmente
+    for i in range(20):
+        t = Thread(target=ingressos.comprar, args=(5,)).start()
+    '''
+    e como pode ver, funcionou normalmente! quando você usa o lock acquire, é como se você estivesse entregando a chave de um
+    banheiro para uma thread e após sua entrada, a thread tranca essa porta. Com isso, as demais threads que quiserem entrar
+    no banheiro, vai precisar esperar a thread liberar a saída e sair. Esse é o release, que destranca a porta desse tal banheiro.
+    Mas não precisa necessariamente uma thread sair do banheiro, pois se vocẽ usa o release e a thread ainda está lá dentro,
+    uma outra thread entra e vira uma espécie de banheiro compartilhado.  
+    
+    '''
+    #também é possível replicar esse exemplo com context manager, que é a forma mais fácil (with)
+#######################################################################################################

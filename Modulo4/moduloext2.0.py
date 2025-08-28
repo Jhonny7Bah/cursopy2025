@@ -426,7 +426,9 @@ if __name__ == '__main': #para inicializar, basta colocar o dunder depois do nam
     
     '''
     #também é possível replicar esse exemplo com context manager, que é a forma mais fácil (with)
+
 #######################################################################################################
+cls()
 # # PyPDF2 para manipular arquivos PDF (Instalação)
 # PyPDF2 é uma biblioteca de manipulação de arquivos PDF feita em Python puro,
 # gratuita e de código aberto. Ela é capaz de ler, manipular, escrever e unir
@@ -451,7 +453,31 @@ PASTA_AULA.mkdir(exist_ok=True) #efetivando criação
 
 #vamos criar duas pastas dentro da pasta da aula. Uma vai armazenar o nosso pdf e a outra vai salvar
 # as cópias ou divisões dele.
-PDF_ORIGINAL_GIT = PASTA_AULA / 'pdf original'
+PDF_ORIGINAL_GIT = PASTA_AULA / 'pdf_original'
+PASTA_NOVA = PASTA_AULA / 'arquivo_novo'
+#aqui efetivamos a criação da pasta
+for __ in (PDF_ORIGINAL_GIT, PASTA_NOVA):
+    __.mkdir(exist_ok=True)
+#agora, manualmente, vou pegar um pdf e colocar dentro da pasta pdf_original
 
+#Após isso, vamos definir o diretório do arquivo pdf que será analisado
+PDF_CAMINHO = PDF_ORIGINAL_GIT / 'git.pdf'
 
+#vamos fazer a importação da classe PdfReader, para leitura
+from PyPDF2 import PdfReader
 
+reader = PdfReader(stream=PDF_CAMINHO) #inicializar o objeto
+
+#e agora, vamos pegar todas as páginas do pdf
+paginas = reader.pages 
+
+#se você quiser saber o número de páginas, basta fazer uso do len no objeto pages
+print(len(paginas)) #-> nesse caso, temos 3 páginas.
+
+#cada página é um iterável, ou seja, eu consigo acessar individualmente através de um iterador ou através de índices
+print(paginas[0]) #aqui, eu acesso a página1 através de índice 0 (que é o primeiro). O retorno disso será as informações gerais de um pdf
+
+#se eu quiser acessar somente o texto disso, basta utilizar o método extract_text.
+print(paginas[0].extract_text())
+
+##########continuamos depois. Paramos em imagem (minuto 11)

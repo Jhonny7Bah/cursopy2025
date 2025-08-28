@@ -251,42 +251,76 @@ except AttributeError:
 ##########################################################################
 # Aula 210 - classmethods + factories methods
 
-class Pessoa2:
-    ano_atual = 2025 #-> lembrando que isso aqui é um atributo de classe, ou seja, eu consido acessar fora da classe sem
-    #necessitar definir uma instância
+# class Pessoa2:
+#     ano_atual = 2025 #-> lembrando que isso aqui é um atributo de classe, ou seja, eu consido acessar fora da classe sem
+#     #necessitar definir uma instância
 
-    #abaixo, estará o molde do objeto, necessitando de instância e de dois atributos.
+#     #abaixo, estará o molde do objeto, necessitando de instância e de dois atributos.
+#     def __init__(self, nome, idade):
+#         self.nome = nome 
+#         self.idade = idade
+    
+#     #ou seja, acessar atributos, temos o dois meios, sendo um através da classe (molde) e outro através de uma instância.
+
+#     #Para métodos, temos a mesma lógica. Exemplo, vamos criar um método abaixo:
+#     def exibir_nome(self):
+#         return f'seu nome é {self.nome}'
+    
+#     #mas... você pode até perguntar: todo método precisa necessariamente de uma instância? NÃO!
+#     # Basicamente, temos um decorador denominado de classmethod (método de classe), que é bem semelhante a um 
+#     # atributo de classe. Ou seja, você poderá executar o método sem necessitar da instância, acessando somente pelo
+#     #namespace da classe.
+
+#     @classmethod
+#     def exibir_ola(cls): #enquanto self faz referência a instância, cls faz referência a própria classe (molde). 
+#         #Pra você entender bem, imagine a seguinte atribuição:-> cls = Pessoa2 <- Considernando que o nome da classe é pessoa2
+#         return 'ola'
+    
+#     #factories methods
+#     @classmethod
+#     def criar_sem_nome(cls, idade):
+#         return cls('Anônima', idade)
+
+
+# print(Pessoa2.ano_atual) #acessando o atributo de classe sem instância
+# EP1 = Pessoa2('Pedro', 19) #definindno a instância e os atributos necessários para a classe
+# print(EP1.exibir_nome()) #aqui, conseguimos executar o método em questão devido a existência da instância.
+# print(Pessoa2.exibir_ola()) #demonstrando o uso do classmethod, sem prcisar necessariamente da instância para execução.
+
+# #ainda falta anotar. Esse é o factories methods
+# EP2 = Pessoa2.criar_sem_nome(15)
+# print(EP2.idade)
+
+class Pessoa:
+    especie = "Humano"
+    
+    def __init__(self, nome):
+        self.nome = nome
+    
+    @classmethod
+    def mudar_especie(cls, nova_especie):
+        cls.especie = nova_especie
+
+Pessoa.mudar_especie("Ciborgue")
+print(Pessoa.especie)
+
+class Realizar_Conta:
+    def __call__(self, x, y):
+        return x + y
+
+soma_simples = Realizar_Conta()
+print(soma_simples(10,20))
+cls()
+
+#######
+class Pessoa:
     def __init__(self, nome, idade):
-        self.nome = nome 
+        self.nome = nome
         self.idade = idade
     
-    #ou seja, acessar atributos, temos o dois meios, sendo um através da classe (molde) e outro através de uma instância.
-
-    #Para métodos, temos a mesma lógica. Exemplo, vamos criar um método abaixo:
-    def exibir_nome(self):
-        return f'seu nome é {self.nome}'
-    
-    #mas... você pode até perguntar: todo método precisa necessariamente de uma instância? NÃO!
-    # Basicamente, temos um decorador denominado de classmethod (método de classe), que é bem semelhante a um 
-    # atributo de classe. Ou seja, você poderá executar o método sem necessitar da instância, acessando somente pelo
-    #namespace da classe.
-
     @classmethod
-    def exibir_ola(cls): #enquanto self faz referência a instância, cls faz referência a própria classe (molde). 
-        #Pra você entender bem, imagine a seguinte atribuição:-> cls = Pessoa2 <- Considernando que o nome da classe é pessoa2
-        return 'ola'
-    
-    #factories methods
-    @classmethod
-    def criar_sem_nome(cls, idade):
-        return cls('Anônima', idade)
+    def idade_50(cls, nome):
+        cls(nome, 50)
 
-
-print(Pessoa2.ano_atual) #acessando o atributo de classe sem instância
-EP1 = Pessoa2('Pedro', 19) #definindno a instância e os atributos necessários para a classe
-print(EP1.exibir_nome()) #aqui, conseguimos executar o método em questão devido a existência da instância.
-print(Pessoa2.exibir_ola()) #demonstrando o uso do classmethod
-
-#ainda falta anotar. Esse é o factories methods
-EP2 = Pessoa2.criar_sem_nome(15)
-print(EP2.idade)
+p1 = Pessoa('jao', 17)
+print(p1.idade_50('pedro'))

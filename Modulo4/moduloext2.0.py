@@ -504,3 +504,27 @@ with open(PASTA_NOVA / 'pdf_completo.pdf', 'wb') as fp: #aqui apontamos o caminh
         writer.add_page(pagina) #aqui, vamos adicionar cada página em uma espécie de fila na memória ram
     #e após a fila completar, vamos salvar a fila completa na memória rom, resultando em um pdf completo!
     writer.write(fp)
+
+#Caso você queira fazer a meclagem de um pdf com outro (o que é possível fazer com a classe PdfWriter),
+# vamos utilizar a classe PdfMerger
+
+from PyPDF2 import PdfMerger
+#inicializando a classe através de um objeto
+merger = PdfMerger()
+
+#agora, vou apontar para dois pdf's dentro de uma lista.
+pdfs = [
+    PASTA_NOVA / 'page0.pdf', #tem que informar exatamente o nome do pdf
+    PASTA_NOVA / 'pdf_completo.pdf'
+]
+
+#agora, faremos um for, juntamente com um context manager para colocar na memória
+with open(PASTA_NOVA / 'pdf_mesclado.pdf', 'wb') as fp:
+    #iterando nos dois pdfs
+    for pdf in pdfs:
+        #adicionando os pdfs na fila individualmente
+        merger.append(pdf)
+    #efetivando o merge
+    merger.write(fp)
+
+##########################################################################

@@ -480,4 +480,27 @@ print(paginas[0]) #aqui, eu acesso a página1 através de índice 0 (que é o pr
 #se eu quiser acessar somente o texto disso, basta utilizar o método extract_text.
 print(paginas[0].extract_text())
 
-##########continuamos depois. Paramos em imagem (minuto 11)
+#se houver imagens na página 1 do pdf, será retornado todas as informações binárias referentes a ela.
+print(paginas[0].images) #como não tem, vai retornar uma lista vazia.
+
+#Também é possível fazer outras coisas (como extração de imagem), por isso é importante consultar a documentação.
+
+##########
+#Para escrita, utilizamos a classe pdfWriter
+from PyPDF2 import PdfWriter
+
+#Vamos inicializar a classe através de um objeto
+writer = PdfWriter()
+#agora, vamos pegar a página0 do pdf anterior como referência e passar para o addpage
+writer.add_page(paginas[0]) #nesse exato momento, a página 0 do pdf anterior se encontra na ram
+
+#para salvar na memória rom, basta fazer um contex manager e apontar para um lugar na memória.
+with open(PASTA_NOVA / 'page0.pdf', 'wb') as fp:#para isso, vamos aproveitar a constante PASTA_NOVA e wb (write bytes)
+    writer.write(fp) #agora utilizamos o método write para escrever 
+
+#aqui eu vou exemplificar mais para solidificar o que foi apresentado
+with open(PASTA_NOVA / 'pdf_completo.pdf', 'wb') as fp: #aqui apontamos o caminho que o pdf será salvo
+    for pagina in reader.pages: #aqui vamos iterar por dentro de cada página
+        writer.add_page(pagina) #aqui, vamos adicionar cada página em uma espécie de fila na memória ram
+    #e após a fila completar, vamos salvar a fila completa na memória rom, resultando em um pdf completo!
+    writer.write(fp)

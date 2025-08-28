@@ -414,7 +414,7 @@ class Ingresso2: #criar um nome semelhante para a classe
 
 #inicializamos o objeto
 ingressos = Ingresso2(estoque=20)
-if __name__ == '__main__': #agora, vamos executar normalmente
+if __name__ == '__main': #para inicializar, basta colocar o dunder depois do name 
     for i in range(20):
         t = Thread(target=ingressos.comprar, args=(5,)).start()
     '''
@@ -427,3 +427,31 @@ if __name__ == '__main__': #agora, vamos executar normalmente
     '''
     #também é possível replicar esse exemplo com context manager, que é a forma mais fácil (with)
 #######################################################################################################
+# # PyPDF2 para manipular arquivos PDF (Instalação)
+# PyPDF2 é uma biblioteca de manipulação de arquivos PDF feita em Python puro,
+# gratuita e de código aberto. Ela é capaz de ler, manipular, escrever e unir
+# dados de arquivos PDF, assim como adicionar anotações, transformar páginas,
+# extrair texto e imagens, manipular metadados, e mais.
+# A documentação contém todas as informações necessárias para usar PyPDF2.
+# Link: https://pypdf2.readthedocs.io/en/3.0.0/
+# Ative seu ambiente virtual
+# pip install pypdf2
+
+#no caso desse módulo, os pdf's não costumam seguir o padrão convencional, logo,
+# a aplicação de códigos para manipulação de um pdf pode ser diferente para manipulação
+# de outro. Portanto, é importante fazer a leitura da documentação.
+
+#Agora, através de Path, vou apontar para o diretório que o pdf se encontra.
+#de início, vou organizar o diretório. Farei isso através de Path 
+from pathlib import Path
+RAIZ = Path(__file__).parent   #raiz do módulo
+#Agora, vamos criar uma pasta para a aula.
+PASTA_AULA = RAIZ / 'aula329' #definindo caminho
+PASTA_AULA.mkdir(exist_ok=True) #efetivando criação
+
+#vamos criar duas pastas dentro da pasta da aula. Uma vai armazenar o nosso pdf e a outra vai salvar
+# as cópias ou divisões dele.
+PDF_ORIGINAL_GIT = PASTA_AULA / 'pdf original'
+
+
+

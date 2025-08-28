@@ -631,3 +631,41 @@ fila_correta.pop()  # 5
 fila_correta.popleft()  # 0
 print(fila_correta)  # deque([1, 2, 3, 4])
 
+#########################################################################################################33
+#O módulo openpyxl é uma alternativa para trabalhar com arquivos Excel xlsx, xlsm, xltx e xltm.
+# Com essa biblioteca será possível ler e escrever dados em células
+# específicas, formatar células, inserir gráficos,
+# criar fórmulas, adicionar imagens e outros elementos gráficos a grandes
+#quantidades de dados.
+# Documentação: https://openpyxl.readthedocs.io/en/stable/ 
+#para fazer uso do openpyxl, é necessário uma instalação externa. 
+# Sendo: "pip install openpyxl" no terminal. De preferência, após ativar venv.
+
+#após isso, podemos importar o openpyxl normalmente.
+import openpyxl 
+
+#para ajudar na manipulação de diretórios, a classe Path seria de grande ajuda.
+from pathlib import Path
+#Definindo o caminho da pasta raiz
+ROOT_FOLDER = Path(__file__).parent
+#Definindo o caminho da pasta que ficará armazenado o arquivo
+CLASS_FOLDER = ROOT_FOLDER / 'aula335, 336 e 337'
+#realizando a criação da pasta
+CLASS_FOLDER.mkdir(exist_ok=True)
+#definindo o caminho completo do arquivo xlsx, especificando o nome do arquivo e formato.
+WORKBOOK_PATH = CLASS_FOLDER / 'workbook.xlsx' #pasta de trabalho
+
+#vamos inicializar a classe através de um objeto
+workbook = openpyxl.Workbook()
+#e agora vamos inicializar a tipagem, para trabalharmos com as planilhas mais facilmente
+worksheet = workbook.active
+
+#o método cell tem três parâmetros, sendo respectivamente:
+#row -> linha
+#culumn -> coluna
+#value -> valor que será armazenado.
+#Com isso, passamos essa informação. Abaixo, selecionei coluna e linha 1. Após isso, definimi o valor.
+worksheet.cell(1, 1, "Nome")
+
+#e para realizar a criação da planilha, basta chamar o OBJETO workbook e utilizar o método save.
+workbook.save(WORKBOOK_PATH)

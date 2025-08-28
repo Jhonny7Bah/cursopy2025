@@ -666,6 +666,54 @@ worksheet = workbook.active
 #value -> valor que será armazenado.
 #Com isso, passamos essa informação. Abaixo, selecionei coluna e linha 1. Após isso, definimi o valor.
 worksheet.cell(1, 1, "Nome")
+worksheet.cell(1, 2, "Idade")
+worksheet.cell(1, 3, "Nota")
 
 #e para realizar a criação da planilha, basta chamar o OBJETO workbook e utilizar o método save.
 workbook.save(WORKBOOK_PATH)
+
+####### Para maior utilidade, vou fazer uma outra planilha que gerará dados mais interessantes.
+WORKBOOK_PATH1 = CLASS_FOLDER / 'workbook1.xlsx' #aproveito do diretório criado por path anteriormente
+
+#Como deve ter percebido, a manipulação de tabelas é com base em linhas e colunas de uma forma
+# bem semelhante a uma matriz, correto? Sabendo disso,vamos criar uma tabela mais útil utilizando matriz.
+
+#criando uma lista de forma estruturada (em produção não será criada com esse tanto de espaço.)
+students = [
+    # nome      idade nota
+    ['João',    14,   5.5],
+    ['Maria',   13,   9.7],
+    ['Luiz',    15,   8.8],
+    ['Alberto', 16,   10],
+]
+
+#Para saber a linha e coluna, vamos precisar de enumerate.s
+for i, students_row in enumerate(students, start=2): #começa de dois, pois a lista se inicia do 0 e o índice 1 já foi preenchido
+    print(f'Por causa de enumerate, será retornado a linha "{i}"\n e a uma sublista, sendo: "{students_row}\n"') 
+
+    #aproveitando do retorno de student_row, vamos coletar a numeração da coluna
+    for j, students_col in enumerate(students_row, start=1): #começará de 1, pois em python, a lista começa do índice 0 e a planilha do 1
+        print(f'o índice da coluna é: {j}\nE agora, será retornado o valor literal, sendo: {students_col}')
+        
+        #Por, basta colocar as linhas e colunas no método cell
+        #coloca a numeração da linha, da coluna e o retorno final do value, que estará em student_col.
+        worksheet.cell(row=i, column=j, value=students_col)
+#para salvar, chamo a pasta de trabalho e passo o diretório da nova pasta
+workbook.save(WORKBOOK_PATH1)
+
+#### Para deixar ainda mais simples, a classe tem por padrão uma iteração matriz de forma simplificada. Sendo necessário
+#apenas denominar uma tabela, como a nossa anterior e passar como argumento para um método.
+
+#Vou exemplificar. Para isso, criarei um novo caminho PATH, reaproveitando dos anteriores
+WORKBOOK_PATH2 = CLASS_FOLDER / 'workbook2.xlsx'
+
+#Vou aproveitar do objeto students, que é uma lista dentro de uma lista.
+
+#Faço um for simples na tabela
+for student in students:
+    #e chamo o método append para inserir individualmente as linhas
+    worksheet.append(student)
+
+#para finalizar, basta chamar o método save e apontar o diretório
+workbook.save(WORKBOOK_PATH2)
+    

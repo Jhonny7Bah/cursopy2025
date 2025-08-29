@@ -324,3 +324,79 @@ print(p.nome, p.idade)  # Ana 25
 #Ademais, posso fazer inúmeros factories methods dentro de uma classe, ou seja, inúmeros tratamentos à parte.
 
 #######################################################
+cls()
+#@staticmethod (métodos estáticos ) -> são métodos (funções) que ficam dentro
+#da classe e que não tem acesso a self ou cls. Ou saja, uma função normal.
+#Em python, aparenta não ter muita utilidade (como mencionado pelo Luiz). ex:
+
+class Util:
+    @staticmethod
+    def dobro(x):
+        return x * 2  # não usa self nem cls
+# Chamando direto pela classe
+print(Util.dobro(10))  # 20
+
+# Chamando por uma instância (funciona igual, mas não precisa dela)
+u = Util()
+print(u.dobro(7))  # 14
+
+# Mesmo resultado se fosse uma função solta fora da classe
+def dobro(x):
+    return x * 2
+print(dobro(10))  # 20
+
+##############################
+class Connection:
+    #inicializo o construtor com as instâncias necessárias
+    def __init__(self, host='localhost'): #em redes, o padrão para host é localhost
+        self.host = host
+        self.user = None #Como não sabemos o usuário e a senha, ambos serão None
+        self.password = None
+    
+    #configurando um setter para "usuário"
+    def set_user(self, user): #setter vai servir como um meio para alterar de None para outra coisa
+        self.user = user
+
+    #configurando um setter para "senha"
+    def set_passoword(self, password): 
+        self.password = password
+    
+    ###
+    @classmethod #denomino uma classe que vai passar diretamente os argumentos para init
+    def create_with_auth(cls, user, password): #informo os parâmetros necessários
+        connection = cls() #inicializo o init
+        #após inicializar o init, conseguirei ter acesso aos atributos de instância.
+        #Com isso, basta apenas realizar as modificações
+        connection.user = user 
+        connection.password = password
+        #após modificar, basta retornar e a classe inicializa de vez.
+        return connection
+        '''
+        #O código acima faz exatamente a mesma coisa que o código abaixo faz
+        return cls(host="localhost", user=user, password=password)        
+        '''
+
+    ### O staticmethod, como mencionado anteriormente, será utilizado como uma função normal. Pois não acessa cls e nem self.
+    @staticmethod
+    def soma(x, y):
+        return x+y
+
+#Inicializando a classe em um objeto    
+c1 = Connection()
+#exibindo o atributo de instância salvo por padrão em user
+print(c1.user) # None
+
+#fazendo um setter para alterar o atributo
+c1.set_user('Alipio')
+#solicito um print para verificar o novo nome
+print(c1.user)# Alipio
+
+#demonstração para classmethod + factories methods
+#Nesse caso, não precisaremos passar os argumentos da classe diretamente pelo objeto
+c2 = Connection.create_with_auth('Alipio', 12345)
+print(c2.user, c2.password)
+
+#demonstração do staticmethod
+print(c2.soma(2, 2)) #4
+
+    

@@ -250,77 +250,77 @@ except AttributeError:
 
 ##########################################################################
 # Aula 210 - classmethods + factories methods
+class Pessoa2:
+    ano_atual = 2025 #-> lembrando que isso aqui é um atributo de classe, ou seja, eu consido acessar fora da classe sem
+    #necessitar definir uma instância
 
-# class Pessoa2:
-#     ano_atual = 2025 #-> lembrando que isso aqui é um atributo de classe, ou seja, eu consido acessar fora da classe sem
-#     #necessitar definir uma instância
-
-#     #abaixo, estará o molde do objeto, necessitando de instância e de dois atributos.
-#     def __init__(self, nome, idade):
-#         self.nome = nome 
-#         self.idade = idade
+    #abaixo, estará o molde do objeto, necessitando de instância e de dois atributos.
+    def __init__(self, nome, idade):
+        self.nome = nome 
+        self.idade = idade
     
-#     #ou seja, acessar atributos, temos o dois meios, sendo um através da classe (molde) e outro através de uma instância.
+    #ou seja, acessar atributos, temos o dois meios, sendo um através da classe (molde) e outro através de uma instância.
 
-#     #Para métodos, temos a mesma lógica. Exemplo, vamos criar um método abaixo:
-#     def exibir_nome(self):
-#         return f'seu nome é {self.nome}'
+    #Para métodos, temos a mesma lógica. Exemplo, vamos criar um método abaixo:
+    def exibir_nome(self):
+        return f'seu nome é {self.nome}'
     
-#     #mas... você pode até perguntar: todo método precisa necessariamente de uma instância? NÃO!
-#     # Basicamente, temos um decorador denominado de classmethod (método de classe), que é bem semelhante a um 
-#     # atributo de classe. Ou seja, você poderá executar o método sem necessitar da instância, acessando somente pelo
-#     #namespace da classe.
+    #mas... você pode até perguntar: todo método precisa necessariamente de uma instância? NÃO!
+    # Basicamente, temos um decorador denominado de classmethod (método de classe), que é bem semelhante a um 
+    # atributo de classe. Ou seja, você poderá executar o método sem necessitar da instância, acessando somente pelo
+    #namespace da classe.
 
-#     @classmethod
-#     def exibir_ola(cls): #enquanto self faz referência a instância, cls faz referência a própria classe (molde). 
-#         #Pra você entender bem, imagine a seguinte atribuição:-> cls = Pessoa2 <- Considernando que o nome da classe é pessoa2
-#         return 'ola'
-    
-#     #factories methods
-#     @classmethod
-#     def criar_sem_nome(cls, idade):
-#         return cls('Anônima', idade)
-
-
-# print(Pessoa2.ano_atual) #acessando o atributo de classe sem instância
-# EP1 = Pessoa2('Pedro', 19) #definindno a instância e os atributos necessários para a classe
-# print(EP1.exibir_nome()) #aqui, conseguimos executar o método em questão devido a existência da instância.
-# print(Pessoa2.exibir_ola()) #demonstrando o uso do classmethod, sem prcisar necessariamente da instância para execução.
-
-# #ainda falta anotar. Esse é o factories methods
-# EP2 = Pessoa2.criar_sem_nome(15)
-# print(EP2.idade)
-
-class Pessoa:
-    especie = "Humano"
-    
-    def __init__(self, nome):
-        self.nome = nome
-    
+    ## Classmethods
     @classmethod
-    def mudar_especie(cls, nova_especie):
-        cls.especie = nova_especie
+    def exibir_ola(cls): #enquanto self faz referência a instância, cls faz referência a própria classe (molde). 
+        #Pra você entender bem, imagine a seguinte atribuição:-> cls = Pessoa2 <- Considernando que o nome da classe é pessoa2
+        # importante: O classmethod por si só não consegue acessar atributos de instância self, por isso, pode ser executado diretamente
+        # sem necessitar de um objeto em questão.
+        return 'ola'
+    
+    ## Factory Method
+    # Usa @classmethod, logo recebe cls (classe).
+    # Enquanto classmethod acessa a classe, o factory method cria uma nova instância da classe
+    # com parâmetros diferentes dos passados diretamente ao construtor.
+    @classmethod
+    def criar_sem_nome(cls, idade):
+        # cls aqui funciona como um callable, chamando __init__ com os argumentos definidos
+        return cls("Anônimo", idade)
 
-Pessoa.mudar_especie("Ciborgue")
-print(Pessoa.especie)
+print(Pessoa2.ano_atual) #acessando o atributo de classe sem instância
+EP1 = Pessoa2('Pedro', 19) #definindno a instância e os atributos necessários para a classe
+print(EP1.exibir_nome()) #aqui, conseguimos executar o método em questão devido a existência da instância.
+print(Pessoa2.exibir_ola()) #demonstrando o uso do classmethod, sem prcisar necessariamente da instância para execução.
 
-class Realizar_Conta:
-    def __call__(self, x, y):
-        return x + y
+#Aqui inicializamos o factories metods, passando a idade da pessoa diretamente.
+EP2 = Pessoa2.criar_sem_nome(15)
+print(EP2.idade)
+print(EP2.nome)
 
-soma_simples = Realizar_Conta()
-print(soma_simples(10,20))
-cls()
+#### Vamos dar um pouco mais de utilidade a esse Factories Methods: 
+import json
 
-#######
-class Pessoa:
+class Pessoa3:
+    #definindo o construtor
     def __init__(self, nome, idade):
         self.nome = nome
         self.idade = idade
-    
-    @classmethod
-    def idade_50(cls, nome):
-        cls(nome, 50)
 
-p1 = Pessoa('jao', 17)
-print(p1.idade_50('pedro'))
+    @classmethod
+    def from_dict(cls, dados):
+        # Factory method que recebe um dicionário e trata para depois inicializar a classe
+        return cls(dados['nome'], dados['idade'])
+
+# Imagine que você recebeu isso de uma API:
+json_data = '{"nome": "Ana", "idade": 25}'
+dados = json.loads(json_data)
+
+# Cria a instância usando o factory method
+p = Pessoa3.from_dict(dados)
+print(p.nome, p.idade)  # Ana 25
+#Ou seja, esse factories methods basicamente fez o tratamento dos dados recebidos antes de entrar diretamente na classe.
+#Com isso, não precisamos tratar diretamente no init, que sobrecarregaria um pouco a classe, principalmente em casos de dados
+#que não precisem ser tratados. 
+#Ademais, posso fazer inúmeros factories methods dentro de uma classe, ou seja, inúmeros tratamentos à parte.
+
+#######################################################

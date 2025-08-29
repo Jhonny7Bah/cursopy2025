@@ -345,9 +345,15 @@ def dobro(x):
     return x * 2
 print(dobro(10))  # 20
 
-##############################
+##################################################################
+# method vs @classmethod vs @staticmethod
+# method - self, método de instância
+# @classmethod - cls, método de classe
+# @staticmethod - método estático (❌self, ❌cls)
+
 class Connection:
     #inicializo o construtor com as instâncias necessárias
+    #Chamamos isso de Method
     def __init__(self, host='localhost'): #em redes, o padrão para host é localhost
         self.host = host
         self.user = None #Como não sabemos o usuário e a senha, ambos serão None

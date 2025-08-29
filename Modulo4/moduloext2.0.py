@@ -669,6 +669,18 @@ worksheet.cell(1, 1, "Nome")
 worksheet.cell(1, 2, "Idade")
 worksheet.cell(1, 3, "Nota")
 
+#Se eu quiser verificar os nomes das Abas em minha planilha, basta utilizar o atributo sheetnames. ex:
+print(workbook.sheetnames)
+
+#Se eu quiser criar uma planilha nova (uma aba), basta utilizar o método create_sheet, onde:
+#title -> nome da aba/planilha que eu desejo inserir
+#index -> o índice/posição que eu quero que fique aquela aba.
+# Essas abas que eu falo é aquelas que ficam no canto inferior esquerdo na planilha
+workbook.create_sheet(title='Apagar Depois', index=0) 
+
+#e caso eu queira apagar uma aba, basta utilizar o método remove (se não existir, vai dar KeyError)
+workbook.remove(workbook['Apagar Depois'])
+
 #e para realizar a criação da planilha, basta chamar o OBJETO workbook e utilizar o método save.
 workbook.save(WORKBOOK_PATH)
 
@@ -716,4 +728,6 @@ for student in students:
 
 #para finalizar, basta chamar o método save e apontar o diretório
 workbook.save(WORKBOOK_PATH2)
+#Só falta verificar como muda o nome de uma aba padrão.
+
     

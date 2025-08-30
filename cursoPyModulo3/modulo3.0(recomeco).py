@@ -405,4 +405,154 @@ print(c2.user, c2.password)
 #demonstração do staticmethod
 print(c2.soma(2, 2)) #4
 
+##################################################################
+#getter e property
+
+# getter - um método para obter um atributo, ou seja, você utiliza de um método para que lhe seja retornado um atributo.
+# Isso pode ser útil em um caso de código cliente, onde um ou mais desenvolvedores fazem uso de sua classe para sustentação
+# de um código. Com isso, é bem provável que haja mudanças em suas classes e isso pode gerar transtornos no código cliente.
+# Por exemplo: Se hoje você define o nome de uma instância de uma forma e amanhã quer trocar esse nome? essa ação não iria ocasionar
+# em transtornos no código cliente? é a mesma coisa que você declarar uma variável, utilizar essa variável em outro lugar
+#  e posteriormente alterar o nome da variável em sua definição. Com isso, surge um problema... como eu poderia resolver essa questão?
+#Uma das formas seria utilizar o getter, que protegeria o escopo dentro de uma função. EX:
+
+class Caneta:
+    def __init__(self, cor, marca):
+        #você poderia instanciar assim e falar que já está pronto para uso.
+        #Porém, caso você mudasse o nome do atributo "cor", geraria transtornos.
+        self.cor = cor #por isso,podemos instanciar e deixar um método fazer o restante
+
+        ##property 
+        self.marca_caneta = marca
+
+    # definiria uma função
+    def get_cor(self):
+        #e toda fez que precisasse desse atributo fora da classe, chamava essa função. Logo, problema iria se resolver.
+        return  self.cor
+    
+    ### @property - um getter no modo Pythônico
+    #Isso iria funcionar perfeitamente na maioria das linguagens. No entanto, em python, temos algo que na maioria dos casos,
+    #funciona melhor que o jeito anterior. No nosso caso, é o property. O Property basicamente é um decorator que executa uma
+    #função como se ela fosse um atributo qualquer, sem necessitar dos "()", é como se a função/método deixasse de ser callable, 
+    # entende? Vou exemplificar.
+
+    @property #como eu falei, aqui vai o decorator
+    def marca(self): #aqui você coloca o nome que será chamada fora da classe
+        return self.marca_caneta #e aqui você aponta para o atributo de instância dentro da classe.
+        #logo, quando caneta.marca ser chamada fora da classe, esse método será executado e como consequência,
+        #vai retornar o nome da marca da caneta.
+    
+    @marca.setter
+    def marca(self, valor):
+        self.marca_caneta = valor
+        # print(valor)
+        ...
+
+#-------------- daqui para baixo será uma exemplificação de uso de um código cliente.
+
+caneta = Caneta('azul', 'cross')
+#no caso do getter, ao invés de fazer isso
+print(caneta.cor)
+#eu faria isso, através de uma função.
+print(caneta.get_cor()) #isso iria garantir uma proteção extra ao código cliente.
+
+##agora, vou demonstrar com property para a marca.
+print(caneta.marca) # e como pode ver, a marca sai normalmente.
+caneta.marca = 'fds'
+
+cls()
+
+######## Combinação de property + setter + getter
+#De início, vou diretamente criar uma classe denominada filme
+class Filme:
+    def __init__(self, nome, categoria):
+        #definindo um atributo de instância que pode ser acessado de qualquer forma
+        self.nome = nome
+
+        #nesse aqui, vamos fazer uma property
+        self._exibir_categoria = categoria #Em poo, temos algo chamado de "protected", que informa por convenção 
+        # que atributos ou métodos que começa com underline não deverá ser acessado fora da classe. Por isso o "_".
+
+    #realizando o getter, como na classe anterior.
+    #(o getter vai retornar o conteúdo presente no atributo de instância _exibir_categoria)
+    @property
+    def categoria(self): 
+        return self._exibir_categoria
+    
+    #agora, vamos realizar um setter.
+    #O setter é equivalente a uma mudança no atributo de instância _exibir_categoria
+    #ou seja, se o usuário resolver alterar o nome do atributo, é necessário 
+    # fazer a configuração a seguir para não ocasionar transtornos.
+
+    #Para isso, vamos precisar utilizar um decorator que apontará para a função property e especificar o setter, veja abaixo:
+    @categoria.setter 
+    #agora precisaremos repetir a mesma função da pŕoperty. (Não se preocupe, ninguém vai sobrescrever ninguém.)
+    def categoria(self, valor): # -> como parâmetro, é necessário especificar o self e posteriormente, o valor que será passado como argumento.
+        if 2 == 2: #e a vantagem é que eu consigo fazer verificações aqui também 
+            self._exibir_categoria = valor #-> agora, o valor que for passado aqui será inserido no atributo de instância "_exibir_categoria"
+        else:
+            raise TypeError('Não é possível instanciar esse tipo de coisa aqui')
+
+f1 = Filme('Anabelle 2', 'Terror')
+#sem o controle via property, eu consigo basicamente fazer qualquer coisa,
+# como acessar o atributo e alterar o atributo. Ex:
+print(f1.nome) #Anabelle 2
+
+#vamos exibir a categoria atual
+print(f1.categoria)
+
+#vamos alterar agora
+f1.nome = 'Psicopata Americano'
+
+#exibir o novo atributo
+print(f1.nome) # Psicopata Americano
+
+#No caso da property
+f1.categoria = 'Aventura' #você nem percebe que isso aqui é uma propery e que tem uma estrutura complexa rodando por trás dos panos...
+print(f1.categoria) # Aventura
+
+##----------Exemplo sem tantos comentários:
+class Produto:
+    def __init__(self, nome, preco, estoque):
+        self.nome = nome
+        self._preco = preco       # só leitura
+        self._estoque = estoque   # leitura/escrita
+
+    # Getter somente leitura
+    @property
+    def preco(self):
+        return self._preco
+
+    # Getter + setter para estoque
+    @property
+    def estoque(self):
+        return self._estoque
+
+    @estoque.setter
+    def estoque(self, valor):
+        if valor < 0:
+            raise ValueError("Estoque não pode ser negativo!")
+        self._estoque = valor
+
+
+# Teste rápido
+p = Produto("Caneta", 2.5, 100)
+
+print(p.nome)      # Caneta
+print(p.preco)     # 2.5
+print(p.estoque)   # 100
+
+p.estoque = 50     # altera normalmente
+print(p.estoque)   # 50
+
+# p.preco = 3.0    # gera erro, pois preço é somente leitura
+
+
+############################################################
+
+
+
+
+
+
     

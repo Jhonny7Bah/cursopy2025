@@ -578,9 +578,70 @@ cla = Cara(nome='Joao')
 
 ################################################################
 # Encapsulamento (modificadores de acesso: public, protected, private)
+# Python NÃO TEM modificadores de acesso
+# Mas podemos seguir as seguintes convenções:
 
+#--------
+#(sem underline) = public
+#       pode ser usado em qualquer lugar
 
+#--------
+# _ (um underline) = protected
+#       DEVE ser usado apenas dentro da classe ou suas subclasses.
 
-
-
+#--------
+# __ (dois underlines) = private
+#       "name mangling" (desfiguração de nomes) em Python. Após sofrer isso, o objeto fica com o aspecto semelhante
+#       a _NomeClasse__nome_attr_ou_method. Sendo que só DEVE ser usado na classe em que foi declarado.
     
+class Persona:
+    def __init__(self, nome, idade, genero):
+        #atributo de instância public
+        self.nome = nome
+        #atributo de instância protected
+        self._idade = idade
+        #atributo de instância private
+        self.__genero = genero
+
+    #método public
+    def exibir_nome(self):
+        #acesando public
+        return self.nome
+    #método protected
+    def _exibir_idade(self):
+        #acessando protected corretamente (dentro da classe que fora definido, também podendo ser acessado em uma herança)
+        return self._idade
+    #método private
+    def __exibir_genero(self):
+        #acessando private corretamente (dentro da classe que fora definido)
+        return self.__genero
+
+#inicializando objeto
+p4 = Persona('joão', 17, 'masculino')
+
+## acessando os métodos públicos
+print(p4.nome)
+print(p4.exibir_nome())
+
+## acessando os métodos privados (da forma errada)
+print(p4._idade)
+print(p4._exibir_idade())
+# aviso: vai funcionar perfeitamente. Mas, saiba que estará indo contra a conversão.
+
+
+## Demonstrando o acesso a modificadores de acesso private (apenas para demonstração)
+try:
+    #vai dar erro devido ao name mangling (desfiguração de nome)
+    print(p4.__genero)
+except AttributeError as e:
+    print(e) #'Persona' object has no attribute '__genero'
+    #e agora, a forma para acessar esse atributo seria:
+    print(p4._Persona__genero)
+    #acessando o método da mesma forma
+    print(p4._Persona__exibir_genero())
+
+    #detalhe -> isso foi apenas para demonstração. Em hipótese alguma vocẽ deverá acessar um atributo ou método
+    #privado fora da classe ou em uma subclasse. Isso só deverá ser acessado dentro da classe. Se fizer o contrário,
+    #vai funcionar, mas estará indo contra a convensão.
+
+##################################################################################

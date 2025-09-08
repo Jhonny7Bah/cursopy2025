@@ -428,7 +428,7 @@ class Caneta:
     # definiria uma função
     def get_cor(self):
         #e toda fez que precisasse desse atributo fora da classe, chamava essa função. Logo, problema iria se resolver.
-        return  self.cor
+        return self.cor
     
     ### @property - um getter no modo Pythônico
     #Isso iria funcionar perfeitamente na maioria das linguagens. No entanto, em python, temos algo que na maioria dos casos,
@@ -549,7 +549,35 @@ print(p.estoque)   # 50
 
 
 ############################################################
+cls()
 
+#Revisão de setter + property e executando getter (property) no init
+#Aula 214
+class Cara:
+    def __init__(self, nome):
+        #executando o getter diretamente no init
+        self.nome = nome
+    
+    #getter
+    @property
+    def nome(self):
+        print('estou no getter')
+        return self._nome
+    
+    #setter
+    @nome.setter
+    def nome(self, valor):
+        print('estou no setter') #Chamo inicializar a classe, no mesmo momento, isso será imprimido.
+        self._nome = valor
+
+cla = Cara(nome='Joao')
+
+# print(cla.nome)
+# cla.nome = 'Pedropa'
+# print(cla.nome)
+
+################################################################
+# Encapsulamento (modificadores de acesso: public, protected, private)
 
 
 

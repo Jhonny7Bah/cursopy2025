@@ -645,3 +645,63 @@ except AttributeError as e:
     #vai funcionar, mas estará indo contra a convensão.
 
 ##################################################################################
+cls()
+#Relações entre classes: Associação, Agregação, e composição.
+
+# Associação é uma relação fraca entre duas classes, que liga uma a outra no mesmo sistema.
+# Relação fraca -> Não há dependência. Ou seja, você pode utilizar as classes em conjunto ou individualmente. 
+# Na natureza, associação seria algo semelhante a uma protocooperação entre objetos. Ou seja, eles não precisam um do outro
+# para realizar suas tarefas, mas junto com o outro, pode funcionar melhor.
+# Além disso, quando realizamos uma protocooperação entre objetos, podemos utilizar seus atributos ou métodos estando em
+# outra classe. (é por isso que o método escrever funciona sem problemas na classe escritor.)
+
+#definindo a primeira classe
+class Escritor:
+    def __init__(self, nome):
+        self.nome = nome
+        #aqui vai ficar a outra classe ou atributo mesmo. Como não há nada ainda, será None.
+        self._ferramenta = None #fazendo isso de forma protegida
+    
+    # realizando o getter para manusear o atributo protegido 'ferramenta'
+    @property
+    def ferramenta(self):
+        return self._ferramenta
+    
+    #agora o setter para atribuir o valor para ferramenta, podendo ser uma classe ou valor qualquer.
+    @ferramenta.setter
+    def ferramenta(self, ferramenta):
+        self._ferramenta = ferramenta
+
+#definindo a segunda classe
+class FerramentaDeEscrever:
+    def __init__(self, nome):
+        self.nome = nome
+    
+    #criando o método para retornar o conteúdo do atributo de forma decorada
+    def escrever(self):
+        return f'{self.nome} está escrevendo!'
+
+#inicializando o primeiro objeto com um atributo de instância
+escritor = Escritor('Luiz')
+#agora, vamos inicializar o segundo objeto com um outro atributo de instância.
+caneta = FerramentaDeEscrever('Caneta Bic')
+
+#para provar que eles não são dependentes, vou inicializar eles sozinhos:
+print(escritor.nome) #Luiz
+print(escritor.ferramenta) #None
+
+print(caneta.nome)# Caneta Bic
+print(caneta.escrever())# Caneta Bic está escrevendo!
+
+#agora, vamos iniciar uma protocooperação
+#lembra do atributo de instância ferramenta, que tem setter? é lá que vamos colocar o objeto 
+escritor.ferramenta = caneta #agora, os métodos e atributos que estão em canetas poderão ser acessados através do objeto escritor
+#método escrever
+print(escritor.ferramenta.escrever())
+#atributo de instância nome
+print(escritor.ferramenta.nome)
+
+#Com isso, foi provado que na associação a protocooperação de fato é efetiva. 
+
+###################
+

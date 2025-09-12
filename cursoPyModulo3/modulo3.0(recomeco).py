@@ -703,5 +703,78 @@ print(escritor.ferramenta.nome)
 
 #Com isso, foi provado que na associação a protocooperação de fato é efetiva. 
 
-###################
 
+###################
+# Agregação é quando dois objetos podem existir sozinhos,
+# mas geralmente trabalham melhor juntos.
+# Em relações entre classes, é uma forma mais específica da associação:
+# levemente mais forte, mas ainda considerada fraca,
+# pois cada objeto pode viver de forma independente.
+#
+# Exemplo: um carro e um pneu. O pneu não precisa do carro
+# para existir, e o carro existe como objeto mesmo sem pneus.
+# Porém, um carro sem pneus não é muito útil, criando uma
+# leve dependência.
+# Obs.: as definições podem variar um pouco em outros materiais.
+#
+# No exemplo abaixo, vamos utilizar o objeto carrinho de compras e produtos, no contexto de um mercado.
+# Para um melhor contexto, é sabido que você pode fazer uso de um carrinho sem colocar produtos lá
+# dentro, correto? Assim como também é possível pegar um produto sem necessariamente precisar 
+# de um carrinho. No entanto, quando se trata de vários produtos, para maior agilidade de coleta e
+# somatória, é melhor pegar o carrinho... assim, será muito mais rápido tanto para você como para o caixa.
+
+
+class Carrinho:
+    def __init__(self):
+        #aqui será armazenado a quantidade de produtos dentro do carrinho
+        self._produtos = []
+
+    #método para inserir produto
+    def inserir_produtos(self, *produtos):
+        self._produtos += produtos
+
+    # método útil para listar os produtos
+    def listar_produtos(self):
+        for numero, produto in enumerate(self._produtos, start=1):
+            print(f'{numero}° produto é: {produto.nome} e o preço é {produto.preco} reais')
+    
+    #uma funcionalidade extra e útil para o carrinho seria também a somatória dos produtos (o que não é necessário, mas é útil)
+    def somar_tudo(self):
+         print(sum(
+            produto.preco
+            for produto in self._produtos
+        ))
+
+#agora a classe produto, contendo nome e preço
+class Produto:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+#### demonstração
+
+#vou desempacotar dois produtos (dois objetos) através da classe Produto.
+p1, p2 = Produto('farinha', 5), Produto('caneta', 1.20)
+print(p1.nome) # farinha
+print(p1.preco) # 5
+
+#Com isso, foi provado que o objeto p1 (o mesmo vale para p2) não precisa do carrinho.
+
+## criando o carrinho
+c = Carrinho() #inicializamos o carrinho em um objeto
+c.listar_produtos() #lista o que tem dentro do carrinho (nada)
+c.somar_tudo() #soma o que tem dentro do carrinho (nada)
+
+# Com isso, também foi provado que o carrinho não precisa do produto para funcionar.
+# Ou seja, ambas funcionam (o que prova a relação fraca), mas na maioria dos casos,
+# usar dessa forma não vai ser muito eficiente... por exemplo, e se for mais de um
+# produto e ambos fossem maiores? haverá problemas...
+
+# Por isso, podemos combinar da seguinte forma:
+c.inserir_produtos(p1, p2) #colocamos os objetos que guardam os produtos no método inserir_produtos, da classe Carrinho.
+#agora, eu consigo ver quais produtos tem no meu carrinho
+c.listar_produtos()
+# e também conseguimos somar tudo
+c.somar_tudo() 
+
+# Com isso, aprendemos um pouco do funcionamento da agregação, que é um tipo específico de associação entre classes.

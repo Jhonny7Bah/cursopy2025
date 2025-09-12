@@ -730,6 +730,38 @@ for student in students:
 workbook.save(WORKBOOK_PATH2)
 #Só falta verificar como muda o nome de uma aba padrão.
 
-###########################################################################
+cls()
+##############################
+# ler dados de uma planilha
 
-    
+#para isso, vamos importar o método load_workbook da library openpyxl
+from openpyxl import load_workbook #type:ignore
+
+#aqui vamos reaproveitar a variável anterior para apontar onde a planilha se encontra
+WORKBOOK_PATH = CLASS_FOLDER / 'workbook.xlsx' #pasta de trabalho
+
+#inicializamos o método e apontamos o diretório da planilha
+workbook_r = load_workbook(WORKBOOK_PATH)
+
+#inicializamos as alterações através de um objeto e salvamos o estado
+worksheet_r = workbook.active
+
+#caso a tipagem do worksheet_r seja unknown, vai ser necessário importar o módulo abaixo para
+#tipar manualmente.
+from openpyxl.cell import Cell
+
+#como não há como tipar no for, vamos tipar externamente
+row: Cell
+#agora vamos iterar sobre a planilha
+for row in worksheet.iter_rows():
+    for col in row:
+        #aqui conseguimos ver na tela o conteúdo que lá dentro tem
+        print(col.value, end='\t')
+    print()
+
+#e também consigo fazer modificações. (provar depois)
+worksheet_r['B3'].value = 17
+
+
+# workbook_r.save(WORKBOOK_PATH)
+

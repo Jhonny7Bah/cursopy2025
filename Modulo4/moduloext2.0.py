@@ -768,6 +768,45 @@ worksheet_r['B3'].value = 17
 workbook_r.save(WORKBOOK_PATH)
 
 ############################################################################################
+#Pillow é um módulo python que é possível, através dele realizar inúmeras alterações em imagens como
+# colocar texto, redimensioar, colocar filtro, dentre outras coisas. É por isso que, segundo o Luiz, 
+# o pillow seria equivalente ao photoshop, porém dentro do python. 
+
+#para instalar o pillow, será necessários fazer o seguinte comando:
+# pip install pillow
+
+#agora, para importar o pillow, utilizamos PIL. Sendo:
+from PIL import Image #type:ignore
+from pathlib import Path #importante para fazer o caminho
+
+#passando o caminho da imagem
+RAIZ = Path(__file__).parent
+#caminho da imagem original completo
+CAMINHO_PHOTO = RAIZ / 'aula338' / 'original.jpg'
+#agora, criamos um caminho que será ocupado péla nova foto, a modificada
+CAMINHO_NEW_PHOTO = RAIZ / 'aula338' / 'new_photo.jpg'
+#agora, criamos um objeto e passamos o caminho fa foto que queremos modificar
+pil_image = Image.open(CAMINHO_PHOTO)
+
+# coletando informações gerais da foto
+width, height = pil_image.size #com o atributo size, é possível obter a largura e altura da foto
+
+# aspect ratio -> faz juz a não deformação da imagem, onde há alteração em apenas uma das dimensões (largura ou altura),
+#após isso, a outra dimensão se alinha proporcionalmente.
+new_width = 300 #utilizamos a largura
+new_height = round(height * new_width / width) #deixamos a altura proporcional a largura com base em uma regra de três.
+
+#utilizamos o método resize para redimensionar a foto, passando uma dupla com dois índices. 
+new_image = pil_image.resize((new_width, new_height))
+
+# e por fim, para salvar a nova imagem modificada, utilizamos o método save.
+new_image.save(
+    CAMINHO_NEW_PHOTO,#passo o caminho da nova foto
+    optimized = True # habilito a otimização, para melhorar um pouco ainda mais.
+)
+
+##############################################################################################################################
+# Módulo 4 finalizadoi!!!!!! Parabéns!!!!!!!!!!!!1
 
 
 

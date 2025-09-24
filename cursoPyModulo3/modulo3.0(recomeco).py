@@ -778,3 +778,63 @@ c.listar_produtos()
 c.somar_tudo() 
 
 # Com isso, aprendemos um pouco do funcionamento da agregação, que é um tipo específico de associação entre classes.
+
+#########
+# Composição é uma forma mais forte de agregação:
+# o objeto "pai" é responsável pelo ciclo de vida do "filho".
+# Quando o pai deixa de existir, o filho também é destruído.
+#
+# Em Python, o gerenciamento de memória é automático.
+# O garbage collector (GC) identifica objetos sem referências
+# e libera sua memória. Em CPython isso normalmente acontece
+# assim que o contador de referências chega a zero,
+# mas a ordem e o momento exatos não são garantidos.
+#
+# Exemplo: um Livro é composto por várias Páginas.
+# Se o Livro é destruído, as Páginas deixam de existir como parte desse livro.
+
+#pai
+class Livro:
+    def __init__(self, titulo, total_paginas):
+        self.titulo = titulo
+        # Ao criar o livro, criamos também as páginas
+        #Perceba também que a classe página foi inicializada dentro da classe livro, 
+        #criando assim uma relação entre classes.
+        self.paginas = [Pagina(numero) for numero in range(1, total_paginas + 1)]
+
+    def listar_paginas(self):
+        for pagina in self.paginas:
+            print(f'Página {pagina.numero} do livro "{self.titulo}"')
+    
+    # Em Python, __del__ (destrutor) é executado quando o garbage collector decide
+    # liberar um objeto que não tem mais referências. O comando del apenas remove
+    # uma referência, o que pode levar o GC a destruir o objeto e disparar __del__.
+    def __del__(self):
+        print('o livro {} se perdeu!!!!'.format(self.titulo))
+
+#filho
+class Pagina:
+    def __init__(self, numero):
+        self.numero = numero
+    
+    # Quando o objeto que inicializa a classe livro for apagada, a classe página será apagada
+    # Também, já que a vida da classe Página será gerenciada pela classe Livro quando Livro for 
+    # inicializada em um objeto.
+    def __del__(self):
+        print('a página {} está se perdendo...'.format(self.numero))
+
+### Demonstração
+livro = Livro("Python Essencial", 3)
+
+# O livro gerencia as páginas
+livro.listar_paginas()
+# Saída:
+# Página 1 do livro "Python Essencial"
+# Página 2 do livro "Python Essencial"
+# Página 3 do livro "Python Essencial"
+
+# Se removermos a referência ao livro, suas páginas também serão apagadas
+# pelo Garbage Collector quando não houver mais uso.
+del livro
+# Agora não temos mais acesso às páginas
+print('###################aqui termina o codigo')

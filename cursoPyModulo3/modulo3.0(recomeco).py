@@ -838,3 +838,70 @@ livro.listar_paginas()
 del livro
 # Agora não temos mais acesso às páginas
 print('###################aqui termina o codigo')
+
+######################################################################################
+#### Herança simples - Relações entre classes
+# Associação - um objeto usa outro objeto
+# Agregação - um objeto tem outro objeto
+# Composição - um objeto É dono de outro objeto e gerencia seu tempo de vida
+# Herança - um objeto É outro objeto (relação "é um")
+#
+# Herança vs Composição
+# Herança não faz parte da composição, pois não se trata de uma relação de "ter", e sim de "ser".
+# - Na herança: Usuario É uma Pessoa
+# - Na composição: Livro TEM Páginas
+#
+# Nomenclaturas
+# Classe principal:
+#   -> super class, base class, parent class
+# Classes filhas:
+#   -> sub class, child class, derived class
+
+# Super classe
+class Pessoa:
+    def __init__(self, nome, idade, genero):
+        self.nome = nome
+        self.idade = idade
+        self.genero = genero
+
+    def mostrar_classe(self):
+        # retorna a classe real da instância
+        return self.__class__.__name__
+
+# Classe filha herdando Pessoa
+class Usuario(Pessoa):
+    ...
+
+p1 = Pessoa('Pedro', 17, 'Feminino')
+print(p1.idade)
+print(p1.mostrar_classe())  # Pessoa
+
+# Na declaração do objeto, o construtor de Pessoa será o mesmo de Usuario.
+u1 = Usuario('Caua', 14, 'Feminino')
+print(u1.idade)
+print(u1.mostrar_classe())  # Usuario
+
+# MRO -> Method Resolution Order:
+# Refere-se à ordem de busca de métodos e atributos em uma hierarquia de classes.
+# No exemplo, Usuario herda de Pessoa, e ambas herdam de object (implícito em Python 3).
+print(Usuario.mro())  # forma prática de visualizar a ordem de resolução
+
+# Pra você ter noção, antigamente, no Python 2, uma classe era declarada assim:
+class Ex(object):
+    ...
+# Hoje em dia, em Python 3, não precisa mais. Mas de toda forma,
+# object continua sendo a raiz da hierarquia de classes do Python.
+
+# Informação importante:
+# Ao usar herança, você herda atributos e métodos da classe mãe. Isso significa que
+# parte do comportamento já vem pronto e, em muitos casos, não é necessário reescrevê-lo.
+#
+# O problema é que, quanto mais níveis de herança você cria, mais difícil fica entender
+# de onde vem cada método ou atributo. Esse acoplamento pode deixar o código complexo
+# e difícil de manter.
+#
+# Por isso, uma boa prática para iniciantes é limitar a hierarquia a, no máximo, 3 níveis.
+# Passou disso, geralmente é mais indicado usar composição (relação entre classes) em vez
+# de herança profunda.
+
+#######################################################################################################3

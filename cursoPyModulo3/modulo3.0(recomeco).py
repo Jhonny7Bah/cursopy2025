@@ -905,3 +905,87 @@ class Ex(object):
 # de herança profunda.
 
 #######################################################################################################3
+cls()
+
+### Eu também posso herdar classes que já existem e fazer alguma mudança. Por exemplo:
+class MinhaClasse(str): # -> herdei elementos da classe str
+    def lower(self): # -> vamos alterar apenas o método lower
+        return 'Tudo bem'
+
+# vamos inicalizar a classe com um objeto
+string1 = MinhaClasse('Olá, amigo!')
+
+# Os demais métodos que não foram modificados da classe str, vão funcionar normalmente
+print(string1.upper()) # OLÁ AMIGO
+
+# mas o lower (que foi modificado), vai retornar o que definimos
+print(string1.lower()) # Tudo bem 
+
+### Uso do super
+# no caso de você querer fazer uma modificação leve em um método, como um logger:
+class MinhaClasse2(MinhaClasse): #-> vou herdar os atributos e métodos da minha classe
+    def lower(self):
+        print('Vou deixar tudo minúsculo!')
+        # o super busca na superclasse o método existente. Com isso, podemos utilizar o super como
+        # uma ponte para retornar o próprio método com o estado anterior.
+        return super().lower() 
+
+        #O super acima também recebe argumentos, sendo:
+        # 't' -> primeiro a classe que ela se encontra no momento
+        # 'obj' -> o segundo, que é self (a instância).
+        #
+        # No caso dessa classe, tais argumentos não foram passados.
+        # No entanto, se fosse para passar, seria da seguinte forma:
+        # 
+        # super(MinhaClasse2, self).lower()
+        #
+        # Mas, em python, quando você chama o super da forma como eu fiz no return, ele já
+        # Vem com os parâmetros declarados iniciamente dessa forma como demontrei acima, evitando
+        # Verbosidade.
+
+string2 = MinhaClasse2('Carlito')
+print(string2.lower())
+
+### Explicando melhor o MRO (Method Resolution Order)
+# Inicialmente, vamos criar três classes que receberão os mesmos atributos de classe e métodos.
+
+class A:
+    atributo_a = 'valor a'
+
+    def metodo(self):
+        print('A')
+##
+class B(A):
+    atributo_b = 'valor b'
+
+    def metodo(self):
+        print('B')
+
+##
+class C(B):
+    atributo_c = 'valor c'
+
+    def metodo(self):
+        print('C')
+
+# vamos inicializar apenas a classe C
+c = C()
+
+# vamos verificar o mro da classe C
+print(A.mro()) #[<class '__main__.A'>, <class 'object'>]
+print(B.mro()) #[<class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
+print(C.mro()) #[<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
+
+# Logo, percebemos que a classe C herdou todas as classes anteriores, pois:
+# C herdou de B
+# B herdou de A
+
+# Logo, C tem todos os atributos e métodos das classes anteriores.
+
+# Porém, no mro, a hierarquia começa da classe que foi chamada. Por exemplo,
+# Se eu defino um objeto para A, o método "metodo" vai retornar um print com o valor de A
+
+# continuar daqui
+
+
+

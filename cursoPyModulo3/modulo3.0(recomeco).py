@@ -952,40 +952,57 @@ print(string2.lower())
 class A:
     atributo_a = 'valor a'
 
-    def metodo(self):
+    def demonstrar(self):
         print('A')
 ##
 class B(A):
     atributo_b = 'valor b'
 
-    def metodo(self):
+    def demonstrar(self):
         print('B')
 
 ##
 class C(B):
     atributo_c = 'valor c'
 
-    def metodo(self):
+    def demonstrar(self):
         print('C')
 
 # vamos inicializar apenas a classe C
 c = C()
 
-# vamos verificar o mro da classe C
+# vamos verificar o mro das classes
 print(A.mro()) #[<class '__main__.A'>, <class 'object'>]
 print(B.mro()) #[<class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
 print(C.mro()) #[<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
 
 # Logo, percebemos que a classe C herdou todas as classes anteriores, pois:
-# C herdou de B
+# A não herdou ninguém
 # B herdou de A
+# C herdou de B
 
 # Logo, C tem todos os atributos e métodos das classes anteriores.
 
-# Porém, no mro, a hierarquia começa da classe que foi chamada. Por exemplo,
-# Se eu defino um objeto para A, o método "metodo" vai retornar um print com o valor de A
+# Porém, no mro, a hierarquia começa da classe que foi chamada. No exemplo acima,
+# Se eu busco o mro à partir da classe A, o método "demonstrar" vai imprimir na tela
+# a letra 'A'
+#
+# Isso acontece porque a busca no mro vai começar da classe ou opbjeto que ele foi chamado.
+# Com isso, ele busca determinado método ou atributo na classe que eu chamei. Se ele não encontrar,
+# Ele busca na classe mãe (se houver). Se ainda assim na classe mãe não houver, ele busca nas outras
+# classes que estão ligados a ele através da Herança. E se ele não encontrar em nenhuma das subclasses,
+# será retornado erro na tela. No entanto, se ele encontrar, vai parar de buscar e inicializar o método
+# em questão. É como se fosse um for buscacando algo com auxilio de um if, que quando encontra, aciona o break.  
 
-# continuar daqui
+#exemplo:
+# a busca começa na classe C, mas na classe C não existe atribuito de classe a,b ou c. Logo, ele buscará nas subclasses.
+print(c.atributo_a) # inicializa em C, depois busca em B e logo busca em A, encontrado. 
+print(c.atributo_b) # inicializa em C, depois em B, encontrado.
+print(c.atributo_c) # inicializa em C e encontra em C.
+
+# abaixo, o demonstrar existe em todas. Tanto A, como B e C. Mas como eu disse, o mro começa a da classe que foi chamada e
+# como em C existe o método demonstrar, a busca é finalizada. (famosa sobreposição)
+c.demonstrar() # inicializa em C e encontra em C.
 
 
 

@@ -942,9 +942,59 @@ class MinhaClasse2(MinhaClasse): #-> vou herdar os atributos e métodos da minha
         # Mas, em python, quando você chama o super da forma como eu fiz no return, ele já
         # Vem com os parâmetros declarados iniciamente dessa forma como demontrei acima, evitando
         # Verbosidade.
+        #
+        # No entanto, sabemos que o super dessa classe é "MinhaClasse". Isso acontece porque,
+        # ao chamar super(), o Python entende automaticamente que estamos dentro da classe
+        # "MinhaClasse2", que, por sua vez, é uma subclasse de "MinhaClasse".
+        #
+        # Assim, o interpretador reconhece que "MinhaClasse2" possui uma superclasse
+        # e faz a busca nela. É justamente esse processo que permite que o método
+        # "lower()" seja executado, mesmo não existindo diretamente no escopo de
+        # "MinhaClasse2". O Python então localiza o método correspondente na classe
+        # mãe ("MinhaClasse") e o executa.
 
 string2 = MinhaClasse2('Carlito')
 print(string2.lower())
+
+
+### Outro caso de uso do super
+
+class Animal:
+    def __init__(self, especie): # o constutor necessitou de um parâmetro, que no caso, foi a espécie
+        pass
+
+# como as classes abaixo são classes filhas, ao serem inicializadas, vão precisar do argumento "espécie" também para
+# inicializar.
+class Gato(Animal):
+    # no entanto, se aqui fosse necessário um parâmetro a mais? como raça?
+    # def __init__(self, raca): -> isso iria sobrepor o init anterior, eliminando o parâmetro espécie.
+    #
+    # Mas e como é que faz então? simples. Bastaria fazer uso do super para acessar a classe mãe (Animal)
+    # para recuperar o parâmetro que desejamos, que no caso, é os que estão no init.
+
+    def __init__(self, especie, raca): # eu sei que o parâmetro que tem lá é especie, logo, adiciono ele no construtor.
+        self.raca = raca
+        super().__init__(especie) # e para acessar, utilizo o super para fazer o acesso ao parâmetro original
+        # Com isso, eu crio um novo parâmetro no construtor e já inicializo com o self, presente na classe original. 
+
+class Cachorro(Animal):
+    ...
+
+# agora, inicio a classe normalmente.
+g1 = Gato('felino','siamês')
+
+'''
+
+Caso os parâmetros no construtor sejam enormess
+
+
+'''
+
+
+
+
+
+##################################################################################################################
 
 ### Explicando melhor o MRO (Method Resolution Order)
 # Inicialmente, vamos criar três classes que receberão os mesmos atributos de classe e métodos.
@@ -1004,5 +1054,29 @@ print(c.atributo_c) # inicializa em C e encontra em C.
 # como em C existe o método demonstrar, a busca é finalizada. (famosa sobreposição)
 c.demonstrar() # inicializa em C e encontra em C.
 
+######
+# Como foi visto anteriormente, em um dos casos de uso do super, podemos fazer alguma modificação em uma classe e ainda
+# chamar o método da função anterior, correto?
+
+class D(C):
+    atributo_c = 'valor D'
+
+    def demonstrar(self):
+        # super().demonstrar()
+        # se eu deixar assim, ele vai chamar automaticamente o método da função mãe de D, que no caso, é C.
+        # Isso seria o equivalente a super(D, self).demonstrar()
+        #
+        # Isso significa que eu indico que a classe é D (a atual) e também indico o objeto (self).
+        # Mas e se eu falar pra ele que essa classe na verdade é B?
+         
+        super(B, self).demonstrar() # retorno: A
+
+        # Isso significa que eu disse pra ele que a classe que ele começará a busca para o mro
+        # é B e como se trata de superclasse, ele foi procurar a superclasse de B, que no caso é A.
+        #
+        # É como se eu falasse: Ei, agora você não deve iniciar a busca por D, você deve começar por B.
+        
 
 
+d = D()
+d.demonstrar()

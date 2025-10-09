@@ -961,34 +961,62 @@ print(string2.lower())
 
 class Animal:
     def __init__(self, especie): # o constutor necessitou de um parâmetro, que no caso, foi a espécie
-        pass
+        self.especie = especie
 
-# como as classes abaixo são classes filhas, ao serem inicializadas, vão precisar do argumento "espécie" também para
+# como as classes abaixo são classes filhas, ao serem inicializadas, irão precisar do argumento "espécie" também para
 # inicializar.
 class Gato(Animal):
-    # no entanto, se aqui fosse necessário um parâmetro a mais? como raça?
-    # def __init__(self, raca): -> isso iria sobrepor o init anterior, eliminando o parâmetro espécie.
+    # no entanto, se aqui fosse necessário um parâmetro a mais, como raça?
+    # Se simplemente fizermos:
+    # def __init__(self, raca): 
+    # Isso iria sobrepor o init original, eliminando o parâmetro espécie.
     #
-    # Mas e como é que faz então? simples. Bastaria fazer uso do super para acessar a classe mãe (Animal)
-    # para recuperar o parâmetro que desejamos, que no caso, é os que estão no init.
+    # Para evitar isso, usamos o “super()” para acessar o construtor da classe mãe (Animal)
+    # e reaproveitar seus parâmetros.
 
     def __init__(self, especie, raca): # eu sei que o parâmetro que tem lá é especie, logo, adiciono ele no construtor.
         self.raca = raca
         super().__init__(especie) # e para acessar, utilizo o super para fazer o acesso ao parâmetro original
         # Com isso, eu crio um novo parâmetro no construtor e já inicializo com o self, presente na classe original. 
 
+    # Além disso, consigo incrementar um método aqui também, que seja apenas dessa classe e de suas filhas.
+    def ronronar(self):
+        print('vrum vrum cvrummm')
+
+# Mas, quando os parâmetros de uma superclasse são inúmeros, passar cada parâmetro do init em um super acaba sendo 
+# um tanto quanto demorado... é por isso que há uma segunda opção: Utilizar argumentos nomeados e não nomeados com
+# empacotamento e desempacotamento. Veja no exemplo abaixo:
 class Cachorro(Animal):
-    ...
+    # Inicialmente, chamo o método que precisará ser modificado e passo o parâmetro que quero incrementar.
+    # Após passar tal parâmetro, passo *args e **kwargs para empacotar todos os parâmetros recebidos, de forma flexível
+    def __init__(self, sexo,*args, **kwargs):
+        # agora eu posso instanciar o novo parâmetro
+        self.sexo = sexo
+        # e no super, chamar o init da superclasse e desempacotar os parâmetros lá existentes.
+        super().__init__(*args, **kwargs)
+
+        # Com isso, modifiquei o construtor sem necessitar adicionar os parâmetros manualmente.
+
+        # Desvantagem: Não preserva a tipagem e na chamada do método para instansciar externamente 
+        # (criação de um objeto à partir da classe), os parâmetros não aparecem.
 
 # agora, inicio a classe normalmente.
-g1 = Gato('felino','siamês')
+generico = Animal('gaha')
+gato1 = Gato('felino','siamês')
+cachorro1 = Cachorro('fêmea', 'rottweiler')
 
-'''
+# objeto inicializado à partir da classe Animais
+print(generico.especie)
+print(generico.__dict__) #{'especie': 'gaha'}
 
-Caso os parâmetros no construtor sejam enormess
+# objeto inicializado à partir da classe Gato
+print(gato1.raca)
+gato1.ronronar()
+print(gato1.__dict__) # {'raca': 'siamês', 'especie': 'felino'}
 
-
-'''
+# objeto inicializado à partir da classe Cachorro
+print(cachorro1.especie)
+print(cachorro1.__dict__)
 
 
 
@@ -1075,8 +1103,18 @@ class D(C):
         # é B e como se trata de superclasse, ele foi procurar a superclasse de B, que no caso é A.
         #
         # É como se eu falasse: Ei, agora você não deve iniciar a busca por D, você deve começar por B.
-        
 
-
+        # Importante:
+        # Se eu não quisesse usar o super() para acessar um método da classe mãe, 
+        # eu poderia chamar diretamente a classe base (caso eu saiba qual é) junto 
+        # com o método e o argumento de instância (self). Isso executa algo semelhante 
+        # ao super(), mas não faz a mesma coisa internamente — ele apenas chama o método 
+        # definido naquela classe específica, ignorando a hierarquia de herança.
+        #
+        # Portanto, embora funcione, o mais recomendável é utilizar super(), pois ele
+        # segue a MRO (Method Resolution Order) e garante que a busca do método seja feita
+        # de forma correta e dinâmica, especialmente em casos de herança múltipla.
+        A.demonstrar(self)
+ 
 d = D()
 d.demonstrar()

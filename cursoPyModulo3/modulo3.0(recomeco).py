@@ -1108,7 +1108,7 @@ class D(C):
         # Se eu não quisesse usar o super() para acessar um método da classe mãe, 
         # eu poderia chamar diretamente a classe base (caso eu saiba qual é) junto 
         # com o método e o argumento de instância (self). Isso executa algo semelhante 
-        # ao super(), mas não faz a mesma coisa internamente — ele apenas chama o método 
+        # ao super(), mas não faz a mesma coisa internamente, ele apenas chama o método 
         # definido naquela classe específica, ignorando a hierarquia de herança.
         #
         # Portanto, embora funcione, o mais recomendável é utilizar super(), pois ele
@@ -1118,3 +1118,129 @@ class D(C):
  
 d = D()
 d.demonstrar()
+
+########################################################################################
+
+# c3 superclass linearization
+
+# Em Python, assim como em algumas outras linguagens de programação, é possível utilizar o conceito
+# de Herança Múltipla.
+# Nos exemplos anteriores, quando criamos uma classe filha, passamos apenas uma classe entre parênteses,
+# isso indica que essa classe é a superclasse (ou classe mãe).
+# No entanto, também é possível adicionar duas, três ou mais classes entre parênteses, separadas
+# por vírgulas. Quando isso ocorre, dizemos que estamos utilizando Herança Múltipla,
+# pois a nova classe passará a herdar atributos de classe, métodos e construtores de
+# todas as classes que foram declaradas na herança.
+#
+# Contudo, isso torna o MRO (Method Resolution Order) um pouco mais complexo, já que o Python
+# precisará determinar a ordem exata em que as classes serão pesquisadas quando houver métodos
+# ou atributos com o mesmo nome.
+# Ainda assim, o MRO é inteligente o suficiente para resolver esses conflitos de forma consistente,
+# o verdadeiro desafio está em manter o código compreensível e organizado à medida que a hierarquia cresce.
+#
+#  Além disso, hás casos que será utilizado mixin, que nada mais é que uma classe usada em herança múltipla
+# para adicionar funcionalidades específicas a outras classes, sem fazer parte direta da hierarquia 
+# principal dessas classes.
+# Ela é pensada para ser combinada (mixada) com outras classes, e não para ser instanciada por conta própria.
+
+# vou mostrar um exemplo de herança múltipla com mixin
+
+# mixin
+class logg:
+    def log(self, msg): 
+        print(f'[LOG]: {msg}')
+
+# classe animal
+class Animal:
+    def __init__(self, especie):
+        self.especie = especie
+
+#Herança múltipla
+class Ovelha(logg, Animal): # foram passadas as duas classes anteriores
+    def __init__(self, nome, especie):
+        self.nome = nome
+        # e aqui, vou acessar a classe mãe que possui o parâmetro especie no init
+        super(Ovelha, self).__init__(especie)
+    
+    # o emitir som será utilizado para o mixin
+    def emitir_som(self):
+        # e como eu herdei logg, o método log poderá ser utilizado aqui
+        self.log('beermemee')
+
+    #resultado: Utilizei funcionalidades de duas classes diferentes em apenas uma classe.
+
+# aqui eu passo os argumentos
+ovelha1 = Ovelha('Shaun', 'Ovis aries')
+# e agora, poderei acessar normalmente cada método da classe Animal.
+print(ovelha1.nome) # Shaun
+print(ovelha1.especie) # Ovis aries
+ovelha1.emitir_som() # [LOG]: beermemee
+print(Ovelha.mro()) # [<class '__main__.Ovelha'>, <class '__main__.logg'>, <class '__main__.Animal'>, <class 'object'>]
+
+# Observação:
+# No mro acima, percebemos que após ele ter buscado na própria classe, ele buscou em logg, para depois
+# buscar em animal e por fim, object builting. No entanto, nem sempre isso acontece... pode haver casos que por mais
+# que determinada fosse passada primeiro, ela pode acabar não sendo a próxima a ser chamada no mro.
+# 
+# Isso acontece porque o python utiliza um algoritmo para saber qual classe deverá procurar depois, que
+# é o C3 superclass Linearization. Esse algoritmo é o que o python utiliza atualmente, mas pode mudar.
+# Nesse algoritmo, conforme a classe vai ficando complexa (com muitas heranças), mais difícil será prever
+# o mro e poderá possibilitar o caso citado acima.
+#
+# Por isso existem o método .mro() e o atributo __mro__, que ajudam a inspecionar e debugar a
+# estrutura de herança. Ainda assim, lembre-se: segundo a PEP 8 e o Zen do Python,
+# "A complexidade é inimiga da clareza." 
+
+### Problema Diamante
+# Como dito anteriormente, em herança múltipla, uma classe pode herdar elementos de duas ou mais classes, correto?
+# Dito isso, há um caso que possui um certo nível de complexidade, que é o caso do diamanate.
+# Esse caso ocorre quando duas classes mãe tem uma outra classe mãe em comum na sua definição,
+# possibilitando uma sobreposição errônea.
+# Se não entendeu, com o exemplo abaixo, vai entender melhor.
+
+# classe mãe
+class um:  
+    def quem_sou(self):
+        print('um')
+
+# classe dois herda de um
+class dois(um):
+    def quem_sou(self):
+        print('dois')
+
+# classe três herda de um.
+#Logo, classe dois e classe três tem uma mãe em comum
+class tres(um):
+    def quem_sou(self):
+        print('tres')
+
+#classe quatro herda de classe dois e de classe três
+class quatro(dois, tres):
+    ...
+    # def quem_sou(self):
+        # print('quatro')
+
+#logo, o exemplo visual ficaria da seguinte forma:
+
+#           um
+#         /    \
+#       dois  tres
+#         \    /
+#         quatro
+
+# percebeu que isso forma um diamante? e no caso de chamar um método que está
+# presente em todas as quatro? o mro vai utilizar o seu algoritmo para cálcular isso.
+# como ainda se trata uma complexidade relativamente simples, ainda poderemos deduzir.
+
+# sendo: o mro vai buscar em quatro e vai encontrar. Mas, caso não encontrasse, iria buscar em dois
+# já que dois está na frente. Se não achasse em dois, iria buscar em tres e se não encontrar em três,
+# buscaria em um.
+
+exam = quatro() 
+exam.quem_sou() # dois
+
+# e como sabemos, "um" é a mãe de dois e três, que parece que vão aparecer mais de uma vez no mro, né?
+# mas não. Quando o mro faz a busca, antes ele faz a mesclagem e assim, evita duplicações. Veja na saída abaixo:
+print(quatro.mro()) # [<class '__main__.quatro'>, <class '__main__.dois'>, <class '__main__.tres'>,
+# <class '__main__.um'>, <class 'object'>]
+

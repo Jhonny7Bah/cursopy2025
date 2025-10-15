@@ -1244,3 +1244,38 @@ exam.quem_sou() # dois
 print(quatro.mro()) # [<class '__main__.quatro'>, <class '__main__.dois'>, <class '__main__.tres'>,
 # <class '__main__.um'>, <class 'object'>]
 
+# pair programing -> programação guiada
+###############################################################################
+###############################################################################
+# POO - Abstração.
+## Abstração é o ato de focar no que o objeto faz, e não em como ele faz. 
+# Nesse sentido, reduzimos a complexidade mostrando apenas o que é essencial para o uso.
+# Toda a implementação detalhada fica oculta.
+#
+# Exemplo: você não precisa entender de motores para dirigir um carro. Ou seja,
+# toda a complexidade foi abstraída, restando apenas o necessário para o uso.
+#
+# Em Python, isso também acontece com classes, onde podemos criar estruturas que
+# definem o comportamento esperado (abstração), mas deixam a implementação para
+# as classes filhas. Veja:
+
+# Classe base (abstrata)
+class Log:
+    def log(self, msg):
+        # Esse método serve apenas como modelo para as subclasses.
+        raise NotImplementedError('Você não deve usar essa classe diretamente. Use a classe filha.')
+
+# Classe concreta que implementa a abstração
+class LogMixin(Log):
+    def log(self, msg):
+        print(msg)
+
+# Agora, LogMixin implementa o comportamento definido em Log,
+# escondendo a complexidade e exibindo apenas o necessário.
+LogMixin().log('Sistema iniciado!')
+
+# mas caso você tente acessar log diretamente, perceba que vai dar erro:
+try:
+    Log().log('olaa')
+except:
+    print('Se isso for executado, então deu erro.')

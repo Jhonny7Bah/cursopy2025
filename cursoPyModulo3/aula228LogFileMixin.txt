@@ -1,0 +1,10 @@
+16/10/25 08:39 -> Error: Não gostei do nome da variável
+16/10/25 08:39 -> Sucess: aí sim, nome maneiro!
+16/10/25 08:39 -> Error: Não gostei do nome da variável
+16/10/25 08:39 -> Sucess: aí sim, nome maneiro!
+16/10/2025 08:40:44 -> Error: Não gostei do nome da variável
+16/10/2025 08:40:44 -> Sucess: aí sim, nome maneiro!
+16/10/2025 08:40:45 -> Error: Não gostei do nome da variável
+16/10/2025 08:40:45 -> Sucess: aí sim, nome maneiro!
+16/10/2025 08:40:52 -> Error: Não gostei do nome da variável
+16/10/2025 08:40:52 -> Sucess: aí sim, nome maneiro!

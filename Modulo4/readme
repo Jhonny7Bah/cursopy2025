@@ -1,0 +1,10 @@
+# Atenção
+
+1. As anotações centrais estão em moduloext.py e a continuação em moduloext2.0.py
+2. Caso queira baixar todos os pacotes de uma só vez, basta utilizar o seguinte comando:
+```
+pip install -r requirements_completo.txt
+```
+3. Alguns arquivos estão soltos, mas isso é devido ao uso de alguns módulos que gerenciam arquivos. Portanto, ignore isso.
+
+

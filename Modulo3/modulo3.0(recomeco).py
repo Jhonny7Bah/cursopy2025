@@ -1330,9 +1330,9 @@ LogFileMixin().log_sucess('aí sim, nome maneiro!')
 # para maior organização.
 
 ##################################################
-# classe abstrata - Abstract Base Class (abc) de forma simples.
+# Classe abstrata - Abstract Base Class (abc)
 #
-# Para definir uma classe abstrata, utilizamos o seguinte código:
+# Para definir uma classe abstrata, podemos usar algo assim:
 
 '''
 class Log:
@@ -1341,24 +1341,44 @@ class Log:
         raise NotImplementedError('Você não deve usar essa classe diretamente. Use a classe filha.')
 '''
 
-# Porém, o exemplo acima é apenas uma forma de criar uma classe abstrata.
-# Existem outras abordagens que tornam o código mais claro, coeso e padronizado.
-# Uma delas é utilizando o módulo abc (Abstract Base Classes), que faz uso de uma metaclasse,
+# O exemplo acima é uma forma válida de criar uma classe abstrata devido a 
+# chamada de um erro (raise) com a justificativa "NotImplementedError" (como foi falado antes).
+# No entanto, há abordagens mais claras, coesas e padronizadas para isso.
+# Uma delas é utilizando o módulo "abc" (Abstract Base Classes), que faz uso de uma metaclasse —
 # um tipo especial de classe responsável por controlar a criação de outras classes.
-# (O conceito de metaclasse ainda será abordado mais adiante.)
+# (O conceito de metaclasse será abordado mais adiante.)
 
 # para chamar o módulo, basta fazer da seguinte forma:
 from abc import ABC, abstractmethod
 
-# Com isso, criamos a nossa classe abstrata que vai herdar abc
+# Criamos uma classe abstrata herdando de abc
 class LogAprimorado(ABC):
-    # Herdar de abc não significa que sua classe agora é abstrata.
-    # Para tornar sua classe abstrata, precisará haver algum método que chame
-    # o decorador abstractmethod. Portanto, criarei um:
+    # Herdar de abc apenas não significa que sua classe agora é abstrata.
+    # Para tornar sua classe abstrata,é necessário que ela contenha,
+    # pelo menos, um método com o decorador @abstractmethod.
     
-    @abstractmethod
+    
+    @abstractmethod #agora, essa classe se comportará como classe abstrata. 
     def exibir_na_tela(): ...
 
-LogAprimorado().exibir_na_tela()
+# Se tentarmos instaciar essa classe diretamente, o código quebra.
+try:
+    LogAprimorado().exibir_na_tela()
+except TypeError:
+   print('deu erro.')  # Can't instantiate abstract class LogAprimorado with abstract 
+   # method exibir_na_tela
 
-# continua
+# Para utilizar essa classe, , é preciso criar uma classe filha que implemente o método 
+# abstrato. Ex:
+
+class LogDemonstrar(LogAprimorado):
+    # e aqui, eu refaço o método.
+    def exibir_na_tela(self, msg):
+        print(f'msg: {msg}')
+
+# agora eu conseguirei chamar a classe abstrata através de sua classe filha.
+LogDemonstrar().exibir_na_tela('hello world')
+
+#######################################################################################
+
+

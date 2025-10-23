@@ -1325,4 +1325,40 @@ LogFileMixin().log_error('Não gostei do nome da variável')
 # para sucesso:
 LogFileMixin().log_sucess('aí sim, nome maneiro!')
 
-#########################################
+##########################
+# A próxima aula será a aula 229 e estará dentro de uma pastinha,
+# para maior organização.
+
+##################################################
+# classe abstrata - Abstract Base Class (abc) de forma simples.
+#
+# Para definir uma classe abstrata, utilizamos o seguinte código:
+
+'''
+class Log:
+    def log(self, msg): 
+        # Esse método serve apenas como modelo para as subclasses.
+        raise NotImplementedError('Você não deve usar essa classe diretamente. Use a classe filha.')
+'''
+
+# Porém, o exemplo acima é apenas uma forma de criar uma classe abstrata.
+# Existem outras abordagens que tornam o código mais claro, coeso e padronizado.
+# Uma delas é utilizando o módulo abc (Abstract Base Classes), que faz uso de uma metaclasse,
+# um tipo especial de classe responsável por controlar a criação de outras classes.
+# (O conceito de metaclasse ainda será abordado mais adiante.)
+
+# para chamar o módulo, basta fazer da seguinte forma:
+from abc import ABC, abstractmethod
+
+# Com isso, criamos a nossa classe abstrata que vai herdar abc
+class LogAprimorado(ABC):
+    # Herdar de abc não significa que sua classe agora é abstrata.
+    # Para tornar sua classe abstrata, precisará haver algum método que chame
+    # o decorador abstractmethod. Portanto, criarei um:
+    
+    @abstractmethod
+    def exibir_na_tela(): ...
+
+LogAprimorado().exibir_na_tela()
+
+# continua

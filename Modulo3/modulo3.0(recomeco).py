@@ -1381,4 +1381,4 @@ LogDemonstrar().exibir_na_tela('hello world')
 
 #######################################################################################
 
-
+# método abstrato / método concreto

@@ -1380,5 +1380,83 @@ class LogDemonstrar(LogAprimorado):
 LogDemonstrar().exibir_na_tela('hello world')
 
 #######################################################################################
+# método abstrato -> método sem corpo, utilizado somente por classes filhas. 
+# método concreto -> métodos com corpo, podendo ser utilizado em classes mães e filhas.
 
-# método abstrato / método concreto
+# Abstractmethod + Getter(property) e setter.
+class Banco(ABC):
+    def __init__(self, nome, saldo):
+        # o atributo saldo estará protegido.
+        self.nome = nome
+        self._saldo = saldo
+
+    # Para atribuir ou visualizar o valor de saldo quando está encapsulado fora da 
+    # classe foi definido que será necessário utilizar um getter. Ou seja, um método
+    # que acessa o atributo em questão. Em python, temos um meio mais simples para a
+    # criação de um getter, que é uma property (método que se comporta como atributo).
+    #
+    # Relembrado isso, a property nada mais é que um decorator. Assim como o abstractmethod.
+    # Para utilizar uma propery em paralelo com abstractmethod é muito simples, basta colocar
+    # um acima do outro na criação do método, de forma hierárquica, ou seja, do mais relevante
+    # ao menos relevante de baixo para cima. Nesse caso, como queremos tornar um método
+    # abstrato, o mais relevante seria o abstractmethod. Logo, faremos da seguinte forma:
+    
+    @property
+    @abstractmethod
+    def saldo(self): ...
+
+    # Como o método acima vai ser sobreposto quando eu chamar uma classe filha, não precisarei
+    # do setter.
+
+    #####
+    # No caso do classmethod também. O mais relevante seria o abstractmethod.
+    @classmethod
+    @abstractmethod
+    def tratamento_nome(cls, nome_completo, saldo): ...
+
+
+class BancoDoBrasil(Banco):
+    # Aqui será necessário chamar a classe abstrata da superclass e definir seu corpo.
+    @property
+    def saldo(self):
+        return self._saldo
+    
+    # agora sim, inserir o setter.
+    @saldo.setter
+    def saldo(self, valor):
+        print('o saldo foi alterado')
+        self._saldo = valor
+
+    # e alteramos o classmethod
+    @classmethod
+    def tratamento_nome(cls, nome_completo, saldo):
+        init_treatment = nome_completo.split(' ')[0]
+        return cls(init_treatment, saldo)
+
+# instanciar os objetos.
+p1 = BancoDoBrasil('João', 50)
+p2 = BancoDoBrasil.tratamento_nome('Carla Silva Dantas', 25)
+
+# atribuição no objeto p1
+print(p1.nome)
+print(p1.saldo)
+p1.saldo = 60
+print(p1.saldo)
+
+# atribuição no objeto p2
+print(p2.nome)
+print(p2.saldo)
+p2.saldo = 60
+print(p2.saldo)
+
+
+'''
+Questionamento para verificar depois:
+Se eu tive que definir o classmethod e a property em ambas as classes,
+Não seria mais fácil fazer o uso desses decoradores somente na classe debaixo? kkkkkkkkkkkk
+'''
+#######################################
+
+
+
+

@@ -1449,14 +1449,27 @@ print(p2.saldo)
 p2.saldo = 60
 print(p2.saldo)
 
-
-'''
-Questionamento para verificar depois:
-Se eu tive que definir o classmethod e a property em ambas as classes,
-Não seria mais fácil fazer o uso desses decoradores somente na classe debaixo? kkkkkkkkkkkk
-'''
 #######################################
+# Polimorfismo é o princípio que permite que
+# classes deridavas de uma mesma superclasse
+# tenham métodos iguais (com mesma assinatura)
+# mas comportamentos diferentes.
+# Assinatura do método = Mesmo nome e quantidade
+# de parâmetros (retorno não faz parte da assinatura academicamente) + princípios
+# que contam. Sendo: Assinatura do método: nome, parâmetros e retorno iguais
+#
+# Princípios que contam:
+#
+# S - Single Responsibility Principle (Princípio da Responsabilidade Única)
+# O - Open Closed Principle (Princípio Aberto/Fechado)
+# L - Liskov Substitution Principle (Princípio da Substituição de Liskov)
+# I - Interface Segregation Principle (Princípio da Segregação de Interface)
+# D - Dependency Inversion Principle (Princípio da Inversão de Dependência)
 
+# Liskov Substitution Principle (Princípio da Substituição de Liskov): Objetos
+# de uma superclasse devem ser substituíveis
+# por objetos de uma subclasse sem quebrar a aplicação.
 
-
-
+"""
+Depois trazer um exemplo
+"""

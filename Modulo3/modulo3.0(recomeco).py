@@ -1449,8 +1449,12 @@ print(p2.saldo)
 p2.saldo = 60
 print(p2.saldo)
 
+# override = sobreposição de métodos
+
 #######################################
-# Polimorfismo é o princípio que permite que
+# Polimorfismo, type hints e princípios
+#
+# Polimorfismo, é o princípio que permite que
 # classes deridavas de uma mesma superclasse
 # tenham métodos iguais (com mesma assinatura)
 # mas comportamentos diferentes.
@@ -1468,8 +1472,88 @@ print(p2.saldo)
 
 # Liskov Substitution Principle (Princípio da Substituição de Liskov): Objetos
 # de uma superclasse devem ser substituíveis
-# por objetos de uma subclasse sem quebrar a aplicação.
+# por objetos de uma subclasse sem quebrar a aplicação. (Onde você usar uma superclasse,
+# uma subclasse deve conseguir substituir sem quebrar a aplicação).
 
-"""
-Depois trazer um exemplo
-"""
+from abc import ABC, abstractmethod
+
+# Notificação é algo aobstrato, pois pode ser notificação de sms, wpp, e-mail, etc. 
+class Notificacao(ABC):
+    # Em python, há algo que chamamos de type hints, que seria determinar
+    # o tipo ou retorno de um método. Logo, podemos utilizar esse princípio
+    # para indicar o retorno de um método ou o tipo de dado que algum parâmetro
+    # irá receber. Por padrão, o init retorna None, mas para demonstração, iremos
+    # fazer isso manualmente.  
+    def __init__(self, mensagem) -> None:
+        self.mensagem = mensagem
+        # Obs: Isso não siginifica que se essa função retornar algo diferente
+        # de None o código vai quebrar. Em python, funcionaria normalmente até
+        # que um código que precise dela e trate ela como None (pois era o esperado)
+        # para talvez quebrar. 
+
+    # enviar será um método abstrato, mas vamos definir que seu retorno será bool.
+    @abstractmethod
+    def enviar(self) -> bool: ...
+
+# subclasse de notificação 1
+class NotificacaoEmail(Notificacao):
+    # Outra vantagem do Type Hints é que quando definimos o tipo de um parâmetro 
+    # ou retorno em uma função ou método, o interpretador e as ferramentas de
+    # desenvolvimento conseguem mostrar automaticamente como essa função deve ser usada.
+    # Ou seja, ao chamar o método em outra parte do código, o editor exibe a assinatura
+    # da função, com os tipos esperados e o que ela retorna, facilitando o entendimento e reduzindo erros no uso.
+    
+    def enviar(self) -> bool:
+        print(f'E-mail: enviando - {self.mensagem}')
+        return True
+
+# subclasse de notificação 2
+class NotificacaoSMS(Notificacao):
+    def enviar(self) -> bool:
+        print(f'SMS: enviando - {self.mensagem}')
+        return False
+
+# No caso acima, notificação é a superclass, enquanto notificaçãoEmail e NotificacaoSMS
+# são subclass. Se você analisar bem, é perceptível que a assinatura do método e o retorno
+# são iguais para as subclass, divergendo apenas o conteúdo no corpo (leve polimofirsmo). 
+# Nesse caso, o Liskov Substitution Principle está sendo cumprido, pois se eu chamar a classe
+# filha 1, passando os alguns argumentos no init e depois chamar a filha 2 e passar o mesmo 
+# argumento, o código não vai quebrar. Exemplo:
+
+NotificacaoEmail('Opaaa').enviar() # E-mail: enviando - Opaaa
+NotificacaoSMS('Opaaa').enviar() #SMS: enviando - Opaaa
+
+# Por mais que o conteúdo retornado (polimofirmo) tenha sido diferente, 
+# os filhos de uma superclasse não quebrou quando eu passei os mesmos argumentos. 
+# Ademais, o retorno também cumpriu seu objeto, retornando true||false.
+
+# E no caso do Polimorfismo, as classes acimas são derivadas de uma superclass,
+# considerando que manteram as mesmas assinaturas (principalmente por conta do princípio),
+# os métodos e por fim, tiveram objetivos diferentes em seu corpo, que nesse caso,
+# foi no escopo do método enviar. 
+
+###
+# Para deixar o conceito de polimorfismo mais claro,
+# vamos criar uma função que recebe qualquer objeto do tipo Notificacao (ou suas subclasses).
+
+# Usando type hints, indicamos que o parâmetro 'msg' deve ser uma instância de 'Notificacao'.
+# Isso permite que o editor reconheça automaticamente os métodos e atributos disponíveis
+# dentro do escopo da função.
+def notificacao(msg: Notificacao) -> None:
+    # Como 'msg' é do tipo Notificacao (ou uma subclasse dela),
+    # podemos chamar o método 'enviar' normalmente.
+    notificacao_enviada = msg.enviar()
+
+    # Aqui validamos o retorno booleano do método 'enviar'.
+    if notificacao_enviada:
+        print('notificação enviada')
+    else:
+        print('notificação não enviada')
+# Ao chamar a função 'notificacao' passando subclasses diferentes (Email ou SMS),
+# o código continua funcionando sem erros. Isso demonstra claramente:
+# - Polimorfismo → as subclasses têm o mesmo método, mas comportamentos diferentes.
+# - Liskov Substitution Principle (LSP) → as subclasses podem substituir a superclasse
+#   sem quebrar o funcionamento da aplicação.
+
+notificacao(NotificacaoEmail('teste email')) # notificação enviada
+notificacao(NotificacaoSMS('teste sms')) # notificação não enviada

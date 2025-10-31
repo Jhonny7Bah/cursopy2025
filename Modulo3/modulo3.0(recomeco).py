@@ -1557,3 +1557,32 @@ def notificacao(msg: Notificacao) -> None:
 
 notificacao(NotificacaoEmail('teste email')) # notificação enviada
 notificacao(NotificacaoSMS('teste sms')) # notificação não enviada
+
+###########################################################################
+# Criando excessões em python orientado a objetos
+# https://docs.python.org/3/library/exceptions.html
+# Para criar uma excessão, basta você criar uma classe e herdar alguma
+# excessão da linguagem. Em python, é recomendado que você herde de 
+# Exception, pois esse é específico para erros e por convenção, quando
+# você herda de exception, a classe deverá ter "Error" no segundo nome. Ex:
+class DivisaoPorDoisError(Exception):
+    # A partir de agora você já tem uma excessão criada, sendo apenas
+    # necessário chamar esse erro quando vir o caso.
+    ...
+
+# Vou criar uma função que realizará uma divisão.
+def divisao(numero: int):
+    if numero is 2: # 'is' faz a mesma comparação que '=='. Por algum motivo, '==' tá bugado.
+        raise DivisaoPorDoisError('Você não deve dividir por dois')
+    return 10 / numero
+
+# vou chamar a função e pôr um número qualquer diferente de dois
+print(divisao(divisao(5)))
+# mas se eu coloco 2, vai lançar uma exessão e por isso, irei tratar.
+try:
+    print(divisao(2))
+except DivisaoPorDoisError as error:
+    print(error) # Você não deve dividir por dois
+
+# portanto, eu fiz meu próprio erro.
+

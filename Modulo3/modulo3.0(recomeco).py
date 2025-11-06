@@ -1570,6 +1570,9 @@ class DivisaoPorDoisError(Exception):
     # necessário chamar esse erro quando vir o caso.
     ...
 
+# Vou fazer outro erro para usar depois.
+class ComplementoDivisaoError(Exception):...
+
 # Vou criar uma função que realizará uma divisão.
 def divisao(numero: int):
     if numero is 2: # 'is' faz a mesma comparação que '=='. Por algum motivo, '==' tá bugado.
@@ -1581,8 +1584,50 @@ print(divisao(divisao(5)))
 # mas se eu coloco 2, vai lançar uma exessão e por isso, irei tratar.
 try:
     print(divisao(2))
-except DivisaoPorDoisError as error:
-    print(error) # Você não deve dividir por dois
+# para demonstrar com mais clareza, a excessão vai tratar dois erros, sendo o meu
+# (DivisaoPorDoisError) e ZeroDivisionError. 
+except (ZeroDivisionError, DivisaoPorDoisError) as error:
+    # Se quisermos descobrir qual foi a exceção capturada,
+    # basta acessar a classe associada ao erro e, em seguida, seu nome:
+    print(error.__class__.__name__)  # DivisaoPorDoisError
 
-# portanto, eu fiz meu próprio erro.
+    # Podemos também ver a mensagem descritiva da exceção:
+    print(error)  # Você não deve dividir por dois
 
+    # Agora imagine que o objetivo deste bloco 'except' seja apenas
+    # registrar informações do erro (ex: logar, exibir detalhes, etc.)
+    # antes de deixá-lo continuar a se propagar, ou seja, permitir
+    # que o programa quebre normalmente após o registro.
+    #
+    # Nesse caso, usamos 'raise' novamente para relançar a exceção.
+    # Isso faz com que o erro original suba para o próximo nível da pilha.
+    #
+    # Exemplo:
+    # raise  # Relança a exceção capturada
+    #
+    # (resultado: DivisaoPorDoisError: Você não deve dividir por dois)
+
+    # Mas, se quisermos evitar que o programa seja interrompido,
+    # podemos capturar novamente o erro dentro de outro try/except:
+    try:
+        raise  # Relança a exceção
+    except DivisaoPorDoisError as error2:
+        print(error2)
+    # E caso seja necessário lançar um erro complementar a excessão que está
+    # sendo alcançada, será necessário armazenar o erro principal em uma variável e 
+    # posteriormente, indicar o complemento com 'from'.
+
+    # -------------------------------------- Explicar melhor dps
+
+    erro_divisao = DivisaoPorDoisError('Você não pode dividir por dois!')
+
+    raise erro_divisao from ComplementoDivisaoError
+
+'''The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/umcex/Documentos/Cursos/cursopy/Modulo3/modulo3.0(recomeco).py", line 1622, in <module>
+    raise erro_divisao from ComplementoDivisaoError
+DivisaoPorDoisError: Você não pode dividir por dois!
+'''
+    

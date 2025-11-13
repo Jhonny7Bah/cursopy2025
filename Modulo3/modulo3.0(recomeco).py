@@ -1613,21 +1613,68 @@ except (ZeroDivisionError, DivisaoPorDoisError) as error:
         raise  # Relança a exceção
     except DivisaoPorDoisError as error2:
         print(error2)
-    # E caso seja necessário lançar um erro complementar a excessão que está
-    # sendo alcançada, será necessário armazenar o erro principal em uma variável e 
-    # posteriormente, indicar o complemento com 'from'.
-
-    # -------------------------------------- Explicar melhor dps
-
-    erro_divisao = DivisaoPorDoisError('Você não pode dividir por dois!')
-
-    raise erro_divisao from ComplementoDivisaoError
-
-'''The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/home/umcex/Documentos/Cursos/cursopy/Modulo3/modulo3.0(recomeco).py", line 1622, in <module>
-    raise erro_divisao from ComplementoDivisaoError
-DivisaoPorDoisError: Você não pode dividir por dois!
-'''
     
+    # Também é possível complementar uma exceção com outra,
+    # mostrando que um erro foi causado por outro erro anterior.
+    #
+    # Para isso, usamos o formato:  raise ErroPrincipal from ErroCausa
+    erro1_divisao = DivisaoPorDoisError('Você não pode dividir por dois!')
+    outro_error = ComplementoDivisaoError('Você realmente não pode dividir por dois.')
+
+    # chamadando o erro (basta tirar o comentário que irá funcionar)
+    
+    # raise erro1_divisao from outro_error
+
+    # Caso você tire o comentário e depois execute o código, o seguinte erro vai 
+    # aparecer:
+
+    '''
+    __main__.ComplementoDivisaoError: Você realmente não pode dividir por dois.
+
+    The above exception was the direct cause of the following exception:
+    (tradução: A excessão acima foi uma causa direta da excessão abaixo:)
+
+    Traceback (most recent call last):
+    File "/home/umcex/Documentos/Cursos/cursopy/Modulo3/modulo3.0(recomeco).py", line 1625, in <module>
+        raise erro1_divisao from outro_error
+    __main__.DivisaoPorDoisError: Você não pode dividir por dois!
+
+    '''
+
+    # Portanto, você agora acaba complementar (encadear) um erro com outro.
+    
+# Além disso, para criação de erros, temos também as notas, que podem ser utilizadas
+# para passar algumas dicas para os desenvolvedores que utilizam da sua classe, ou
+# coisa do tipo. 
+
+meu_erro_novamente = DivisaoPorDoisError('você não pode dividir por dois amigo')
+
+# E para adicionar uma nota, basta chamar o método add_note, após instanciar sua 
+# classe de erro. Considerando que esse método não aceita argumentos nomeados. 
+meu_erro_novamente.add_note('Pare de tentar dividir por dois, tente por três')
+meu_erro_novamente.add_note('Cara, sabia que você pode tentar dividir por quatro?' \
+' seria mais interessante')
+
+# caso você queira ver as notas somente, basta chamar o atributo __notes__ 
+
+print(meu_erro_novamente.__notes__) # ['Pare de tentar dividir por dois, tente por três', 'Cara, sabia que você pode tentar dividir por quatro? seria mais interessante']
+
+cls()
+# E para ver isso no traceback:
+try:
+    raise meu_erro_novamente
+except ComplementoDivisaoError as error:
+    print(error)
+    '''
+    Traceback (most recent call last):
+    File "/home/umcex/Documentos/Cursos/cursopy/Modulo3/modulo3.0(recomeco).py", line 1665, in <module>
+        raise meu_erro_novamente
+    DivisaoPorDoisError: você não pode dividir por dois amigo
+    Pare de tentar dividir por dois, tente por três
+    Cara, sabia que você pode tentar dividir por quatro? seria mais interessante
+
+    '''
+
+    # E após o raise, vemos as notas.
+
+###########################################################

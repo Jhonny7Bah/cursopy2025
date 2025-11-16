@@ -1,13 +1,13 @@
-def caceta(): #def irá criar uma função com uma variável
-    print('cacetinha') #aqui é o conteúdo de def
-    print('cacetinha')
+def sou_funcao(): #def irá criar uma função com uma variável
+    print('ola, sou uma funcao mesmo') #aqui é o conteúdo de def
+    print('ola, sou uma funcao sim')
 
-caceta() #quando eu chamar a função cacetinha, oq estiver dentro dela na hora em que foi criada, será executado.
+sou_funcao() #quando eu chamar a função sou_funcao, oq estiver dentro dela na hora em que foi criada, será executado.
 
 #None = não valor, semelhante a um false
 #funções python retornam None. 
 
-def totozinha_sacana(a,b,c):
+def minha_querida_amiga(a,b,c):
     #funções podem receber valores para parâmetros
     #no caso acima, meus parâmetros são: a, b e c, que futuramente receberão valores.
     #como eu definir 3 parâmetros, quando eu atribuir valores a um, terei que atribuir aos três, caso 
@@ -16,9 +16,9 @@ def totozinha_sacana(a,b,c):
     print(b)
     print(c)
 
-totozinha_sacana(10, 70, 90) #aqui há uma atribuição de valores, chamada também de argumentos
+minha_querida_amiga(10, 70, 90) #aqui há uma atribuição de valores, chamada também de argumentos
 #posso fazer isso quantas vezes eu quiser 
-totozinha_sacana('kaka', 'baba', 40)
+minha_querida_amiga('kaka', 'baba', 40)
 
 def saudacao (nome='Marcas'): #para não haver erro, vamos adicionar um nome para se caso a pessoa não passar nenhum argumento
     print('olá, {}'.format(nome))
@@ -54,21 +54,21 @@ def notas(a1, a2): #essa linha do def é denominada de assisnatura da função, 
 # o def seria um escopo local, já o restante do código, um global. Logo, se eu declaro uma variavel
 #dentro do escopo local e tentar acessar de fora sem entrar nesse antes, vai dar pau. 
 #ex:
-def caceta():
+def func_():
     try:
-        marcas_bandida = 10 #var declarada dentro do escopo só vai poder ser acessada na chamada da função
-        print(marcas_bandida)
+        demontrar = 10 #var declarada dentro do escopo só vai poder ser acessada na chamada da função
+        print(demontrar)
         print(blablabla) #blablabla é uma variável que ainda não foi declarada 
     except NameError:
         print('Deu pau aqui')
-caceta()
+func_()
 
-marcas_bandida = 20 #fora do código, posso criar uma variável com o msm nome que não vai da nada.
-print(marcas_bandida)
+demontrar = 20 #fora do código, posso criar uma variável com o msm nome que não vai da nada.
+print(demontrar)
 
 #mas, se eu definir a função antes de chamar a função, eu consegurei acessar uma variavel globald entro do escopo local.
 blablabla = 101010 
-caceta() #agora, blablabla irá aparecer com sua atribuição 
+func_() #agora, blablabla irá aparecer com sua atribuição 
 #escopo primario
 
 terramota = 5
@@ -92,7 +92,7 @@ print(terramota) #percebe-se que terramota fora do escopo é 11
 # escopo do módulo é esse que estamos, é o principal
 casa = 14
 terremoto = 10 
-def caceta():
+def demons():
     def teste():
         print(terremoto) #eu não consigo acessar o escopo módulo sem global, mas consigo acessar o escopo de uma função dentro de uma outra função
     global casa #agora, eu consigo acessar a variavel fora desse escopo. 
@@ -100,7 +100,7 @@ def caceta():
     casa = 16 #nova função, novo escopo
     terremoto = 15
     teste() #terremoto foi definida dentro do desse escopo, mas no sub escopo, eu fiz um print com ele e deu certo  
-caceta()
+demons()
 print(casa)
 
 def soma(x, y):
@@ -120,7 +120,7 @@ except TypeError:
 
 #como fazer a função retornar valor != None:
 def soma_verdadeira(x, y):
-    print('Foda-seeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+    print('Amigooooooooooooooooooooooooooooooooooooooooooooo')
     return x + y #return vai retornar tipo que vier após ele ser chamado dentro da função 
     #todo código digitado após o return ser chamado, torna-se um código inalcançável, ou seja, que não irá executar. 
 
@@ -133,8 +133,8 @@ print(soma_1 + soma_2, type(soma_1)) #como pode ver, a soma foi um sucesso e o t
 #Ctrl + Shift + K -> atalho para apagar uma linha de código no VS code 
 def condicaooo(num):
     if num > 14:
-        return print('caceco') #funciona parecido com o break em um laço, pois se isso for verdadeiro, o que será retornado será caneco.
-    return print('bunda') #é só imaginar que return é um break, problema resolvido!
+        return print('poxa') #funciona parecido com o break em um laço, pois se isso for verdadeiro, o que será retornado será caneco.
+    return print('vida') #é só imaginar que return é um break, problema resolvido!
 condicaooo(1) #menor que 14
 condicaooo(45) #maior que 14
 
@@ -167,38 +167,38 @@ print(*listinha) #quando eu utilizo o * antes da tupla listinha, o valor é dese
 # First-Class Functions - Funções que são tratadas como outros tipos de dados comuns (strings, inteiros, etc...) - uma das principais características é passar uma função numa variável
 #Exemplificações abaixo:
 
-def fds(msg): #é possível fazer a chamada de uma função a partir de uma variavel
+def demons_dnv(msg): #é possível fazer a chamada de uma função a partir de uma variavel
     return msg
 
-carai = fds #a variavel carai ta recebendo a função fds
-print(carai(10)) #como pode ver, estou colocando argumentos em carai, já que ele tem como elemento a função fds. (não vejo utilidade, mas é bom saber)
-print(fds(10)) #mas como pode ver, posso chamar a função diretamente também.  
+caramba = demons_dnv #a variavel caramba ta recebendo a função demons_dnv
+print(caramba(10)) #como pode ver, estou colocando argumentos em caramba, já que ele tem como elemento a função demons_dnv. (não vejo utilidade, mas é bom saber)
+print(demons_dnv(10)) #mas como pode ver, posso chamar a função diretamente também.  
 
 def imprimindo(msg): #essa função vai imprimir o valor de msg se verdadeiro.
     #além disso, eu posso executar uma função através de outra função (não sei o porquê de querer fazer isso)
     if msg: #aqui, ele faz a comparação para saber se msg is True
         return msg
-    #se não, vai tacar o fds.
-    return 'foda-se'
+    #se não, retorna: 
+    return 'ola, tudo bem?'
 #essa função abaixo tem o papel de executar a função acima.
 def executado(funcao):#declaro um parâmetro chamado função, que tem que ser correspondente ao nome da função que quero executar
     return funcao #e aqui, ela vai retornar a função
 
 chamada = executado(imprimindo) #nessa variável, eu guardo a chamada da função executar, e logo após, ela realiza a chamada da função imprimindo.
-#no caso acima, a função imprimindo, quando chamada, recebe um argumento, que no caso, é 'carai'
-print(chamada('carai')) #logo, carai será printado!
+#no caso acima, a função imprimindo, quando chamada, recebe um argumento, que no caso, é 'caramba'
+print(chamada('caramba')) #logo, caramba será printado!
 #fim das exemplificações
 
 
 #relembrando:
 # argumentos nomeados são aqueles que recebem uma "variavel" ou um nome na chamada da função/método. numa função e ignoram a ordem pré-determinada, por exemplo:
-bandido = 14
-autista = 15
+markl = 14
+compl = 15
 #caso variável
-print('primeiro: {two} segundo: {one}'.format(one=bandido, two=autista))
+print('primeiro: {two} segundo: {one}'.format(one=markl, two=compl))
 #no caso acima, two foi primeiro no campo de substituição {}, no entanto, na chamada da variável, quem aparece primeiro é o one
 # Se fossem não nomeadas, seguiria a ordem na chamada da variável.
-print(bandido, autista)
+print(markl, compl)
 #no exemplo acima, são agora argumentos não nomeados, seguindo a ordem pré determinada
 
 # caso função
@@ -227,12 +227,12 @@ def saudacionar(msg):
     return msg
 
 armazenar_saudacionar = saudacionar #estou acessando a função saudacionar e armazenando ela na variável
-print(armazenar_saudacionar('fds')) #como eu tenho a função saudacionar armazenada, eu posso utiliza ela para incrementar um argumento.
+print(armazenar_saudacionar('oii')) #como eu tenho a função saudacionar armazenada, eu posso utiliza ela para incrementar um argumento.
 
 #outro caso
 #fazer uma função retornar outra função
 def saudar():
-    print('va pra peste') #função a ser retornada
+    print('boa tarde') #função a ser retornada
 
 def executa(func): #função que irá retornar.
     return(func) #func no caso é o nome da função a ser retornada
@@ -279,6 +279,7 @@ from os import system
 def cls():
     return system('cls')
 #-----------------------------------
+
 
 cls()
 #   CLOSURE E FUNÇÕES QUE RETORNAM OUTRAS FUNÇÕES AULA 116
@@ -362,8 +363,8 @@ print(mais_cinco(10)) #retornará 15.
 #para criar um dicionário, basta utilizar a chaves na declaração da variável, ex:
 dicionario = {} #isto é um dicionário vazio.
 print(dicionario, type(dicionario)) #vazio, dict
-dicionario['fds'] = 'vai te lascar' #chave nesse caso seria o fds, tendo como valor o 'vai te lascar
-#acima, eu incrementei uma chave denominada fds e atribui um valor para essa chave.
+dicionario['um'] = 'opa, tudo ok?' #chave nesse caso seria o um, tendo como valor o 'opa, tudo ok?
+#acima, eu incrementei uma chave denominada um e atribui um valor para essa chave.
 print(dicionario) #ao chamar o dicionário agora, vemos que elenão está mais vazio
 
 
@@ -383,7 +384,7 @@ print(pessoa_01) #aqui, eu acesso todo o dicionário
 
 print(pessoa_01['Sexo']) #já aqui, eu faço uma busca filtrada no dicionário com base na palavra chave, que é 'sexo'
 
-arrombar = dict(xablau=10, idade=20) #outra forma de declarar um dicionário
+outra_forma = dict(xablau=10, idade=20) #outra forma de declarar um dicionário
 #nome do dict   chave  valor\\\\\\\\\\
 
 pessoa_02 = {
@@ -651,7 +652,7 @@ conjunto_a = set() #como declarar um set
 print(conjunto_a, type(conjunto_a)) #como no set não há nada, no print, aparecerá o próprio set
 
 
-conjunto_b = set('cacete')
+conjunto_b = set('opa')
 
 print(conjunto_b) #como pode ver, o set vai agir como iterável, no entanto,
 # o caso acima tem apenas um argumento, com isso, ele vai transformar o argumento em uma espécie de lista desordenada. 
@@ -706,12 +707,12 @@ cls()
 # métodos úteis para set
 # add, update, clear, discard
 s1 = set()#aqui temos um set vazio, novamente
-s1.add ('fds') #como pode ver, add serve para adicionar um valor no set
+s1.add ('que isso') #como pode ver, add serve para adicionar um valor no set
 print(s1)
 s1.update('poxa') #como pode ver, o poxa foi descompactado de forma desordenada. Caso não queira que isso ocorra,
 #basta colocar ele dentro de uma tupla ou lista.
 print(s1)
-s1.update(['poxa', 'slk']) #como pode ver, o poxa foi compactado e normal, juntamente com slk
+s1.update(['poxa', 'tio']) #como pode ver, o poxa foi compactado e normal, juntamente com tio
 print(s1)
 s1.discard('poxao') #vai fazer uma busca direta por um valor e vai apagar.
 #se o valor não existir, a ide vai ignorar, apenas. No entanto, é bom evitar.
@@ -779,7 +780,7 @@ def ordenacao(chave):
 
 lista.sort(key=ordenacao) #utilizo o método sort para ordenar, e como parametro, chamo key passando a função ordenacao
 print(lista) #aqui já vai esta ordenado.
-for fds in lista: print(fds) #para visualizar melhor, utilizo o for.
+for b in lista: print(b) #para visualizar melhor, utilizo o for.
 
 # O parâmetro key serve para que você passe uma função (seja definida com def ou com lambda) que extrai um valor de cada elemento da sequência. Esse valor extraído é então usado pelo método sort() (ou pela função sorted())
 #  para comparar os elementos durante a ordenação. 
@@ -908,7 +909,7 @@ teste('akakakak') #esse aqui e para você perceber que os valores armazenados em
 
 
 lista = {
-    'name':'Peste',
+    'name':'poxa',
     'sobrenome':'caramba',
 }
 
@@ -1114,7 +1115,7 @@ print(getattr(terracota, maiusculo)()) #depois
 #no exemplo de iterator farei uso de um dunder e posteriormente de uma função para iterator.
 
 #qual a difrença entre o iterável e o iterator? 
-lista = ['caceta', 'terracota', 'marcos']
+lista = ['aoba', 'terracota', 'marcos']
 
 
 #o iterável tem a responsabilidade de percorrer uma lista individualmente, sabendo quem é início, meio e fim e ao chegar no fim, parar. Ex:
@@ -1177,7 +1178,7 @@ def generator(n=0):
     yield 2
     #podemos fazer isso quantas vezes quisermos. A partir de agora, essa função se torna uma generator function
     yield 3
-    return 'se lascou' #esse return só vai acompanhar o erro StopIteration (se lascou virá depois de StopInteraion para informar que a geradora foi esgotada.) 
+    return 'fim de execucao' #esse return só vai acompanhar o erro StopIteration (se lascou virá depois de StopInteraion para informar que a geradora foi esgotada.) 
     print('olá') #é um pylance
 
 gen = generator(n=0) #com isso, basta denominar uma variável que vai fazer o armazenamento (esse aqui seria tipo a função iter())
@@ -1544,18 +1545,18 @@ cls()
 #o código abaixo será incrementado em secao_2_modulo:
 # __all__ = [
 #     'terra_cota',
-#     'bandido'
+#     'terrinha'
 # ]
 # terra_cota = 10
-# bandido_caramba = 'safado'
-# bomba_do_rato = 20
+# terrinha = 'aoba'
+# complem = 20
 
 importlib.reload(secao_2_modulo)
 from secao_2_modulo import *
 
 print(terra_cota)
-print(bandido_caramba)
-# print(bomba_do_rato) #como pode ver, como bomba do rato não estava na lista do all, ele passa a ser desconsiderado, enquanto os outros dois foram executados normalmente!
+print(terrinha)
+# print(complem) #como pode ver, como `complem` não estava na lista do all, ele passa a ser desconsiderado, enquanto os outros dois foram executados normalmente!
 
 ####################considerações importantes referente a modularização e package
 #uma coisa importante para destacar reerente a modularização, é que você pode fazer uma série de importações, resultando em mais de um módulo main.
@@ -2245,9 +2246,9 @@ with open(CAMINHO, 'w') as ARQUIVO: #como dito antes, o with tem o papel de abri
     #os comandos para o arquivo devem permanecer dentro deste escopo.
     ARQUIVO.write('Digito algo no documento.') #este aqui serve para digitar algo no documento.
     #lembrando que quando você utilizar o write novamente, ele vai continuar de onde parou. 
-    ARQUIVO.write('bandido \n') #ou seja, ele vai juntar o 'bandido' na mesma linha do texto anterior.
+    ARQUIVO.write('amigo \n') #ou seja, ele vai juntar o 'amigo' na mesma linha do texto anterior.
     #LOGO, BASTA COLOCAR UMA QUEBRA DE LINHA, FICANDO:
-    ARQUIVO.write('safado') #como viu no documento, está tudo ok!
+    ARQUIVO.write('forca') #como viu no documento, está tudo ok!
 
 
 print('é um arquivo do tipo', type(CAMINHO))
@@ -2309,13 +2310,13 @@ with open(CAMINHO, 'a+') as add:
     for number in range(0, 21, 2):
         add.write(f'{number} \n') #como pode ver, segue a mesma lógica das demais e não apagou nada.
         #segundo o Otávio, é uma boa forma de gerar loggers.
-    add.write('gayzão\n')
+    add.write('amigo\n')
     #como pode ver, um acento ou caracter especial vai ocasionar em um transtorno na execução, que é uma palavra incorreta.
     #isso ocorre porque a codificação do linux/mac é diferente do windows, ocasinando em uma decodificação inusitada.
 
 # para resolver isso, basta incremntar um argumento no open, que no caso, é o enconding e logo após, informar o formato de codificação.
 with open(CAMINHO, 'a+', encoding='utf8') as adicionado:
-    adicionado.write('gayzãooo')
+    adicionado.write('amigaoo')
     #dentro do arquivo está certinho e problema resolvido!
 
 ############### apagando ou renomeando arquivo
@@ -2417,7 +2418,7 @@ def demons(x, y):
     if isinstance((x, y), tuple):
         return x+y
     else:
-        return 'vai te lascar'
+        return 'amigaooo'
 
 print(demons(10,20))
 
@@ -2425,7 +2426,7 @@ print(demons(10,20))
 def demons(x, y):
     if isinstance((x, y), tuple):
         return x+y
-    return 'vai te lascar'
+    return 'amigaooo'
 
 print(demons(10,20)) #agora, o código ficou mais eficiente e menos redundante.
 

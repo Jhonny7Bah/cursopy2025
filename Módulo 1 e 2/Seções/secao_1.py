@@ -612,7 +612,7 @@ print(cpf2) #aqui temos o cpf tratado, porém, é str
 import sys 
 
 for kakak in range(20):
-    print('minha caceta', kakak)
+    print('meu amigo', kakak)
     if kakak == 12:
         sys.exit() #quando kakak for == 12, o código é finalizado
 #numeros aleatorios

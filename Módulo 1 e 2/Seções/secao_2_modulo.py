@@ -1,11 +1,11 @@
 __all__ = [
     'terra_cota',
-    'bandido_caramba'
+    'terrinha'
 ]
 
 terra_cota = 10
-bandido_caramba = 'safado'
-bomba_do_rato = 20
+terrinha = 'aoba'
+complem = 20
 
 teste_veja_ai = 'olá mundo!'
 valor_101 = 10

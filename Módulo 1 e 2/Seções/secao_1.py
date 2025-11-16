@@ -3,7 +3,7 @@ numero = 10
 ha = '\n'
 
 #isso e comentário
-print("minha caceta eh da boa, veja: {}, tá?".format(numero))
+print("opa amigo, tudo bem: {}, tá?".format(numero))
 print("hello world!")
 
 """
@@ -12,14 +12,13 @@ o nome disso aqui é docstring
 
 #abaixo tem outro modo de usar o docstring
 print(""" {}
-    minha caceta
-      eh bem da boa slk
+    Meu nome eh Edilson...
 
 """.format(ha))
 
 #aula 2
-print(123, 456, "fds") #uma forma de escrever variaveis ou misturar tipos primitivos num print só
-print("{} {} {}".format(123,456,"caceta")) #mesma coisa, po´rem de outra forma 
+print(123, 456, "opa") #uma forma de escrever variaveis ou misturar tipos primitivos num print só
+print("{} {} {}".format(123,456,"tudo bem? ")) #mesma coisa, po´rem de outra forma 
 #o que é colocado na função print são argumentos. No caso acima, chamamos de argumentos não nomeados. 
 
 print(123, 456, 789, sep="-") #sep no caso é um separador, ou seja, a cada virgula colocada, será inserido um traço para separar(nesse caso)
@@ -31,16 +30,16 @@ teste = 10
 #função tem parenteses e comeca com letras minusculas
 teste = 45
 
-print(type('fds')) # a função type diz o tipo trimitivo do argumento
+print(type('aoba')) # a função type diz o tipo trimitivo do argumento
 print(type(teste)) #int
 
-caramba = float(input('isso aqui é um flutuante, ou seja, numero quebrado'))
+caramba = float(input('insira um flutuante: '))
 
 #conversão detipos primitivos
 
 import os #biblioteca de sistema
 terra = '4' #isso é um int
-me_mama = 10
+que_isso = 10
 
 print(type(terra)) #veja por si só
 
@@ -61,9 +60,9 @@ print(10 % 2) #resto da divisão de 10 por 2.
     
 #aula27
 
-print('Jao' + ' ' + 'baitora') #pecularidade da soma (concatenar)
-print('fds ' * 10) #ira multiplicar o fds 10 vezes.
-print(3 * 'caceta ') #também
+print('Jao' + ' ' + 'amigo') #pecularidade da soma (concatenar)
+print('que isso ' * 10) #ira multiplicar o fds 10 vezes.
+print(3 * 'amigo ') #também
 
 print(...) #esses tres pontinhos sechama elipse e pode ser usado em uma linha de codigo que nao pensei ainda 
 
@@ -75,16 +74,16 @@ print(...) #esses tres pontinhos sechama elipse e pode ser usado em uma linha de
 
 ##aula31 
 #meios de usar varivaies no print:
-teste = 'pomba'
+teste = 'isso eh um teste'
 #os meios abaixo chegarão ao mesmo resultado 
-print('eu tenho uma', teste)
-print(f'eu tenho uma {teste}') #formatracao f-strings
-print('eu tenho uma {}'.format(teste))
+print('veja: ', teste)
+print(f'veja:  {teste}') #formatracao f-strings
+print('veja:  {}'.format(teste))
 
 #quando não tem nome, eu chamo de argumento, como abaixo:
 print('eu tenho uma {0} e maiis outra {0}, so q n tenho mais {0}'.format(teste)) #um jeito de utilizar apenas uma variável através de uma ordem numérica
 #agora tem nome e eu chamo de parametro nomeado, veja:
-print('minha {eita} se encontra mole'.format(eita = teste)) #ao lado está um parametro nomeado local, ou seja, a variavel eita so pode ser usada aq 
+print('olhe o meu {eita} '.format(eita = teste)) #ao lado está um parametro nomeado local, ou seja, a variavel eita so pode ser usada aq 
 #caso eu começar a utlizar o format como parametro nomeado, terei que terminar, ou seja, utilizar apenas parametros nomeados no format completo.
 
 #quando uma função está dentro de um objeto, ela é chamada de método. 
@@ -104,7 +103,7 @@ if 1+1 == 2:
 elif 1+1 == 3:
     print("tem coisa errada ai pow")
 else:
-    print('vai te lascar ')
+    print('num deu ')
 
 
 #aula37 operadores logicos
@@ -122,27 +121,27 @@ else:
 carro = None #uma variável sem atribuição 
 print(carro)
 
-#verificacao = input('Você quer entrar nessa peste?\n[S]im [N]ão ')
+#verificacao = input('Você quer entrar nessa amizade?\n[S]im [N]ão ')
 verificacao = 'N'
 
 if(verificacao == 'S' or verificacao == 's'): #para "or", uma das cond tem que ser True
 
-    verificacao2 = input('certeza mesmo, garai? \n[S]im [N]ão ')
+    verificacao2 = input('certeza mesmo, amigo? \n[S]im [N]ão ')
     
     if(verificacao2 == 'S' or verificacao == verificacao2 == 's') and (verificacao == 'S' or verificacao == 's'):
         #o caso acima utiliza or e and(para se caso duas condições forem true, a condição dara verdadeira)
         #o if é parecido com uma expressão no sentido de expressão, então para não gerar bugs, colocaremos o parenteses 
-        print('va queimar rosquinha va')
+        print('que isso amigo')
     
     
-    else: print('va da caneco ')
+    else: print('ai nao ')
 
 else:
     
-    print('entao va da o caneco ')
+    print('entao se saia daqui ')
 teste = 'jao'
 
-print('caceta 'or 'my caceta') #quem for verdadeiro no operador or, aparece primeiro
+print('amigo 'or 'my amigo') #quem for verdadeiro no operador or, aparece primeiro
 
 print('teste drive' and 'hahahaha') #ele vai parar no último que foi verdadeiro
 
@@ -164,7 +163,7 @@ variavel = '%s, o preco foi %.2f' % (nome, preco) #dois num decimais após a vir
 print(variavel)
 
 #padds
-variavel = 'caceta'
+variavel = 'amigo'
 print(f'{variavel: >10}') #o valor da variável será printado após 10 espaços
 print(f'{variavel: <10}.') # preenche 10 espaços para frente
 print(f'{variavel: ^10}')# dentre dez espaços, ele faz o possível para centralizar o conteúdo da variável
@@ -178,25 +177,25 @@ print(f'{74:08x}') #hexaadecimal (não sei a utilidade)
 #aula 46
 #fatiamento de strings
 
-caceta = 'ola mundo'
+iniciando = 'ola mundo'
          #012345678   indices positivos
         #-987654321   indices negativos
-print(caceta[4]) #escolho uma parte da string com base no índice
+print(iniciando[4]) #escolho uma parte da string com base no índice
 
-print(caceta[0:-6], len(caceta)) #vai do 0 ate o indice 5 (6-1)
+print(iniciando[0:-6], len(iniciando)) #vai do 0 ate o indice 5 (6-1)
 #a funcao len serve para ver o comprimento do conteudo da variavel 
 
-print(caceta[0:-6:2]) #vai do 0 ao 5 pulando de 2 em 2
+print(iniciando[0:-6:2]) #vai do 0 ao 5 pulando de 2 em 2
 
-print('ata' in caceta) #nao tem 'ata' na variavel caceta
+print('ata' in iniciando) #nao tem 'ata' na variavel iniciando
 
-print(caceta[::-2]) #inverte de trás para frente
+print(iniciando[::-2]) #inverte de trás para frente
 
 try:
     kaskkhsa        #try vai verificar verificar o código e se houver algum erro,
                     #jogara para except. oq eu digitei daria erro, então ele ignorará o erro e vai para except
 except:
-    print('deixe de canecagem')
+    print('deu erro')
 
 
 CONST = 10
@@ -221,8 +220,8 @@ RADAR_RANGER_MULTAGEM = 1
 if km_do_carro < (POSICAO_RADAR + RADAR_RANGER_MULTAGEM) and \
    km_do_carro > (POSICAO_RADAR - RADAR_RANGER_MULTAGEM) \
    and velocidade_do_carro > RADAR_1:
-        print('tomou no papero ')
-#para não ficar com muitas ifs, vamos fazer assim:
+        print('tomou multa ')
+#para não ficar com muitos ifs, vamos fazer assim:
 
 velocidade_do_carro = 60
 km_do_carro = 100 #posição do carro na estrada
@@ -289,14 +288,14 @@ while contar <= 100:
      
     print(contar)
 
-caceta = 'caramba'
-caceta = caceta.startswith('c') #pergunta se começa com c, é um método (true) 
-print(caceta)
+amigo = 'caramba'
+amigo = amigo.startswith('c') #pergunta se começa com c, é um método (true) 
+print(amigo)
 
 broca = 'Haha'
 broca.lower().endswith('a') #método que verifica se termina com a (true )
 
-caramba = 'te lascar meu mano'
+caramba = 'meu mano'
 i = 0
 while i < len(caramba):
     print(caramba[i])
@@ -320,7 +319,7 @@ while linha <= linhas:
 
 texto = 'hahaha' #quando o valor da variável é previsível, basta utilizar o for no lugar do While
 for teste in texto:
-    print('caceta')
+    print('ola')
 
 novo_texto = ''
 for letra in texto:
@@ -331,7 +330,7 @@ print(novo_texto)
 #range -> início, fim, intervalos(pula de quantos em quantos)
 for ha in range(10): ... #vai de 0 até 10
 for kk in range(0,4): ... #vai de 0 até 4
-for kaka in range(0, 4, 2): print('caceta') #vai de 0 até quatro pulando de 2 em 2
+for kaka in range(0, 4, 2): print('que isso') #vai de 0 até quatro pulando de 2 em 2
     
 for paridade in range(0, 100, 2): print(paridade) #pego todos os pares de 0 até 98
 
@@ -339,19 +338,19 @@ for paridade in range(0, 100, 2): print(paridade) #pego todos os pares de 0 até
 #iterador -> busca quem é o próximo valor
 #iter -> busca o interador 
 #método uma ação que vou chamar para o meu objeto, ex:
-peste = 'aaa'
-peste.upper() #isso é um método
+amg = 'aaa'
+amg.upper() #isso é um método
 
 #demonstração de como o for funciona por debaixo dos panos aula 74:
-testando_slk = 'caceta'
+testando_dnv = 'aobaaa'
 
-iterador = iter(testando_slk)
+iterador = iter(testando_dnv)
 
 print(iterador) #aqui informa o iterador por causa da funcção iter
 print(next(iterador)) #Quando a função next é chamada, ele faz uma busca no valor 
-#armazenado na variável testando_slk e retorna um iterável, ou seja, um único valor.
+#armazenado na variável testando_dnv e retorna um iterável, ou seja, um único valor.
 #no entando, ele precisa fazer isso várias vezes para retornar os próximos valores, por exemplo:
-print(next(iterador)) #aqui ele já buscou o segundo valor testando_slk[1] e o retornou.
+print(next(iterador)) #aqui ele já buscou o segundo valor testando_dnv[1] e o retornou.
 print(next(iterador)) #[2]
 print(next(iterador)) #[3]
 print(next(iterador)) #[4]
@@ -382,31 +381,31 @@ os.system('cls')
 #uma lista é mutável, diferente de uma str
 #duas formas de criar uma lista:
 #Além disso, posso colocar diferentes tipos primitivos numa lista. Por ex:
-caceta = list()
-caceta = ["carai", 1015, True, 4.5, ['slk', 10]] #forma convencional
+minha_lista = list()
+minha_lista = ["opa", 1015, True, 4.5, ['pei', 10]] #forma convencional
 #e como visto no exemplo acima, posso usar uma lista dentro de outra lista
-print(caceta)
-print(caceta[4]) #acessando o conteúdo na lista dentro de outra lista. 
-print(caceta[0].upper()) #utilizando métodos na list
+print(minha_lista)
+print(minha_lista[4]) #acessando o conteúdo na lista dentro de outra lista. 
+print(minha_lista[0].upper()) #utilizando métodos na list
 
-del caceta[0] #del irá detetar um elemento da lista com base no índice. Nesse caso, irá deletar o "carai"
-print(caceta) #o indice 0 agora é o 1015
+del minha_lista[0] #del irá detetar um elemento da lista com base no índice. Nesse caso, irá deletar o "caramba"
+print(minha_lista) #o indice 0 agora é o 1015
 
-caceta.append('mais um') #adiciono mais um elemento no final da lista 
-print(caceta)
+minha_lista.append('mais um') #adiciono mais um elemento no final da lista 
+print(minha_lista)
 
-caceta.pop() #remove o último elemento da lista
-print(caceta) #não existe o 'mais um'
+minha_lista.pop() #remove o último elemento da lista
+print(minha_lista) #não existe o 'mais um'
 
-caceta.pop(0) #quando eu coloco um índice nos parenteses, ele remove da lista com base nesse índice
-print(caceta) #removeu o 1015
+minha_lista.pop(0) #quando eu coloco um índice nos parenteses, ele remove da lista com base nesse índice
+print(minha_lista) #removeu o 1015
 
-teste = caceta.pop() #uma forma de encontrar e salvar o último valor da lista
+teste = minha_lista.pop() #uma forma de encontrar e salvar o último valor da lista
 print(teste[-1]) #outra forma de encontrar o último item da lista
 print(teste)
 
-caceta.insert(0, "carai") #adiciono um item com base no índice sem apagar o anterior(o valor armazenado anterior anda um índice para frente)
-print(caceta) #o "carai" agora está no índice 0
+minha_lista.insert(0, "caramba") #adiciono um item com base no índice sem apagar o anterior(o valor armazenado anterior anda um índice para frente)
+print(minha_lista) #o "caramba" agora está no índice 0
 
 lista_a = [1, 2, 3]
 lista_b = [4, 5, 6]
@@ -416,8 +415,8 @@ lista_a.extend(lista_b) #ele incrementa os valores de lista b na lista a
 print(lista_c) #concatenado 
 print(lista_a) #juntado
 
-caceta.clear() #utilizado para limpar a lista completamente
-print(caceta) # a lista agora está vazia
+minha_lista.clear() #utilizado para limpar a lista completamente
+print(minha_lista) # a lista agora está vazia
 
 #dados mutáveis tem que tomar cuidado, pois por mais que o código de reatribuição venha depois,
 #ele vai acabar alterando em ambas variáveis, como no exemplo abaixo:
@@ -430,26 +429,26 @@ print(mais_lista_b)
 
 mais_lista_b = mais_lista_a.copy() #mas, fazendo desse jeito, esse problema é resolvido, mantendo o valor
 #inicial daqui pra cima da lista a.
-mais_lista_a[1] = 'caceta'
+mais_lista_a[1] = 'opinha'
 
 print(mais_lista_a) #como pode ver, mudou apenas na lista a.
 print(mais_lista_b)
 
 #o list também é um iterável, por ex:
 for __ in mais_lista_b:
-    print('carai') #lista a tinha 3 elementos, então vai se repetir 3 vezes.
+    print('caramba') #lista a tinha 3 elementos, então vai se repetir 3 vezes.
 #testes
 for __ in 'teste':
     print('hahaha')
 
 for aa in __:
-    print('putz')
+    print('poxa')
 #fechamento dos testes
 
 os.system('cls')
 #ex rapido
 nomes = ['joao', 'Maria', 'Carmelita']
-nomes.append('carai')
+nomes.append('amizade')
 nomes.append(456)
 
 indices = 0
@@ -461,47 +460,47 @@ for __ in nomes:
 #desempacotamento
 
 #no caso abaixo eu crio uma lista com três elementos 
-peste = ['carai', 'mermao', 'marcos_gay']
+poxat = ['caramba', 'mermao', 'marcos_amigo']
 #abaixo, novamente, eu crio três variáveis seguidas e coloco para se atribuirem com base no valor acima
-telasca1, telasca2, telasca3 = peste
+demonstracao1, demonstracao2, demonstracao3 = poxat
 
 #quando eu imprimir uma dessas variaveis, ela virá sozinha. Isso é o desempacotamento
-print(telasca3)
+print(demonstracao3)
 
 #um jeito mais fácil:
-carambaa, bandido = ['porra', 'marcas']
+carambaa, pacote = ['poxa', 'marcas']
 #também é um desempacotamento e tem q ter a mesma quantidade de valores e variáveis, se n dá pau
-print(caramba, bandido) 
+print(caramba, pacote) 
 
 #se eu quiser apenas um valor:
-bunda_de_loki, *_ = ['Juliano', 'Carro', 'Bilau']
-print(bunda_de_loki,'\n', _) #no caso, bunda de loki tem apenas Juliano e _ tem carro + bilau, entando ambos empacotados numa lista ainda. 
+loki_valor, *_ = ['Juliano', 'Carro', 'Briareu']
+print(loki_valor,'\n', _) #no caso, bunda de loki tem apenas Juliano e _ tem carro + bilau, entando ambos empacotados numa lista ainda. 
 os.system('cls')
 
 
 #tuplas - lista imutável 
 tinta = 'carro', 'casa' #tupla declarada
 tinta = ('carro', 'casa') #uma forma mais bonita de criar uma tupla
-peste = [10, 20 ,30] #lista criada
+demons = [10, 20 ,30] #lista criada
 
 #a tupla é um pouco mais rápida que a lista, então, se eu precisar trabalhar com algo do tipo e não
 #precisar alterar elementos na lista, é melhor utilizar a tupla.
 
 print(tinta[0]) #mesmo jeito que usa a lista 
-peste = tuple(peste) #conversão de list para tupla
-print(type(peste)) #agora é tupla
-peste = list(peste)
-print(type(peste)) #agora é list
+amizade = tuple(demons) #conversão de list para tupla
+print(type(amizade)) #agora é tupla
+amizade = list(amizade)
+print(type(amizade)) #agora é list
 
 #uma forma mais fácil de resolver aquele exercício rápido:
 #aula 89
-bundao = ('treta', 'xablau', 'carai')
+baal = ('treta', 'xablau', 'caramba')
 
-te_lascar = enumerate(bundao)
-print(te_lascar, '\n') #será apresentado um código doidão, mas tipo, é só usar o next que fica tudo de boa
+te_am = enumerate(baal)
+print(te_am, '\n') #será apresentado um código doidão, mas tipo, é só usar o next que fica tudo de boa
 
-for __ in bundao:
-    print(next(te_lascar)) #resolvido
+for __ in baal:
+    print(next(te_am)) #resolvido
 
 print('teste\t teste \n') #assim como o \n é para quebra de linha, o \t é para um tab
 
@@ -518,12 +517,12 @@ num_1, num_2 = decimal.Decimal('0.1'), decimal.Decimal('0.2') #tem que colocar c
 num_3 = num_1 + num_2
 print(num_3) #retorna a conta certinha
 
-frase = ' minha caceta, é da boa'
+frase = ' minha amiga'
 quebrartudo = frase.split() #caso não haja nenhum argumento, a minha string acabará se tornando uma lista a cada espaço
 print(quebrartudo)
 
-comecacaceta = frase.split(',') #vai dividir a minha string para lista a partir da vírgula
-print(comecacaceta)
+cms_amizade = frase.split(',') #vai dividir a minha string para lista a partir da vírgula
+print(cms_amizade)
 
 print(frase.strip())#corta os espaços no início e fim da minha string
 #rstrip corta o espaço da esquerda e rstrip o da direita
@@ -539,7 +538,7 @@ salas = [ #lista dentro de lista
     #0          #1
     ['juliano', 'Carlão'], #1
     #0
-    ['Coroi', (10, 20, 30)] #2 também consigo incrementar uma tupla dentro da lista
+    ['Joao', (10, 20, 30)] #2 também consigo incrementar uma tupla dentro da lista
 
 ]
 print(salas[1][1]) #irá ser printado carlão
@@ -552,19 +551,19 @@ for sala in salas: #para cada itens na variável salas
 
 os.system('cls')
 #caso a mais do desempacortameto
-a, b, c , *_ = 'caceta', 'xablau', 10, 20, 40 #no caso, estou desempacotando os três primeiros e o resto eu guardo no _
+a, b, c , *_ = 'Pietra', 'xablau', 10, 20, 40 #no caso, estou desempacotando os três primeiros e o resto eu guardo no _
 print(a,b,c)
 print(_) #esses valores ainda estão empacotados
 
 #mas e se eu quisesse pegar o último valor e empacotar o resto?
-a, b, *_, c = 'caceta', 'jão', 10, 30
+a, b, *_, c = 'Pietra', 'jão', 10, 30
 print(a, b, _, c) #basta colocar o *_ antes e depois continuar escrevendo
 
-a,*_, b, c = 'caceta', 'jão', 10, 30#posso pegar qualquer valor e gaurdar como resto, basta eu adicionar o *_ no lugar
+a,*_, b, c = 'Pietra', 'jão', 10, 30#posso pegar qualquer valor e gaurdar como resto, basta eu adicionar o *_ no lugar
 print(a, b, _, c)
 
 #outras formas de desempacotar
-lista = ['caceta', 'jão', 10, 30]
+lista = ['Pietra', 'jão', 10, 30]
 print(lista) #aqui vai sair uma lista
 print(*lista) #aqui vai sair um "str"
 
@@ -576,9 +575,9 @@ print('\n\n')
 #ex:
 
 terracota = [
-    ['caceta', 'terra'],
-    ['bora canecadaa', 'que bandidagem'],
-    ['bora canecadaa', 'que bandidagem', ['caceta', 'terra']],
+    ['opa', 'terra'],
+    ['bora', 'amizade'],
+    ['bora', 'amizade', ['opa', 'terra']],
 ]
 print(terracota) #meio bagunçado de entender
 
@@ -586,12 +585,12 @@ print( *terracota, sep='\n') #mais fácil
 
 #operação ternária = if e else em uma linha
 terra = 10
-print('Marcos deu' if terra > 8 else 'Marcos não deu. (ainda)' )
+print('Marcos amigo' if terra > 8 else 'Marcos não amigo. (ainda)' )
 
-terraslk = terra = 40 if True else print('teve como não') #terra será 40. Se não fosse, o print demonstrado seria armazenado na variável
-print(terraslk)
+terra_amg = terra = 40 if True else print('teve como não') #terra será 40. Se não fosse, o print demonstrado seria armazenado na variável
+print(terra_amg)
 
-print('Marcos é gay' if 10 == 11 else'ainda ta virando. ' if 20 == 20 else 'que ferrado') #uma continuação no if, com if se. mas é confuso em uma linha só.
+print('Marcos é forte' if 10 == 11 else'ainda ta virando. ' if 20 == 20 else 'ta quase') #uma continuação no if, com if se. mas é confuso em uma linha só.
 
 #uma forma de tratar o cpf
 cpf = '568.145.545-00'

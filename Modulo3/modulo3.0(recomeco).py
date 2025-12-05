@@ -1662,7 +1662,8 @@ print(meu_erro_novamente.__notes__) # ['Pare de tentar dividir por dois, tente p
 cls()
 # E para ver isso no traceback:
 try:
-    raise meu_erro_novamente
+    # raise meu_erro_novamente # para ver na pratica, basta tirar isso como um comomentário.
+    ...
 except ComplementoDivisaoError as error:
     print(error)
     '''
@@ -1678,3 +1679,55 @@ except ComplementoDivisaoError as error:
     # E após o raise, vemos as notas.
 
 ###########################################################
+
+# Quando criamos uma classe e instanciamos um objeto, ao imprimir esse objeto o Python
+# mostra uma representação padrão, herdada de `object`, que inclui o módulo, a classe
+# e o endereço de memória. Ex:
+
+class Ponto:
+    def __init__(self, x, y, z='string'):
+        self.x = x
+        self.y = y
+        self.z = z
+p1 = Ponto(10,20)
+
+print(p1) # <__main__.Ponto object at 0x749bfda72660>
+
+# Como eu disse, será possível ver apenas a posição da memória.
+# E se quiséssemos trocar essa informação por algo mais amigável? temos alguns dunder methods/Magic methods
+# que podemos utilizar para isso.
+
+# __repr__ -> representation - # Representação oficial do objeto. Deve ser o mais precisa possível e mostrar informações
+# relevantes do estado da instância. É a melhor opção para debugging.
+
+# __str__ -> string - apenas um simples texto de mudança para diferenciar o texto padrão, que é a informação do
+# edereço de memória. 
+
+# Detalhe -> str tem mais prioridade que o repr, ou seja, se ambos existirem na classe e forem chamadas por uma print,
+# quem vai aparecer é o str.
+
+# forma de uso:
+
+class Ponto:
+    def __init__(self, x, y, z='string'):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __repr__(self):
+        nome_classe = type(self) 
+        # nome_classe = __class__.__name__ # assim você também pega o nome da classe, mas em caso de herança ou 
+        # mixin, pode ser falho.
+        #
+        # esse método deverá retornar uma string, sendo que ela deve ser o mais completa possível
+        return f'{nome_classe}(x={self.x}, y={self.y})'
+
+    # caso queira ver o repr, comente a linha abaixo. (str tem mais prioridade que repr)
+    def __str__(self):
+        return 'opaaaa'
+
+p2 = Ponto(10,20)
+
+print(p2) # Ponto(x=10, y=20) || 'opaaaa'
+
+################

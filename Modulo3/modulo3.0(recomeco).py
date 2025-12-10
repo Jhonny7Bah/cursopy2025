@@ -1720,14 +1720,47 @@ class Ponto:
         # mixin, pode ser falho.
         #
         # esse método deverá retornar uma string, sendo que ela deve ser o mais completa possível
-        return f'{nome_classe}(x={self.x}, y={self.y})'
+        return f'{nome_classe}(x={self.x}, y={self.y}, z={self.z})'
 
     # caso queira ver o repr, comente a linha abaixo. (str tem mais prioridade que repr)
-    def __str__(self):
-        return 'opaaaa'
+    # def __str__(self):
+    #     return 'opaaaa'
 
 p2 = Ponto(10,20)
 
-print(p2) # Ponto(x=10, y=20) || 'opaaaa'
+print(p2) # <class '__main__.Ponto'>(x=50, y=60, z='string') || 'opaaaa'
 
+# Mas, percebe que no caso rep, a string fica parecendo um objeto? isso pode causar confusão e para resolver isso,
+# poderíamos colocar o parâmetro "z" entre parênteses. No entanto, há um jeito muito mais fácil de resolver isso, 
+# sendo através da formatação rep. Vou demonstrar abaixo.
+
+class Ponto:
+    def __init__(self, x, y, z='string'):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    # para indicar a formatação rep, utilizamos (!r). Assim, o python saberá lidar com strings
+    # e não criará uma confusão na hora de demonstrar o rep.
+    def __repr__(self):
+        nome_classe = type(self) 
+        return f'{nome_classe}(x={self.x!r}, y={self.y!r}, z={self.z!r})'
+
+    # para formatar a string, podemos utilizar
+    def __str__(self):
+        return f'{self.z!s}'
 ################
+
+p3 = Ponto(50,60)
+print(p3)  # <class '__main__.Ponto'>(x=50, y=60, z='string') || 'string'
+
+# caso você tenha definido string e rep em uma classe, saberá que str tem mais preferência
+# que rep. Mas, e se fosse necessário ver o rep de alguma forma? temos as seguintes formas:
+
+#através da função rep.
+print(repr(p3)) # <class '__main__.Ponto'>(x=50, y=60, z='string')
+
+# através da formatação rep.
+print(f'{p3!r}') # <class '__main__.Ponto'>(x=50, y=60, z='string')
+
+##################################################################################

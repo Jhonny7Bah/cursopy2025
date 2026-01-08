@@ -1744,7 +1744,12 @@ class Ponto:
     # e não criará uma confusão na hora de demonstrar o rep.
     def __repr__(self):
         nome_classe = type(self) 
-        return f'{nome_classe}(x={self.x!r}, y={self.y!r}, z={self.z!r})'
+        return f'{nome_classe}(x={self.x!r}, y={self.y!r}, z={self.z!r})' # retorno: <class '__main__.Ponto'>(x=50, y=60, z='string')
+        return f'{nome_classe}(x={self.x}, y={self.y}, z={self.z})' # retorno: <class '__main__.Ponto'>(x=50, y=60, z=string)
+        # utilizei dois retornos distintos para demonstrar como iria retornar com e sem formatação. 
+        # no primeiro retorno, string retorna em aspas, como se realmente fosse uma string.
+        # no segundo retorno também é uma string, mas seria fácil de confundir com qualquer tipo 
+        # de dado, pois não tem aspas especificando que é uma string.
 
     # para formatar a string, podemos utilizar
     def __str__(self):
@@ -1763,4 +1768,56 @@ print(repr(p3)) # <class '__main__.Ponto'>(x=50, y=60, z='string')
 # através da formatação rep.
 print(f'{p3!r}') # <class '__main__.Ponto'>(x=50, y=60, z='string')
 
-##################################################################################
+################################################################
+# Exemplo de uso de dunder methods (métodos mágicos)
+# __lt__(self,other) - self < other
+# __le__(self,other) - self <= other
+# __gt__(self,other) - self > other
+# __ge__(self,other) - self >= other
+# __eq__(self,other) - self == other
+# __ne__(self,other) - self != other
+# __add__(self,other) - self + other
+# __sub__(self,other) - self - other
+# __mul__(self,other) - self * other
+# __truediv__(self,other) - self / other
+# __neg__(self) - -self
+# __str__(self) - str
+# __repr__(self) - str
+
+# métodos magicos são são funções especiais definidas dentro de classes que
+# permitem que objetos interajam com operações built-in do Python. Por exemplo,
+# __add__ é um método mágico que é habilitado quando é utilizado o operador de 
+# soma (+) em alguma parte do codigo, como 2 + 2. Quando os valores são inicializados
+# através de uma classe, o desenvolvedor pode alterar o comportamento desses métodos.
+
+# No exemplo abaixo, vou criar uma classe e alterar o comportamento do add.
+class Teste:
+    # Aqui irei inicializar os atributos por questão de organizacao
+    def __init__(self, n1):
+        self.num = n1
+    
+    # Dentro da classe, chamo o add
+    # Atente-se que nesse caso, serão passados 2 valores, onde o primeiro parâmetro será self e 
+    # o segundo será other (é o padrão chamar o segundo parâmetro assim em python),
+    def __add__(self, other):
+        # agora, vou apresentar os dois valores
+        print(self.num) # esse apresentará o primeiro valor, aproveitando o atributo no init.
+        print(other.num) # esse será o segundo.
+
+        # como percebeu, o other se comporta como um segundo self para o segundo valor.
+
+        # agora, vou retornar um texto qualquer somente para demonstrar.
+        return "eu sou um mágico!"
+
+# para funcioanar corretamente, precisamos instanciar dois valores na classe anterior.
+# Caso contrario, o python irá acessar as operações built-in do Python no escopo principal.
+valor1 = Teste(10)
+valor2 = Teste(2)
+
+# agora, irei realizar uma soma com os dois valores.
+print(valor1 + valor2) # 10 /n2 /neu sou um mágico!
+
+# Como pode ver, o comportamento da soma alterou completamente. 
+# Esse é o poder de um método mágico!
+
+####################################333

@@ -1784,7 +1784,7 @@ print(f'{p3!r}') # <class '__main__.Ponto'>(x=50, y=60, z='string')
 # __str__(self) - str
 # __repr__(self) - str
 
-# métodos magicos são são funções especiais definidas dentro de classes que
+# métodos magicos são funções especiais definidas dentro de classes que
 # permitem que objetos interajam com operações built-in do Python. Por exemplo,
 # __add__ é um método mágico que é habilitado quando é utilizado o operador de 
 # soma (+) em alguma parte do codigo, como 2 + 2. Quando os valores são inicializados
@@ -1810,14 +1810,110 @@ class Teste:
         return "eu sou um mágico!"
 
 # para funcioanar corretamente, precisamos instanciar dois valores na classe anterior.
-# Caso contrario, o python irá acessar as operações built-in do Python no escopo principal.
+# Se os operadores não tiverem o método mágico correspondente, o Python não cai em uma
+# soma built-in genérica
 valor1 = Teste(10)
 valor2 = Teste(2)
 
 # agora, irei realizar uma soma com os dois valores.
-print(valor1 + valor2) # 10 /n2 /neu sou um mágico!
+print(valor1 + valor2) # imprime:
+# 10
+# 2
+# eu sou um mágico!
+
 
 # Como pode ver, o comportamento da soma alterou completamente. 
 # Esse é o poder de um método mágico!
 
-####################################333
+# é importante deixar claro que quando é feita uma alteração como a anterior, 
+# a depender do que tenha sido feito, algumas operações podem não funcioanar 
+# corretamente como esperado. No caso acima, foi incremetado ações extras 
+# como imprimir na tela e retornar uma string. Portanto, certamente o código
+# irá quebrar na chamada de uma operação qualquer. 
+try:
+    print(valor1 > valor2)
+except TypeError as e:
+    print(e) # '>' not supported between instances of 'Teste' and 'Teste'
+
+# Uma informação muito importante que tem que ficar clara é que quando 
+# uma método mágico for definido, em sua assinatura, deverá haver somente 
+# dois parâmetros: self e other. Self sempre irá ficar do lado esquerdo e 
+# portanto, será o primeiro valor. Other sempre ficará do lado direito e será
+# sempre o segundo valor. Logo, se é feito: a + b, então a será correspondente
+# a self enquanto b será correspondente a other. 
+
+####################################
+
+# Resumo da aula
+# __new__ e __init__ em classes Python
+# __new__ é o método responsável por criar e
+# retornar o novo objeto. Por isso, new recebe cls.
+# __new__ ❗️DEVE retornar o novo objeto❗️
+# __init__ é o método responsável por inicializar
+# a instância. Por isso, init recebe self.
+# __init__ ❗️NÃO DEVE retornar nada (None)❗️
+# object é a super classe de uma classe
+
+# init apenas executa inicialmente na classe porque new o chama. Ou seja,
+# o new executa antes do init.
+
+class DemonsInitENew:
+    # como parâmetro para o new não seria self e sim cls.
+    def __new__(cls):
+        print("eu sou o new")
+
+    def __init__(self):
+        print("eu sou o init")
+
+demons_init = DemonsInitENew() # console: eu sou o new 
+# o new executou primeiro e o init nem chegou a executar, correto?
+# como foi dito antes, o new é o primeiro a executar e por padrão,
+# após sua execução, ele chama o init. Porém, no caso acima não fora feito isso.
+#
+# Mas irei refatorar o new para chamar o init. 
+# No caso abaixo, mostrarei uma das formas do new chamar o init.
+print(object.__new__(DemonsInitENew).__init__()) # console: eu sou o init
+
+# detalhe: se new não tivesse valor algum, então por padrão, irá retornar None.
+
+# Ademais, somente em casos muito espeficos que irá necessitar fazer o uso do New.
+# Pois, basicamente, você somente irá precisar do new se quiser executar algo antes
+# do init no código... caso contrário, não fará tanto sentido você fazer isso. Vou 
+# deixar um exemplo de caso para querer executar o new antes:
+
+class DemonsInitENew:
+    def __new__(cls):
+        print("chamando alguma importacao muito necessaria antes do init")
+        print("finalizando logica da importacao ou sabe-se la oq antes do init")
+        # o retorno deverá ser a chamada do init. Nesse caso, irei armazenar em uma variavel
+        # como tudo isso se trata de uma hierarquia de classes, posso muito bem chamar o super
+        # para chamar o init. No entanto, também posso chamar o init de outras formas, como por
+        # exemplo, chamar diretamente pelo nome da classe object.__new__(DemonsInitENew). 
+        # mas por que é chamado uma classe acima da atual? porque, como foi dito na aula de mro,
+        # object é uma classe padrão do python que é está presente em todas as classes desde o momento
+        # de criação. Portanto, quando eu chamo object diretamente, eu to chamando uma classe acima e através dela,
+        # posso chamar o init. Logo, como apenas precisamos chamar uma classe acima, faz mais sentido usar super.
+        chamada_init = super().__new__(cls)
+        print()
+        return chamada_init
+
+        # detalhe: como aqui tem uma variavel para o init, é possível também criar atributos para o init aqui no new.
+        # porém, iria necessitar colocar os parametros de init semelhante ao de new. ex:
+        # def __new__(cls, algo)
+        # def __init__(self, algo)
+        #
+        # ou pode usar argumentos nomeados e nao nomeados para executar.
+
+
+    def __init__(self):
+        print("eu sou o init")
+
+demons_init = DemonsInitENew() # retorno:
+# chamando alguma importacao muito necessaria antes do init
+# finalizando logica da importacao ou sabe-se la oq antes do init
+# 
+# eu sou o init
+
+#############################################
+# 
+#  

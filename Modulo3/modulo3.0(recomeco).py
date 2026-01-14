@@ -1916,4 +1916,81 @@ demons_init = DemonsInitENew() # retorno:
 
 #############################################
 # 
-#  
+# Context Manager com classes - Criando e Usando gerenciadores de contexto
+# Explicação do professor
+# Context Manager com classes - Criando e Usando gerenciadores de contexto
+# Você pode implementar seus próprios protocolos
+# apenas implementando os dunder methods que o
+# Python vai usar.
+# Isso é chamado de Duck typing. Um conceito
+# relacionado com tipagem dinâmica onde o Python não
+# está interessado no tipo, mas se alguns métodos existem
+# no seu objeto para que ele funcione de forma adequada.
+# Duck Typing:
+# Quando vejo um pássaro que caminha como um pato, nada como
+# um pato e grasna como um pato, eu chamo aquele pássaro de pato.
+# Para criar um context manager, os métodos __enter__ e __exit__
+# devem ser implementados.
+# O método __exit__ receberá a classe de exceção, a exceção e o
+# traceback. Se ele retornar True, exceção no with será
+# suprimidas.
+#
+#
+# Ou seja, para que o context manager funcine, será necessário haver dois métodos
+# na classe, sendo o __enter__ para entrada (caminha como um pato) e o __exit__ (
+# nada como um pato), tornand-o assim válido para tal uso, transformando-o completamente
+# em um pato, no sentido figurado. Vejamos na prática:
+#
+#
+with open('revisao.py', 'r'):
+    ...
+# vamos tentar recriar posteriormente uma classe que se assemelhe ao papel do open. 
+# lembrando que o with funciona sempre com objetos que precisam abrir e fechar.
+
+class MeuExemploParaWith:
+    def __enter__(self):
+        print("entrando")
+
+    # para o exit será necessário definir parametros de saida para caso ocorra algum transtorno 
+    # durante a execucao, o usuario ter a opcao de tratar através da propria classe.
+    def __exit__(self, class_exception, exception, traceback):
+        print("saindo")
+
+# a classe acima está realmente completa para ser utilizada através do context maneger.
+with MeuExemploParaWith():
+    # assim que essa linha for executada, o conteudo contido em enter e exit será executado 
+    # respectivamente.
+    # retorno:
+
+    # entrando
+    # saindo
+    ...
+
+# assim, consigo fazer o meu proprio gerenciador de contexto. Seja ele para conexão, abertura de arquivos, etc.
+# no caso abaixo, vou demonstrar a criação de contexto para abertura de arquivos:
+
+class AbrirArquivo:
+    # na classe, por mais que não seja chamada diretamente, o init é sempre um dos primeiros
+    # a executar, principalmente quando comparado ao método enter
+    def __init__(self, caminho, metodo_abertura):
+        # o open tem dois parâmetros padrão, sendo um o caminho e o segundo o método de abertura.
+        self.caminho = caminho
+        self.metodo_abertura = metodo_abertura
+        self.arquivo = None # esse atributo será útil e necessário para salvar o estado do arquivo desejado.
+    
+    def __enter__(self):
+        # o open é não faz parte do gerenciador de contexto. Ele apenas um método
+        # para controle e gerenciamento de arquivos, servindo para leitura, criação
+        # e escrita.
+        self.arquivo = open(self.caminho, self.metodo_abertura). # aqui eu salvo o estado do gerenciador, passando os
+        #parametros necessarios.
+        #
+        # Agora, consigo manipular do jeito que eu quiser
+        return self.arquivo.read()
+        
+    def __exit__():
+        print("finalizando")
+
+with AbrirArquivo
+#@@#########################################
+# ainda falta finalizarr, to sem tempoooooo

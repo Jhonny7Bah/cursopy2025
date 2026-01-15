@@ -1982,15 +1982,51 @@ class AbrirArquivo:
         # o open é não faz parte do gerenciador de contexto. Ele apenas um método
         # para controle e gerenciamento de arquivos, servindo para leitura, criação
         # e escrita.
-        self.arquivo = open(self.caminho, self.metodo_abertura). # aqui eu salvo o estado do gerenciador, passando os
+        self.arquivo = open(self.caminho, self.metodo_abertura) # aqui eu salvo o estado do gerenciador, passando os
         #parametros necessarios.
         #
-        # Agora, consigo manipular do jeito que eu quiser
-        return self.arquivo.read()
+        # O valor retornado por __enter__ é atribuído à variável após o 'as'
+        # no bloco with. Ao retornar o arquivo, exponho o recurso para que
+        # o usuário possa manipulá-lo livremente dentro do contexto.
+        return self.arquivo
         
-    def __exit__():
-        print("finalizando")
+    def __exit__(self, class_exception, exception, traceback):
+        self.arquivo.close()
 
-with AbrirArquivo
-#@@#########################################
-# ainda falta finalizarr, to sem tempoooooo
+cls()
+with AbrirArquivo('revisao.py', 'r') as arquivo:
+    # gracas ao retorno do __enter__ retornando o objeto self.arquivo apos ser
+    # inicializando com os argumentos para gerenciamento, é possível manipular
+    # o arquivo em questão aqui. Por exemplo:
+    # print(arquivo.read()) # conteudo do resumo.
+    ...
+
+#################################
+# Este é um exemplo de gerenciador de contexto implementado via classe.
+# A classe base (AbrirArquivo) é responsável por abrir e fechar o arquivo,
+# enquanto esta classe herda seu comportamento para demonstrar o uso do
+# método __exit__ no tratamento de exceções.
+#
+# no método exit da funcao acima, há três parametros extras. Por padrão, se nada ocorrer no código,
+# os três parâmetros recebidos (class_exception, exception e traceback) serão None
+class AbrirArquivo2(AbrirArquivo):
+    def __exit__(self, class_exception, exception, traceback):
+
+        # vou receber um erro para demonstração 
+        print(class_exception, "\n") # retorna a classe do erro (TypeError) 
+        print(exception, "\n") # retorna o conteudo do erro ('erro teste')
+        print(traceback, "\n") # retorna o traceback associado ao erro
+
+        # garante o fechamento do recurso reutilizando a lógica da classe pai
+        super().__exit__(class_exception, exception, traceback)
+        
+        # retornar True suprime a exceção ocorrida dentro do bloco with. Portanto,
+        # se algum erro lá dentro ocorrer, o método __exit__ será chamado e, como
+        #  retorna True, o erro não interrompe a execução do programa.
+        return True
+
+# isso vai gerar um transtorno no codigo, pois esse ola não existe.
+with AbrirArquivo2('revisao.py', 'r') as d:
+    raise TypeError('erro teste') # o codigo continua funcionando normalmente.
+
+print('oi') # oi

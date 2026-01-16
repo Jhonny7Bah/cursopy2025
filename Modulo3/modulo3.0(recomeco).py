@@ -2078,3 +2078,63 @@ with abrir_outro_arquivo('revisao.py', 'r') as a:
     print(a.read())
 
 #############################################
+# Funções decoradoras e decoradores com classes
+#
+'''
+Considere que você tem duas classes que tem um método em comum, com a mesma assinatura,
+mesmo comportamento, etc. Para não repetir código, você herdou esse método de uma superclasse
+mixin, ex:
+'''
+
+# exemplo de mixin
+class AlgoMixin:
+    def __str__(self):
+        # retornando uma string qualquer
+        return 'eu sou um método comum'
+
+# classes que herdam o mixin
+class ClasseA(AlgoMixin):
+    ...
+class ClasseB(AlgoMixin):
+    ...
+
+# agora, tanto a classe A quanto a B possuem o método_comum herdado do mixin.
+a = ClasseA()
+b = ClasseB()
+
+print(a) # eu sou um método comum
+print(b) # eu sou um método comum
+
+# porém, é sempre recomendado o uso de composições ao invés de heranças sempre que possível.
+# Logo, uma forma de evitar a herança, seria através de uma função. Ex:
+
+def metodo_comum(cls):
+    # aqui, eu defino o método comum
+    cls.__str__ = 'eu sou um método comum'
+    return cls
+
+# agora, para usar esse método comum em outras classes, basta chamar a função na classe. ex:
+
+class ClasseC:
+    ...
+
+# como a função retorna atualmente
+print(ClasseC.__str__) # <slot wrapper '__str__' of 'object' objects>
+
+# para usar o método comum, basta fazer o seguinte:
+ClasseC = metodo_comum(ClasseC)
+print(ClasseC.__str__) # eu sou um método comum
+
+# porém, há uma forma mais elegante de fazer isso, que é através de um decorador. Ex:
+def metodo_comum_decorador(cls):
+    cls.__str__ = 'eu sou um método comum'
+    return cls
+
+@metodo_comum_decorador
+class ClasseD:
+    ...
+
+# agora, para usar o método comum, basta fazer o seguinte:
+print(ClasseD.__str__) # eu sou um método comum
+
+

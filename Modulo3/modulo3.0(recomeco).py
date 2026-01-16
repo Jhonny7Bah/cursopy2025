@@ -2030,3 +2030,51 @@ with AbrirArquivo2('revisao.py', 'r') as d:
     raise TypeError('erro teste') # o codigo continua funcionando normalmente.
 
 print('oi') # oi
+
+cls()
+##########################################
+# Há outra forma de criar um gerenciador de contexto, que é através de um decorator oriundo da 
+# biblioteca padrão contextlib, importando o contexto manager. Exemplo:
+from contextlib import contextmanager
+
+# vou criar um exemplo novamente para arquivo.
+# portanto, será necessário separar uma função para abrir e fechar o arquivo,
+# que deverá iniciar com o decorator @contextmanager.
+
+@contextmanager
+def abrir_outro_arquivo(caminho, modo):
+    ''' nessa lógica, o tratamento de exceção precisa ser feito manualmente
+    com recursos do python, como o try/except/finally.
+    como é possível fazer uso do finallly, é possível garantir o fechamento do arquivo
+    mesmo que ocorra um erro, portanto, para esse caso não será necessário o uso do
+    bloco except, porém, mesmo assim, irei colocar um para demonstração.
+    '''
+    
+    try:
+        print('abrindo o arquivo')
+        # aqui, abro o arquivo e salvo o estado.
+        arquivo = open(caminho, modo)
+        # agora, para disponibilizar o recurso para o usuário,
+        # uso o yield, que funciona como um return, porém,
+        # diferente, pois após o yield, o código continua
+        # executando normalmente. Logo, essa função se tornará
+        # um generator e o decotaror lidará com isso como se o yield
+        # fosse um return dentro de um __enter__.
+        yield arquivo
+
+    # não é obrigatório tratar o erro aqui, mas irei colocar um para demonstração.        
+    except Exception as e:
+        print(f'Ocorreu erro: {e}')
+
+    # obrigatoriamente, para garantir o fechamento do arquivo
+    finally:
+        print('fechando o arquivo')
+        arquivo.close()
+
+# agora, para usar o gerenciador de contexto, basta fazer da seguinte forma:
+with abrir_outro_arquivo('revisao.py', 'r') as a:
+    # aqui, posso manipular o arquivo normalmente e 
+    # quando o bloco with finalizar, o arquivo será fechado
+    print(a.read())
+
+#############################################

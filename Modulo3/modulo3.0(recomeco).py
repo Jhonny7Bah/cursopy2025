@@ -2034,7 +2034,7 @@ print('oi') # oi
 cls()
 ##########################################
 # Há outra forma de criar um gerenciador de contexto, que é através de um decorator oriundo da 
-# biblioteca padrão contextlib, importando o contexto manager. Exemplo:
+# biblioteca padrão contextlib, importando o context manager. Exemplo:
 from contextlib import contextmanager
 
 # vou criar um exemplo novamente para arquivo.
@@ -2046,8 +2046,8 @@ def abrir_outro_arquivo(caminho, modo):
     ''' nessa lógica, o tratamento de exceção precisa ser feito manualmente
     com recursos do python, como o try/except/finally.
     como é possível fazer uso do finallly, é possível garantir o fechamento do arquivo
-    mesmo que ocorra um erro, portanto, para esse caso não será necessário o uso do
-    bloco except, porém, mesmo assim, irei colocar um para demonstração.
+    mesmo que ocorra um erro. Portanto, para esse caso não será necessário o uso do
+    bloco except. Porém, mesmo assim, irei utilizar o except para demonstração.
     '''
     
     try:
@@ -2137,4 +2137,60 @@ class ClasseD:
 # agora, para usar o método comum, basta fazer o seguinte:
 print(ClasseD.__str__) # eu sou um método comum
 
+cls()
+############## 
+# também é possível criar decoradores seguindo a mesma lógica para métodos 
+# de uma classe. 
 
+# para isso, vamos aplicar o closure, que é uma função que não executa de imediato,
+# havendo uma função externa (para controle) e uma interna (para execução de uma lógica)
+# extra.
+
+# no método, quando utilizarmos o decorator no método, o método em si entra como argumento
+# para o parametro "metodo" da funcao "meu_planeta" abaixo.
+def meu_planeta(metodo):
+    # toda os argumentos que o método recebeu dentro da classe
+    # serão preservados pelos argumentos nomeados e não nomeados.
+    def interna (self, *args, **kwargs):
+        # o resultado é a execução do método em seu estado original.
+        # portanto, se eu retornasse "resultado" de uma vez, nada mudaria.
+        resultado = metodo(self, *args, **kwargs)
+
+        # porém, o que estamos fazendo é decorar um método de uma forma muito semelhante
+        # a decorar uma funcao em python. Portanto, posso retornar o resultado depois
+        # que fizer a minha modificacao, ou então, posso escolher não retornar.
+
+        # como aquele método é responsável apenas por informar o nome do planeta que fora
+        # passado pelo usuário, consigo fazer uma lógica com seu resultado e retornar algo
+        # oompletamente diferente do esperado.
+
+        # por exemplo, será verificado se é planeta terra. Se sim, então será avisado que 
+        # o usuário está em seu planeta natal, caso contrário, lhe será informado que ele
+        # está em um planeta estrangeiro.
+
+        # verifica se é o planeta natal do usuario.
+        if str(resultado).strip().lower() == 'terra':
+            return 'voce está em seu planeta natal!'
+        return f'voce não está em seu planeta natal. voce está em: {resultado}'
+    
+    # chama a funcao interna
+    return interna
+
+# criacao convencional de uma classe.
+class Planeta:
+    def __init__(self, nome):
+        self._nome = nome
+    
+    # chamando decotador
+    @meu_planeta # se voce quiser, comente essa linha e vai perceber que o metodo vai funcionar como de costume.    
+    def exibir_planeta(self):
+        # retorando apenas o nome do planeta.
+        return self._nome
+
+terra = Planeta('terra')
+marte = Planeta('marte')
+
+print(terra.exibir_planeta()) # 'voce está em seu planeta natal!'
+print(marte.exibir_planeta()) # 'voce não está em seu planeta natal. voce está em: marte'
+
+###########

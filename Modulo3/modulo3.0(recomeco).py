@@ -2194,3 +2194,43 @@ print(terra.exibir_planeta()) # 'voce está em seu planeta natal!'
 print(marte.exibir_planeta()) # 'voce não está em seu planeta natal. voce está em: marte'
 
 ###########
+
+# método especial callable.
+# callable é algo que pode ser executado através de parenteses, podendo ser um
+# método, funcao, classe, dentre outras coisas.
+# Em classes normais, __call__ faz a instância de uma
+# classe "callable".
+# isso quer dizer que se voce instanciar uma classe e por algum motivo chamar ela
+# com parenteses, ela não irá quebrar, contanto que seja passado os parametros solicitados.
+
+# para demonstrar isso, vou criar uma instancia para uma das classes anteriores e 
+# tentar executar.
+
+urano = Planeta('urano')
+
+# como sei que vai quebrar, vou chamar isso dentro de um try.
+try:
+    urano()
+except Exception as e:
+    print('ocorreu o erro: ',e) # ocorreu o erro:  'Planeta' object is not callable
+
+# como viu, o tentei executar a instancia, mas pelo fato dela não ser callable, 
+# o código quebrou. Porém, se eu realmente quisesse que essa classe permitisse
+# executar algo da instancia, como foi demonstrado anteriormente, seria necessário
+# implementar o método __call__ na classe, como no exemplo abaixo: 
+
+class CallMe:
+    def __init__(self, numero):
+        self.numero = numero
+    
+    # se for do desejo do programador, pode deixar os parametros de forma indefinida 
+    # através de empacotamento.
+    def __call__(self, *args, **kwargs):
+        print(f'o número {self.numero} tentou me chamar?')
+
+n1 = CallMe('7444')
+# agora, irei tentar executar n1.
+n1() # o número 7444 tentou me chamar?
+
+#######################
+    

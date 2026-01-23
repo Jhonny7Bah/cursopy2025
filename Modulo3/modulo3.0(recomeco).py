@@ -2232,5 +2232,27 @@ n1 = CallMe('7444')
 # agora, irei tentar executar n1.
 n1() # o número 7444 tentou me chamar?
 
+cls()
 #######################
-    
+# decoradores com classe
+
+# decorador com func
+def decorador(func):
+    print(func)
+    def interna(*args, **kwargs):
+        print('estou decorando')
+        return func(*args, **kwargs)
+    return interna
+
+@decorador
+def soma(x, y):
+    return x + y
+
+primeiro = soma(10,20)
+
+print(primeiro)
+
+# fazendo decorador com func e inicializando na chamada
+
+# tem uma forma de fazer o caso anterior muito mais simples.
+# é necessário se lembrar dela.

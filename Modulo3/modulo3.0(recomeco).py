@@ -2234,25 +2234,67 @@ n1() # o número 7444 tentou me chamar?
 
 cls()
 #######################
-# decoradores com classe
+# Decoradores com classes
+# Decoradores são uma forma elegante de modificar o comportamento de funções ou métodos
+# sem alterar seu código-fonte. Eles são amplamente utilizados para adicionar funcionalidades
+# de forma reutilizável. Em Python, os decoradores podem ser implementados usando funções
+# ou classes. Quando usamos uma classe como decorador, ela deve implementar o método __call__,
+# tornando a instância da classe "callable". Isso permite que a classe seja usada como um decorador
+# para funções ou métodos, modificando seu comportamento de maneira flexível e poderosa.
 
-# decorador com func
-def decorador(func):
-    print(func)
-    def interna(*args, **kwargs):
-        print('estou decorando')
-        return func(*args, **kwargs)
-    return interna
+class DecoratorSum:
+    # o init recebe a função que será decorada como argumento e a armazena em um atributo da
+    #  classe.
+    def __init__(self, func):
+        self.func = func
 
-@decorador
+    # o método __call__ é responsável por executar a função decorada, permitindo que a classe
+    # seja usada como um decorador. Ele recebe os mesmos argumentos que a função decorada
+    # e pode modificar seu comportamento antes ou depois de chamar a função original.
+    def __call__(self, *args, **kwargs):
+        print('hahah')
+        return self.func(*args, **kwargs)
+
+# agora, para usar o decorador, basta chamar a classe com o decorator na função desejada. Ex:
+@DecoratorSum
 def soma(x, y):
-    return x + y
+    print(f'a soma entre {x} e {y} é: {x+y}')
 
-primeiro = soma(10,20)
+soma(10, 20) # hahah
+# execução da função original: a soma entre 10 e 20 é: 30
 
-print(primeiro)
 
-# fazendo decorador com func e inicializando na chamada
+#########
+# o exemplo acima é um decorador simples, onde a classe recebe a função como argumento e
+# a executa dentro do método __call__, adicionando uma funcionalidade extra (imprimir 'hahah')
+# antes de chamar a função original. Agora, vamos criar um exemplo de decorador com classe
+# que recebe um argumento extra no init, além da função a ser decorada. Ex:
 
-# tem uma forma de fazer o caso anterior muito mais simples.
-# é necessário se lembrar dela.
+class DecoratorSub:
+    # value é o argumento extra que será passado no init, além da função a ser decorada.
+    # nesse caso, value será utilizado para realizar uma subtração, ou seja, o resultado
+    # da função decorada será subtraído por esse valor.
+    def __init__(self, value):
+        print('vamos decorarrr')
+        self.value = value
+
+    def __call__(self, func):
+        def interna(*args, **kwargs):
+            # aqui, o resultado da função decorada é subtraído pelo valor passado no init.
+            result = func(*args, **kwargs)
+            return result - self.value 
+        return interna
+
+# agora, para usar o decorador, basta chamar a classe com o decorator na função desejada,
+# passando o argumento necessário. Ex:
+@DecoratorSub(2)
+def subtracao(x,y):
+    # aqui, a função decorada realiza uma subtração entre x e y, mas o resultado final será
+    # subtraído por 2, que é o valor passado no init do decorador.
+    print(f'{x} - {y} = {x - y}')
+    return x - y
+
+# agora, para executar a função decorada, basta chamar a função normalmente. Ex:
+print(subtracao(10,6)) # vamos decorarrr
+# execução da função original: 10 - 6 = 4
+# resultado final após a decoração: 2 (4 - 2)

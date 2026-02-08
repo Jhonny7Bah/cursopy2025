@@ -2298,3 +2298,5 @@ def subtracao(x,y):
 print(subtracao(10,6)) # vamos decorarrr
 # execução da função original: 10 - 6 = 4
 # resultado final após a decoração: 2 (4 - 2)
+
+#####################################################

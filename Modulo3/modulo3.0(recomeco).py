@@ -2300,3 +2300,62 @@ print(subtracao(10,6)) # vamos decorarrr
 # resultado final após a decoração: 2 (4 - 2)
 
 #####################################################
+# metaclasses
+# Em python, tudo é um objeto, incluindo as classes. As classes são instâncias de metaclasses.
+# A metaclasse é a classe das classes, ou seja, é a classe que define o comportamento das classes.
+# Por padrão, a metaclasse é a type, mas é possível criar metaclasses personalizadas para controlar
+# a criação e o comportamento das classes.
+ 
+class ClasseExemplo:
+    ...
+
+ex = ClasseExemplo()
+print(type(ex)) # <class '__main__.ClasseExemplo'> -> a classe do objeto
+print(type(ClasseExemplo)) # <class 'type'> -> a classe da classe
+
+# logo, sabemos que ex é uma instância da classe ClasseExemplo, e a classe ClasseExemplo
+# é uma instância da metaclasse type.
+
+''' resenha professor
+
+# Ao criar uma classe, coisas ocorrem por padrão nessa ordem:
+# __new__ da metaclass é chamado e cria a nova classe
+# __call__ da metaclass é chamado com os argumentos e chama:
+#   __new__ da class com os argumentos (cria a instância)
+#   __init__ da class com os argumentos
+# __call__ da metaclass termina a execução
+
+'''
+# lembrando que o método __new__ é responsável por criar a classe, enquanto o método __call__
+# é responsável por criar a instância da classe. Portanto, quando uma classe é chamada,
+# o método __call__ da metaclasse é executado, que por sua vez chama o método __new__ da
+# classe para criar a instância, e depois chama o método __init__ para inicializar a instância.
+
+# para criar uma classe através da metaclasse type, basta chamar da seguinte forma:
+
+# type('Name', (Bases,), __dict__), onde 
+# Name é o nome da classe
+# Bases é uma tupla de classes base (herança, lembrando que recebe object por padrão)
+# __dict__ é um dicionário de atributos e métodos da classe (pode ser vazio).
+
+# sendo: 
+MinhaClasse = type('MinhaClasse', (), {}) # o primeiro argumento é o nome da classe
+
+print(MinhaClasse) # <class '__main__.MinhaClasse'> -> a classe criada através da metaclasse type
+
+# agora, para criar uma instância da classe criada, basta chamar a classe normalmente:
+minha_instancia = MinhaClasse()
+
+print(minha_instancia) # <__main__.MinhaClasse object at 0x749bfda72660> -> a instância da classe criada
+
+# citação do Tim Peters, um dos principais desenvolvedores do Python
+# "Metaclasses são magias mais profundas do que 99% dos usuários
+# deveriam se preocupar. Se você quer saber se precisa delas,
+# não precisa (as pessoas que realmente precisam delas sabem
+# com certeza que precisam delas e não precisam de uma explicação
+# sobre o porquê)."
+# — Tim Peters (CPython Core Developer)
+
+# ou seja, as metaclasses são um assunto avançado e complexo, e a maioria dos desenvolvedores
+# não precisa se preocupar com elas.
+

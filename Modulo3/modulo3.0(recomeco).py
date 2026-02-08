@@ -2299,6 +2299,7 @@ print(subtracao(10,6)) # vamos decorarrr
 # execução da função original: 10 - 6 = 4
 # resultado final após a decoração: 2 (4 - 2)
 
+cls()
 #####################################################
 # metaclasses
 # Em python, tudo é um objeto, incluindo as classes. As classes são instâncias de metaclasses.
@@ -2348,6 +2349,123 @@ minha_instancia = MinhaClasse()
 
 print(minha_instancia) # <__main__.MinhaClasse object at 0x749bfda72660> -> a instância da classe criada
 
+# o que foi feito acima foi criar uma classe de forma dinâmica utilizando a metaclasse type,
+# que seria algo semelhante a criar uma classe através de uma instancia de uma classe.
+
+# no entanto, também é possível criar uma metaclasse personalizada, herdando da metaclasse type,
+# e sobrescrevendo os métodos __new__ e __call__ para controlar a criação e o comportamento
+# das classes.
+
+# por padrão, quando criamos uma classe, sua assinatura é a seguinte:
+'''
+class NomeDaClasse(Bases, metaclass=type):
+    corpo da classe
+
+'''
+
+# a metaclasse é definida através do argumento metaclass na definição da classe. Se não for
+# especificada, a metaclasse padrão é a type.
+
+# para criar uma metaclasse personalizada, basta herdar da metaclasse type e sobrescrever
+# os métodos __new__ e __call__. Ex:
+
+class Meta(type):
+    # o método __new__ é responsável por criar a classe, portanto, é onde podemos controlar,
+    # considerando que será necessário informar sua assinatura, que é (cls, name, bases, dct),
+    # onde:
+    # mcs é a metaclasse, sendo uma convenção chamar o primeiro parâmetro de cls.
+    # name é o nome da classe sendo criada
+    # bases são as classes base da classe sendo criada
+    # dct é o dicionário de atributos e métodos da classe sendo criada
+
+    def __new__(mcs, name, bases, dct):
+        print('eu sou o new')
+        # nesse caso, a metaclasse será a primeira a executar, pois é ela que cria a classe.
+        # Portanto, podemos controlar a criação da classe aqui, por exemplo, adicionando 
+        # um atributo, validação ou método à classe.
+        
+        cls = super().__new__(mcs, name, bases, dct) # aqui, criamos a classe normalmente utilizando o super para chamar o método __new__ da metaclasse type.
+
+        # podemos visualizar o dicionário da classe para ver os atributos e métodos que ela possui, incluindo os que foram adicionados pela metaclasse.
+        print(cls.__dict__)
+
+        # podemos adicionar um método à classe criada, por exemplo:
+        def metodo_adicionado(self):
+            return 'eu sou um método adicionado pela metaclasse'
+        
+        # adicionamos o método ao dicionário da classe
+        cls.metodo_adicionado = metodo_adicionado
+
+        # podemos adicionar um atributo à classe criada, por exemplo:
+        cls.atributo_adicionado = 'eu sou um atributo adicionado pela metaclasse'
+
+        # vamos ver o dicionário da classe novamente para verificar os atributos e 
+        # métodos adicionados.
+        print(cls.__dict__)
+
+        # podemos verificar também se um método específico ou atributo foi adicionado à classe,
+        # por exemplo:
+        print('metodo_adicionado' in cls.__dict__) # True
+
+        # não se proecupe, pois os métodos e atributos adicionados na classe pelo usuário
+        # estarão presentes no dicionário da classe, portanto, é possível verificar de fato
+        # a existência e criar uma lógica com ele. Por exemplo:
+        if not 'tratamento_nome' in cls.__dict__:
+            raise TypeError('a classe deve ter um atributo tratamento_nome')
+        # logo, a classe só vai ser criada se tiver um atributo chamado tratamento_nome, caso contrário,
+        # irá levantar um erro.
+
+        # e por fim, retornamos a classe criada.
+        return cls
+
+    # o conteúdo em new vai tratar apenas a criação da classe, ou seja,
+    # o comportamento da classe em si. No entanto, ele não trata os argumentos
+    # passados pela classe. Logo, será necessário do método __call__ para tratar
+    # os argumentos passados pela classe, ou seja, o comportamento da instância da classe. Ex:
+    def __call__(cls, *args, **kwargs):
+        # o método __call__ é chamado quando uma instância da classe é criada.
+        # ele recebe a classe (cls), os argumentos posicionais (*args) e os argumentos nomeados 
+        # (**kwargs).
+        print(f'criando instância da classe {cls.__name__} com args={args}, kwargs={kwargs}')
+        return super().__call__(*args, **kwargs) # aqui, chamamos o método __call__ da metaclasse type
+        # para criar a instância normalmente, passando os argumentos recebidos.
+
+    # logo, alteramos todo o comportamento da classe, mas no final das contas, devido ao super,
+    # a classe e suas instâncias serão criadas normalmente, mas com as funcionalidades extras.
+
+# agora, para usar a metaclasse personalizada, basta definir a classe com o argumento 
+# metaclass=Meta. Ex:
+class DemonstraMetaclass(metaclass=Meta):
+    def __init__(self, nome):
+        self.nome = nome
+        
+    # para passar na validação da metaclasse, é necessário ter um atributo chamado tratamento_nome.
+    def tratamento_nome(self): ...
+
+# considere que a metaclasse é executada no momento da criação da classe, ou seja,
+# quando a classe é definida. Portanto, ao definir a classe DemonstraMetaclass,
+# o método __new__ da metaclasse Meta é executado, criando a classe e adicionando os
+# métodos e atributos definidos. Depois, quando uma instância da classe é criada,
+# o método __call__ da metaclasse é executado, permitindo controlar a criação da
+# instância e seus argumentos.
+
+# retornos após ter criado a classe: 
+
+'''
+eu sou o new
+{'__module__': '__main__', '__firstlineno__': 2438, '__init__': <function DemonstraMetaclass.__init__ at 0x7b7675be2610>, 'tratamento_nome': <function DemonstraMetaclass.tratamento_nome at 0x7b7675be26c0>, '__static_attributes__': ('nome',), '__dict__': <attribute '__dict__' of 'DemonstraMetaclass' objects>, '__weakref__': <attribute '__weakref__' of 'DemonstraMetaclass' objects>, '__doc__': None}
+{'__module__': '__main__', '__firstlineno__': 2438, '__init__': <function DemonstraMetaclass.__init__ at 0x7b7675be2610>, 'tratamento_nome': <function DemonstraMetaclass.tratamento_nome at 0x7b7675be26c0>, '__static_attributes__': ('nome',), '__dict__': <attribute '__dict__' of 'DemonstraMetaclass' objects>, '__weakref__': <attribute '__weakref__' of 'DemonstraMetaclass' objects>, '__doc__': None, 'metodo_adicionado': <function Meta.__new__.<locals>.metodo_adicionado at 0x7b7675be2770>, 'atributo_adicionado': 'eu sou um atributo adicionado pela metaclasse'}
+True
+'''
+
+# vamos criar a instância
+demonstra = DemonstraMetaclass('demonstração') # criando instância da classe DemonstraMetaclass com args=('demonstração',), kwargs={}
+print(demonstra.nome) # demonstração
+print(demonstra.atributo_adicionado) # eu sou um atributo adicionado pela metaclasse
+print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metacl
+
+######
+
 # citação do Tim Peters, um dos principais desenvolvedores do Python
 # "Metaclasses são magias mais profundas do que 99% dos usuários
 # deveriam se preocupar. Se você quer saber se precisa delas,
@@ -2359,3 +2477,4 @@ print(minha_instancia) # <__main__.MinhaClasse object at 0x749bfda72660> -> a in
 # ou seja, as metaclasses são um assunto avançado e complexo, e a maioria dos desenvolvedores
 # não precisa se preocupar com elas.
 
+########################################################

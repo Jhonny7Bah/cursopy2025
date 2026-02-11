@@ -2478,3 +2478,29 @@ print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metacl
 # não precisa se preocupar com elas.
 
 ########################################################
+from pathlib import Path
+
+# coleto o módulo atual
+RAIZ = Path(__file__).parent
+
+# crio a pasta que vamos utilizar como referência
+pasta_ref = RAIZ / 'aula252' 
+Path.mkdir(pasta_ref,exist_ok=True)
+
+# crio o arquivo que será analisado
+caminho_arquivo_um_linha = pasta_ref / 'uma_linha.py'
+Path.touch(caminho_arquivo_um_linha)
+
+# agora que já foi criado algo, vamos importar o módulo que acabou de
+# ser criado.
+from aula252 import uma_linha
+
+# vamos verificar os componentes desse módulo
+print(dir(uma_linha)) # ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']
+
+# através do dir é possível verificar tudo que o módulo tem, seja variável,
+# função, etc. Por exemplo, vou adicionar uma variável e função nova:
+with open(caminho_arquivo_um_linha, 'w') as pd:
+    ...
+
+# incompleto

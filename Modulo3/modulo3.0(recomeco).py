@@ -2538,7 +2538,7 @@ print(uma_linha.__doc__) # None
 # no entanto, há uma função que é muito útil quando o desejado é saber tudo
 # e com detalhes de um determinado módulo em python, de forma organizada:
 
-# print(help(uma_linha)) # para ver isso funcionando, basta descomentar essa linha 
+# help(uma_linha) # para ver isso funcionando, basta descomentar essa linha 
 
 '''
 retorno:
@@ -2568,13 +2568,13 @@ FILE
 dados_anteriores = Path(caminho_arquivo_um_linha).read_text() 
 # adiciono a doc no topo e depois o conteúdo antigo do arquivo
 Path(caminho_arquivo_um_linha).write_text(
-    '\'\'\'Este módulo faz uma demonstração prática do poder pythônico\'\'\'\n'
+    '"""Este módulo faz uma demonstração prática do poder pythônico"""\n'
     'cor = \'azul\'\n'
     'def imprimir(msg:str):\n    print(msg)'
 )
 
 # fazendo um help
-# print(help(uma_linha)) # para visualizar o help, descomente essa linha
+# help(uma_linha) # para visualizar o help, descomente essa linha
 '''
 retorno:
 Help on module aula252.uma_linha in aula252:
@@ -2591,5 +2591,65 @@ DATA
 FILE
     /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/uma_linha.py
 
+'''
+
+# @______
+# Outro detalhe importante é que também é possível adicionar uma descrição 
+# de várias linhas através da docstring, que vai aparecer bonitinho quando for
+# utilizado o help. No entanto, é importante destacar que para isso, é 
+# necessário que você siga as recomendações de boas práticas da pep8, sendo uma
+# delas: uma linha deve ter no máximo até 79 caracteres. Caso passe disso,
+# então será necessário quebrar a linha. Abaixo, irei criar um outro arquivo,
+# escrever um doc de várias linhas e mostrar como vai ficar.
+
+Path(pasta_ref / 'varias_linhas.py').write_text(
+    '''"""Snake_case ipsum pep8 sit amet, indent_four_spaces adipiscing elit.
+Try_except do eiusmod tempor variable_name ut labore et strings_triplas magna
+aliqua. Ut enim ad backend veniam, quis nostrud list_comprehension ullamco
+laboris nisi ut aliquip ex ea lambda consequat. Duis aute irure docstring
+in reprehenderit in code_review velit esse cillum dolore eu syntax_error 
+pariatur.
+
+Deploy_production ipsum merge_conflict sit amet, code_refactor debugging elit.
+Docker_container do eiusmod tempor pipeline_automation ut Jenkins et
+Kubernetes magna aliqua. Ut enim ad microservices veniam, quis nostrud
+pull_request ullamco cloud_computing nisi ut aliquip ex ea database_schema
+consequat. Duis aute irure dark_mode in backend_development in production_ready
+velit esse API_endpoint dolore eu logic_error pariatur."""
+
+print('hello world!')
+'''
+)
+
+# importando o novo módulo
+from aula252 import varias_linhas
+
+# agora, vamos olhar o help:
+# help(varias_linhas) # para verificar o help, descomente essa linha.
+
+'''
+retorno:
+Help on module aula252.varias_linhas in aula252:
+
+NAME
+    aula252.varias_linhas
+
+DESCRIPTION
+    Snake_case ipsum pep8 sit amet, indent_four_spaces adipiscing elit.
+    Try_except do eiusmod tempor variable_name ut labore et strings_triplas magna
+    aliqua. Ut enim ad backend veniam, quis nostrud list_comprehension ullamco
+    laboris nisi ut aliquip ex ea lambda consequat. Duis aute irure docstring
+    in reprehenderit in code_review velit esse cillum dolore eu syntax_error
+    pariatur.
+
+    Deploy_production ipsum merge_conflict sit amet, code_refactor debugging elit.
+    Docker_container do eiusmod tempor pipeline_automation ut Jenkins et
+    Kubernetes magna aliqua. Ut enim ad microservices veniam, quis nostrud
+    pull_request ullamco cloud_computing nisi ut aliquip ex ea database_schema
+    consequat. Duis aute irure dark_mode in backend_development in production_ready
+    velit esse API_endpoint dolore eu logic_error pariatur.
+
+FILE
+    /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/varias_linhas.py
 '''
 

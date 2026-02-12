@@ -2698,6 +2698,8 @@ def subtracao(x, y):
 
     return x-y
 '''
+# Antes de continuar, perceba que eu também adicionei um comentário no código
+# acima com o intuito de mostrar que no help, comentários não aparecem.
 
 # criando o arquivo e inserindo o codigo
 Path(pasta_ref / 'documentando_funcoes.py').write_text(codigo_funcao)

@@ -2363,16 +2363,17 @@ class NomeDaClasse(Bases, metaclass=type):
 
 '''
 
-# a metaclasse é definida através do argumento metaclass na definição da classe. Se não for
-# especificada, a metaclasse padrão é a type.
+# a metaclasse é definida através do argumento metaclass na definição da 
+# classe. Se não for especificada, a metaclasse padrão é a type.
 
-# para criar uma metaclasse personalizada, basta herdar da metaclasse type e sobrescrever
-# os métodos __new__ e __call__. Ex:
+# para criar uma metaclasse personalizada, basta herdar da metaclasse type e
+# sobrescrever os métodos __new__ e __call__. Ex:
 
 class Meta(type):
-    # o método __new__ é responsável por criar a classe, portanto, é onde podemos controlar,
-    # considerando que será necessário informar sua assinatura, que é (cls, name, bases, dct),
-    # onde:
+    # o método __new__ é responsável por criar a classe, portanto, é onde 
+    # podemos controlar, considerando que será necessário informar sua 
+    # assinatura, que é (cls, name, bases, dct), onde:
+    #
     # mcs é a metaclasse, sendo uma convenção chamar o primeiro parâmetro de cls.
     # name é o nome da classe sendo criada
     # bases são as classes base da classe sendo criada
@@ -2380,13 +2381,17 @@ class Meta(type):
 
     def __new__(mcs, name, bases, dct):
         print('eu sou o new')
-        # nesse caso, a metaclasse será a primeira a executar, pois é ela que cria a classe.
-        # Portanto, podemos controlar a criação da classe aqui, por exemplo, adicionando 
-        # um atributo, validação ou método à classe.
+        # nesse caso, a metaclasse será a primeira a executar, pois é ela que
+        # cria a classe. Portanto, podemos controlar a criação da classe aqui,
+        # por exemplo, adicionando um atributo, validação ou método à classe.
         
-        cls = super().__new__(mcs, name, bases, dct) # aqui, criamos a classe normalmente utilizando o super para chamar o método __new__ da metaclasse type.
+        # criando a classe normalmente utilizando o super para chamar o método
+        #  __new__ da metaclasse type:
+        cls = super().__new__(mcs, name, bases, dct) 
 
-        # podemos visualizar o dicionário da classe para ver os atributos e métodos que ela possui, incluindo os que foram adicionados pela metaclasse.
+        # podemos visualizar o dicionário da classe para ver os atributos e 
+        # métodos que ela possui, incluindo os que foram adicionados pela
+        # metaclasse.
         print(cls.__dict__)
 
         # podemos adicionar um método à classe criada, por exemplo:
@@ -2399,55 +2404,60 @@ class Meta(type):
         # podemos adicionar um atributo à classe criada, por exemplo:
         cls.atributo_adicionado = 'eu sou um atributo adicionado pela metaclasse'
 
-        # vamos ver o dicionário da classe novamente para verificar os atributos e 
-        # métodos adicionados.
+        # vamos ver o dicionário da classe novamente para verificar os 
+        # atributos e métodos adicionados.
         print(cls.__dict__)
 
-        # podemos verificar também se um método específico ou atributo foi adicionado à classe,
-        # por exemplo:
+        # podemos verificar também se um método específico ou atributo foi
+        # adicionado à classe, por exemplo:
         print('metodo_adicionado' in cls.__dict__) # True
 
-        # não se proecupe, pois os métodos e atributos adicionados na classe pelo usuário
-        # estarão presentes no dicionário da classe, portanto, é possível verificar de fato
-        # a existência e criar uma lógica com ele. Por exemplo:
+        # não se proecupe, pois os métodos e atributos adicionados na classe 
+        # pelo usuário estarão presentes no dicionário da classe, portanto, é 
+        # possível verificar de fato a existência e criar uma lógica com ele.
+        #  Por exemplo:
         if not 'tratamento_nome' in cls.__dict__:
             raise TypeError('a classe deve ter um atributo tratamento_nome')
-        # logo, a classe só vai ser criada se tiver um atributo chamado tratamento_nome, caso contrário,
-        # irá levantar um erro.
+        # logo, a classe só vai ser criada se tiver um atributo chamado 
+        # tratamento_nome, caso contrário, irá levantar um erro.
 
         # e por fim, retornamos a classe criada.
         return cls
 
     # o conteúdo em new vai tratar apenas a criação da classe, ou seja,
     # o comportamento da classe em si. No entanto, ele não trata os argumentos
-    # passados pela classe. Logo, será necessário do método __call__ para tratar
-    # os argumentos passados pela classe, ou seja, o comportamento da instância da classe. Ex:
+    # passados pela classe. Logo, será necessário do método __call__ para 
+    # tratar os argumentos passados pela classe, ou seja, o comportamento da
+    #  nstância da classe. Ex:
     def __call__(cls, *args, **kwargs):
         # o método __call__ é chamado quando uma instância da classe é criada.
-        # ele recebe a classe (cls), os argumentos posicionais (*args) e os argumentos nomeados 
-        # (**kwargs).
+        # ele recebe a classe (cls), os argumentos posicionais (*args) e os
+        # argumentos nomeados (**kwargs).
         print(f'criando instância da classe {cls.__name__} com args={args}, kwargs={kwargs}')
-        return super().__call__(*args, **kwargs) # aqui, chamamos o método __call__ da metaclasse type
-        # para criar a instância normalmente, passando os argumentos recebidos.
+        return super().__call__(*args, **kwargs) # aqui, chamamos o método 
+        # __call__ da metaclasse type para criar a instância normalmente,
+        # passando os argumentos recebidos.
 
-    # logo, alteramos todo o comportamento da classe, mas no final das contas, devido ao super,
-    # a classe e suas instâncias serão criadas normalmente, mas com as funcionalidades extras.
+    # logo, alteramos todo o comportamento da classe, mas no final das contas,
+    # devido ao super, a classe e suas instâncias serão criadas normalmente,
+    # mas com as funcionalidades extras.
 
-# agora, para usar a metaclasse personalizada, basta definir a classe com o argumento 
-# metaclass=Meta. Ex:
+# agora, para usar a metaclasse personalizada, basta definir a classe com o
+# argumento metaclass=Meta. Ex:
 class DemonstraMetaclass(metaclass=Meta):
     def __init__(self, nome):
         self.nome = nome
         
-    # para passar na validação da metaclasse, é necessário ter um atributo chamado tratamento_nome.
+    # para passar na validação da metaclasse, é necessário ter um atributo
+    # chamado tratamento_nome.
     def tratamento_nome(self): ...
 
-# considere que a metaclasse é executada no momento da criação da classe, ou seja,
-# quando a classe é definida. Portanto, ao definir a classe DemonstraMetaclass,
-# o método __new__ da metaclasse Meta é executado, criando a classe e adicionando os
-# métodos e atributos definidos. Depois, quando uma instância da classe é criada,
-# o método __call__ da metaclasse é executado, permitindo controlar a criação da
-# instância e seus argumentos.
+# considere que a metaclasse é executada no momento da criação da classe,
+# ou seja, quando a classe é definida. Portanto, ao definir a classe
+# DemonstraMetaclass, o método __new__ da metaclasse Meta é executado, criando
+# a classe e adicionando os métodos e atributos definidos. Depois, quando uma
+# instância da classe é criada o método __call__ da metaclasse é executado,
+# permitindo controlar a criação da instância e seus argumentos.
 
 # retornos após ter criado a classe: 
 
@@ -2474,8 +2484,8 @@ print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metacl
 # sobre o porquê)."
 # — Tim Peters (CPython Core Developer)
 
-# ou seja, as metaclasses são um assunto avançado e complexo, e a maioria dos desenvolvedores
-# não precisa se preocupar com elas.
+# ou seja, as metaclasses são um assunto avançado e complexo, e a maioria dos
+# desenvolvedores não precisa se preocupar com elas.
 
 ########################################################
 # Uso do dir, help e DocString de uma linha para visualização de componetes

@@ -2472,8 +2472,7 @@ True
 demonstra = DemonstraMetaclass('demonstração') # criando instância da classe DemonstraMetaclass com args=('demonstração',), kwargs={}
 print(demonstra.nome) # demonstração
 print(demonstra.atributo_adicionado) # eu sou um atributo adicionado pela metaclasse
-print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metacl
-
+print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metaclasse
 ######
 
 # citação do Tim Peters, um dos principais desenvolvedores do Python
@@ -2653,3 +2652,89 @@ FILE
     /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/varias_linhas.py
 '''
 
+# @___
+# Agora que já mostrei como fazer, irei fazer uma demonstração de uso real
+# da dogstring, inicialmente com funções. Como mostrei, todas as funções 
+# aparcerem no help, correto? e para cada uma delas, é possível incrementar uma
+#  docstring explicando para que ela serve e também utilizar type hints para 
+# informar os tipos que cada parâmetro deverá receber, juntamente com o 
+# retorno(considere que essa é somente uma das formas de documentar função ou 
+# qualquer outra coisa). Portanto, irei criar abaixo mais um arquivo para
+# demonstrar como seria isso.
+
+# inserindo o código
+codigo_funcao = '''\
+"""Este módulo apenas vai exemplificar o uso de uma função com docstring
+
+No geral, haverá somente duas funções.
+"""
+
+def multiplica(
+    x: int | float,
+    y: int | float,
+    z: int | float | None = None
+) -> int | float:
+    """Multiplica x, y e/ou z
+
+    Multiplica x e y. Se z for enviado, multiplica x, y, z.
+    """
+    if z is None:
+        return x * y
+    return x * y * z
+
+# eu não ia mostrar outra forma de usar doc numa função, mas farei abaixo:
+def subtracao(x, y):
+    """ Essa função realizará uma
+        subtração entre x e y.
+    
+    :param x: primeiro número    
+    :type x: int ou float
+    :param y: segundo número    
+    :type y: int ou float
+    
+    :return y: subtração de x - y
+    :return_type: int ou float
+    """
+
+    return x-y
+'''
+
+# criando o arquivo e inserindo o codigo
+Path(pasta_ref / 'documentando_funcoes.py').write_text(codigo_funcao)
+
+# importando o módulo
+from aula252 import documentando_funcoes
+
+# chamando o help para o novo módulo
+# help(documentando_funcoes) # para ver na prática, descomente essa linha
+'''
+retorno:
+Help on module aula252.documentando_funcoes in aula252:
+
+NAME
+    aula252.documentando_funcoes - Este módulo apenas vai exemplificar o uso de uma função com docstring
+
+DESCRIPTION
+    No geral, haverá somente duas funções.
+
+FUNCTIONS
+    multiplica(x: int | float, y: int | float, z: int | float | None = None) -> int | float
+        Multiplica x, y e/ou z
+
+        Multiplica x e y. Se z for enviado, multiplica x, y, z.
+
+    subtracao(x, y)
+        Essa função realizará uma
+            subtração entre x e y.
+
+        :param x: primeiro número
+        :type x: int ou float
+        :param y: segundo número
+        :type y: int ou float
+
+        :return y: subtração de x - y
+        :return_type: int ou float
+
+FILE
+    /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/documentando_funcoes.py
+'''

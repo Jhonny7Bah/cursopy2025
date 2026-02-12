@@ -2572,8 +2572,8 @@ Path(caminho_arquivo_um_linha).write_text(
     'def imprimir(msg:str):\n    print(msg)'
 )
 
-# fazendo um help
-# help(uma_linha) # para visualizar o help, descomente essa linha
+# fazendo um help (para verificar o help, descomente a linha abaixo):
+# help(uma_linha)
 '''
 retorno:
 Help on module aula252.uma_linha in aula252:
@@ -2623,8 +2623,8 @@ print('hello world!')
 # importando o novo módulo
 from aula252 import varias_linhas
 
-# agora, vamos olhar o help:
-# help(varias_linhas) # para verificar o help, descomente essa linha.
+# agora, vamos olhar o help (para verificar o help, descomente a linha abaixo):
+# help(varias_linhas)
 
 '''
 retorno:
@@ -2708,7 +2708,6 @@ Path(pasta_ref / 'documentando_funcoes.py').write_text(codigo_funcao)
 from aula252 import documentando_funcoes
 
 # chamando o help para o novo módulo
-# help(documentando_funcoes) # para ver na prática, descomente essa linha
 '''
 retorno:
 Help on module aula252.documentando_funcoes in aula252:
@@ -2740,3 +2739,96 @@ FUNCTIONS
 FILE
     /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/documentando_funcoes.py
 '''
+
+# @____
+# Eu realmente não queria trazer outros estilos de organização de função para
+# docstring, mas irei trazer 3, sendo um o estilo que mostrei 
+# anteriormente (reST) e como extra, trarei um exemplo de como escrever isso
+# caso a função haja um exception. Segue para o arquivo:
+
+# Definindo o conteúdo do arquivo com tratamento de erro
+codigo_exceptions = '''\
+"""Este módulo demonstra como documentar EXCEÇÕES (Raises).
+"""
+
+# -------------------------------------------------------------------------
+# 1. Google Style
+# -------------------------------------------------------------------------
+def funcao_google(x: int, y: int) -> int:
+    """Realiza uma operação, mas falha se y for 2.
+
+    Args:
+        x (int): O primeiro número.
+        y (int): O segundo número.
+
+    Returns:
+        int: O resultado da operação.
+
+    Raises:
+        ValueError: Se y for igual a 2.
+    """
+    if y == 2:
+        raise ValueError("y não pode ser 2 neste sistema")
+    return x + y
+
+
+# -------------------------------------------------------------------------
+# 2. NumPy Style 
+# -------------------------------------------------------------------------
+def funcao_numpy(x: int, y: int) -> int:
+    """
+    Realiza uma operação, mas falha se y for 2.
+
+    Parameters
+    ----------
+    x : int
+        O primeiro número.
+    y : int
+        O segundo número.
+
+    Returns
+    -------
+    int
+        O resultado da operação.
+
+    Raises
+    ------
+    ValueError
+        Se o valor de y for estritamente igual a 2.
+    """
+    if y == 2:
+        raise ValueError("y não pode ser 2 neste sistema")
+    return x + y
+
+
+# -------------------------------------------------------------------------
+# 3. Padrão reST - reStructuredText
+# -------------------------------------------------------------------------
+def funcao_padrao(x: int, y: int) -> int:
+    """Realiza uma operação, mas falha se y for 2.
+
+    :param x: O primeiro número.
+    :type x: int
+    :param y: O segundo número.
+    :type y: int
+    :return: O resultado da operação.
+    :rtype: int
+    :raises ValueError: Se y for igual a 2.
+    """
+    if y == 2:
+        raise ValueError("y não pode ser 2 neste sistema")
+    return x + y
+'''
+
+# Criando o arquivo
+Path(pasta_ref / 'documentando_funcoes_exception.py').write_text(
+    codigo_exceptions
+    )
+
+# Importando para testar
+from aula252 import documentando_funcoes_exception
+
+# chamando help (descomente a linha abaixo para visualizar):
+# help(documentando_funcoes_exception) 
+
+##########

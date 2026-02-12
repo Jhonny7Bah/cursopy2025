@@ -2478,6 +2478,15 @@ print(demonstra.metodo_adicionado()) # eu sou um método adicionado pela metacl
 # não precisa se preocupar com elas.
 
 ########################################################
+# Uso do dir, help e DocString de uma linha para visualização de componetes
+# Para demonstrar tanto o uso como a visualização de forma organizada, será
+# necessário criar uma pasta específica (provavelmente serão várias aulas). 
+# Para não fazer como das outras vezes, onde eu criava a pasta manualmente
+# e ia comentando como fazia, irei digitar aqui o código de criação 
+# passo a passo, através do módulo pathlib, que sei que ainda não coloquei nada
+# aqui sobre ele, mas basta visitar o módulo seguinte (módulo 4) e buscar por
+# ele em específico que você passará a entender como fiz aqui.
+
 from pathlib import Path
 
 # coleto o módulo atual
@@ -2500,7 +2509,77 @@ print(dir(uma_linha)) # ['__builtins__', '__cached__', '__doc__', '__file__', '_
 
 # através do dir é possível verificar tudo que o módulo tem, seja variável,
 # função, etc. Por exemplo, vou adicionar uma variável e função nova:
-with open(caminho_arquivo_um_linha, 'w') as pd:
-    ...
+Path(caminho_arquivo_um_linha).write_text(
+    'cor = \'azul\'\n'
+        'def imprimir(msg:str):\n    print(msg)'
+)
 
-# incompleto
+# verificando novamente o conteúdo da do módulo:
+print(dir(uma_linha)) # ['__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'cor', 'imprimir']
+# é possível identificar a presença da função 'imprimir' e da variável cor no final.
+ 
+# também é possível verificar cada coisa individualmente, considerando que já
+# é sabido o nome dos componetes.
+print(uma_linha.__name__) # aula252.uma_linha
+print(uma_linha.__cached__) # /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/__pycache__/uma_linha.cpython-314.pyc
+print(uma_linha.__file__) # /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/uma_linha.py
+print(uma_linha.__doc__) # None
+
+# no entanto, há uma função que é muito útil quando o desejado é saber tudo
+# e com detalhes de um determinado módulo em python, de forma organizada:
+
+# print(help(uma_linha)) # para ver isso funcionando, basta descomentar essa linha 
+
+'''
+retorno:
+Help on module aula252.uma_linha in aula252:
+
+NAME
+    aula252.uma_linha
+
+FUNCTIONS
+    imprimir(msg: str)
+
+DATA
+    cor = 'azul'
+
+FILE
+    /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/uma_linha.py
+
+'''
+
+# @----
+# Podemos também utilizar docstrings para organizar ainda mais o arquivo,
+# fazendo com que o help consiga ser mais visual e explicativo. 
+# Para demonstrar isso, irei colocar no topo do arquivo um docstring explicando
+# o que o módulo faz:
+
+# busco o que já estava escrito no arquivo (lembrando que o doc será no topo)
+dados_anteriores = Path(caminho_arquivo_um_linha).read_text() 
+# adiciono a doc no topo e depois o conteúdo antigo do arquivo
+Path(caminho_arquivo_um_linha).write_text(
+    '\'\'\'Este módulo faz uma demonstração prática do poder pythônico\'\'\'\n'
+    'cor = \'azul\'\n'
+    'def imprimir(msg:str):\n    print(msg)'
+)
+
+# fazendo um help
+# print(help(uma_linha)) # para visualizar o help, descomente essa linha
+'''
+retorno:
+Help on module aula252.uma_linha in aula252:
+
+NAME
+    aula252.uma_linha - Este módulo faz uma demonstração prática do poder pythônico
+
+FUNCTIONS
+    imprimir(msg: str)
+
+DATA
+    cor = 'azul'
+
+FILE
+    /home/umcex/Documentos/Cursos/cursopy/Modulo3/aula252/uma_linha.py
+
+'''
+

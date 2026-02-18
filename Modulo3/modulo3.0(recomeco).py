@@ -2813,7 +2813,7 @@ def funcao_padrao(x: int, y: int) -> int:
     :type y: int
     :return: O resultado da operação.
     :rtype: int
-    :raises ValueError: Se y for igual a 2.
+    :raises: ValueError: Se y for igual a 2.
     """
     if y == 2:
         raise ValueError("y não pode ser 2 neste sistema")
@@ -2832,3 +2832,59 @@ from aula252 import documentando_funcoes_exception
 # help(documentando_funcoes_exception) 
 
 ##########
+# @___
+# E como pode imaginar, também funciona para classes. Com reST, irei
+# demontrar um exemplo. Portanto, irei criar um outro arquivo para isso.
+
+classe_documentacao = '''\
+
+'''
+
+Path(pasta_ref / 'documentando_classes.py').write_text(
+    classe_documentacao
+)
+cls()
+
+"""
+Esse módulo é apenas uma exemplificacão de documentacao para classes.
+"""
+
+class divisao_doc:
+    """
+    Essa classe é responsável por gerenciar divisões de valores
+    de forma responsável, tratando apenas números inteiros.
+    """
+    def __init__(self, a:int, b:int) -> float:
+        """
+        Docstring para __init__
+        
+        :param self: parâmetro reservado do método
+        :param a: primeiro valor
+        :type a: int
+        :param b: segundo valor
+        :type b: int
+        :return: divisão entre o primeiro valor e o segundo
+        :rtype: float
+        """
+    
+        self.valor_a = a
+        self.valor_b = b
+    
+    def calculo(self):
+        """
+        Verifica o tipo dos argumentos passados e se forem inteiros, então
+        realiza uma divisão.
+        
+        :param self: Descrição
+
+        
+        """
+
+
+        # verifica o tipo dos dados informados
+        if not type(all(x,int) for x in (self.valor_a, self.valor_b)):
+            raise TypeError('será aceito somente valores inteiros')
+
+        return self.valor_a / self.valor_b
+
+print(divisao_doc(20,2).calculo())

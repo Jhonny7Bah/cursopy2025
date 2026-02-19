@@ -63,7 +63,7 @@ def funcao_padrao(x: int, y: int) -> int:
     :type y: int
     :return: O resultado da operação.
     :rtype: int
-    :raises ValueError: Se y for igual a 2.
+    :raises: ValueError: Se y for igual a 2.
     """
     if y == 2:
         raise ValueError("y não pode ser 2 neste sistema")

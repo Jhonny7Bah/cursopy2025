@@ -1,10 +1,36 @@
 #####################
-def cls():
-    ##limpando terminal
-    from os import system, name
-    if name == 'posix':
-        return system('clear')
-    return system('cls')
+def cls() -> None:
+    # importando os módulos necessários
+    from os import system
+    import platform
+
+    # realiza a busca do nome do sistema
+    sistema_usuario = platform.system().lower()
+
+    if sistema_usuario == 'windows': 
+        system('cls')
+        
+    elif sistema_usuario == 'linux':
+       # busca a distro do usuário
+        try:
+            dados_linux = platform.freedesktop_os_release()
+            distro_id = dados_linux.get('ID', '') # Retorna 'arch', 'ubuntu'
+            nome_bonito = dados_linux.get('PRETTY_NAME', 'Linux')
+            
+            print(f"Limpando terminal do: {nome_bonito}")
+            
+            # Verifica usando a ID
+            if distro_id == 'arch': 
+                system('reset')
+            else: 
+                system('clear')
+                
+        except AttributeError:
+            # apenas gatantia
+            system('clear')
+            
+    else:
+        print('Não consegui limpar seu terminal')
 
 # Classe
 # Por convenção, utilizamos PascalCase para denominar classes.
@@ -2708,6 +2734,8 @@ Path(pasta_ref / 'documentando_funcoes.py').write_text(codigo_funcao)
 from aula252 import documentando_funcoes
 
 # chamando o help para o novo módulo
+# help(documentando_funcoes)
+
 '''
 retorno:
 Help on module aula252.documentando_funcoes in aula252:
@@ -2824,12 +2852,68 @@ def funcao_padrao(x: int, y: int) -> int:
 Path(pasta_ref / 'documentando_funcoes_exception.py').write_text(
     codigo_exceptions
     )
-
+cls()
 # Importando para testar
 from aula252 import documentando_funcoes_exception
 
 # chamando help (descomente a linha abaixo para visualizar):
 # help(documentando_funcoes_exception) 
+
+'''
+retorno:
+Help on module aula252.documentando_funcoes_exception in aula252:
+
+NAME
+    aula252.documentando_funcoes_exception - Este módulo demonstra como documentar EXCEÇÕES (Raises).
+
+FUNCTIONS
+    funcao_google(x: int, y: int) -> int
+        Realiza uma operação, mas falha se y for 2.
+
+        Args:
+            x (int): O primeiro número.
+            y (int): O segundo número.
+
+        Returns:
+            int: O resultado da operação.
+
+        Raises:
+            ValueError: Se y for igual a 2.
+
+    funcao_numpy(x: int, y: int) -> int
+        Realiza uma operação, mas falha se y for 2.
+
+        Parameters
+        ----------
+        x : int
+            O primeiro número.
+        y : int
+            O segundo número.
+
+        Returns
+        -------
+        int
+            O resultado da operação.
+
+        Raises
+        ------
+        ValueError
+            Se o valor de y for estritamente igual a 2.
+
+    funcao_padrao(x: int, y: int) -> int
+        Realiza uma operação, mas falha se y for 2.
+
+        :param x: O primeiro número.
+        :type x: int
+        :param y: O segundo número.
+        :type y: int
+        :return: O resultado da operação.
+        :rtype: int
+        :raises: ValueError: Se y for igual a 2.
+
+FILE
+    /home/umcex/Documents/Cursos/cursopy/Modulo3/aula252/documentando_funcoes_exception.py
+'''
 
 ##########
 # @___
@@ -2837,14 +2921,6 @@ from aula252 import documentando_funcoes_exception
 # demontrar um exemplo. Portanto, irei criar um outro arquivo para isso.
 
 classe_documentacao = '''\
-
-'''
-
-Path(pasta_ref / 'documentando_classes.py').write_text(
-    classe_documentacao
-)
-cls()
-
 """
 Esse módulo é apenas uma exemplificacão de documentacao para classes.
 """
@@ -2856,15 +2932,12 @@ class divisao_doc:
     """
     def __init__(self, a:int, b:int) -> float:
         """
-        Docstring para __init__
+        Inicializa o construtor com os argumentos passados.
         
-        :param self: parâmetro reservado do método
         :param a: primeiro valor
         :type a: int
         :param b: segundo valor
         :type b: int
-        :return: divisão entre o primeiro valor e o segundo
-        :rtype: float
         """
     
         self.valor_a = a
@@ -2875,16 +2948,73 @@ class divisao_doc:
         Verifica o tipo dos argumentos passados e se forem inteiros, então
         realiza uma divisão.
         
-        :param self: Descrição
-
-        
+        :return: divisão entre o primeiro valor e o segundo
+        :rtype: float
+        :raises TypeError: Se algum dos argumentos não for inteiro.
         """
-
 
         # verifica o tipo dos dados informados
         if not type(all(x,int) for x in (self.valor_a, self.valor_b)):
             raise TypeError('será aceito somente valores inteiros')
 
         return self.valor_a / self.valor_b
+'''
+# criando o arquivo
+Path(pasta_ref / 'documentando_classes.py').write_text(
+    classe_documentacao
+)
 
-print(divisao_doc(20,2).calculo())
+# importando o arquivo
+from aula252 import documentando_classes
+
+# chamando o help (descomente a linha abaixo para visualizar)
+# help(documentando_classes)
+
+'''
+Help on module aula252.documentando_classes in aula252:
+
+NAME
+    aula252.documentando_classes - Esse módulo é apenas uma exemplificacão de documentacao para classes.
+
+CLASSES
+    builtins.object
+        divisao_doc
+
+    class divisao_doc(builtins.object)
+     |  divisao_doc(a: int, b: int) -> float
+     |
+     |  Essa classe é responsável por gerenciar divisões de valores
+     |  de forma responsável, tratando apenas números inteiros.
+     |
+     |  Methods defined here:
+     |
+     |  __init__(self, a: int, b: int) -> float
+     |      Inicializa o construtor com os argumentos passados.
+     |
+     |      :param a: primeiro valor
+     |      :type a: int
+     |      :param b: segundo valor
+     |      :type b: int
+     |
+     |  calculo(self)
+     |      Verifica o tipo dos argumentos passados e se forem inteiros, então
+     |      realiza uma divisão.
+     |
+     |      :return: divisão entre o primeiro valor e o segundo
+     |      :rtype: float
+     |      :raises TypeError: Se algum dos argumentos não for inteiro.
+     |
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |
+     |  __dict__
+     |      dictionary for instance variables
+     |
+     |  __weakref__
+     |      list of weak references to the object
+
+FILE
+    /home/umcex/Documents/Cursos/cursopy/Modulo3/aula252/documentando_classes.py\
+'''
+
+##########################################################

@@ -3018,3 +3018,108 @@ FILE
 '''
 
 ##########################################################
+# Explicacao do professor:
+
+# Enum -> Enumerações
+# Enumerações na programação, são usadas em ocasiões onde temos
+# um determinado número de coisas para escolher.
+# Enums têm membros e seus valores são constantes.
+# Enums em python:
+#   - são um conjunto de nomes simbólicos (membros) ligados a valores únicos
+#   - podem ser iterados para retornar seus membros canônicos na ordem de
+#       definição
+# enum.Enum é a superclasse para suas enumerações. Mas também pode ser usada
+#   diretamente (mesmo assim, Enums não são classes normais em Python).
+# Você poderá usar seu Enum com type annotations, com isinstance e
+# outras coisas relacionadas com tipo.
+# Para obter os dados:
+# membro = Classe(valor), Classe['chave']
+# chave = Classe.chave.name
+# valor = Classe.chave.value
+# -----------------------------------
+
+# um exemplo para o uso do enum:
+# Vamos supor que há um joguinho simples onde o persongem principal tem que 
+# se movimentar pelo mapa. Considerando que as a movimentacão é composta por:
+#
+# Esquerda;
+# Direita;
+# Cima;
+# Baixo;
+#
+# Logo, podemos utilizar uma variável qualquer e para verificar se a 
+# movimentacão para tal lugar é permitida, podemos utilizar um for in simplemente
+# um in com uma lista. No entanto, conforme isso cresce, pode acabar ficando 
+# baguncado. Logo, podemos utilizar o enum para tal objetivo, sendo chamado da 
+# seguinte forma:
+
+# O enum é um módulo que já vem com o python
+import enum
+
+# agora, basta declarar uma classe que vai herdar da classe Enum, sendo
+# possível adiantar os argumentos.
+Direcoes = enum.Enum(
+    # Perceba que como os dados na lista não irão mudar, irei inicializar
+    # como constante (Letras em caixa alta).
+    'Direcoes',[
+        'ESQUERDA', 'DIREITA', 'CIMA', 'BAIXO',
+    ]
+)
+
+# para acessar o conteúdo dentro da instancia, há algumas formas.
+# Dentre elas há:
+
+# Busca com base no número (por ordem)
+print(Direcoes(1)) # Direcoes.ESQUERDA
+
+# busca com base no nome
+print(Direcoes['ESQUERDA']) # Direcoes.ESQUERDA
+
+# busca com base no namespace # Direcoes.ESQUERDA
+print(Direcoes.ESQUERDA) 
+
+# é possível também acessar diretamente tanto o nome como o valor:
+print(
+    Direcoes.DIREITA.name, Direcoes.DIREITA.value # DIREITA 2
+) 
+
+# Para fazer a movedura do personagem, será criada uma funcao.
+def mover(direcao: Direcoes): 
+    # para verificar se dado enviado em direcao é válido, é possível verificar
+    # a instancia do tipo de dado que foi enviado:
+    if not isinstance(direcao, Direcoes):
+        raise TypeError('Dado inválido!')
+    
+    print(f'movendo para: {direcao}')
+
+mover(Direcoes.BAIXO) # movendo para: Direcoes.BAIXO
+mover(Direcoes.CIMA) # movendo para: Direcoes.CIMA
+mover(Direcoes.ESQUERDA) # movendo para: Direcoes.ESQUERDA
+mover(Direcoes.DIREITA) # movendo para: Direcoes.DIREITA
+
+# uma informacao importante: Até onde é sabido, a metaclasse que constrói 
+# enum.Enum possui uma metaclasse própria.
+
+# Assim, é utilizado um enum. No entanto, para algumas config o meio acima pode
+# não funcionar a tipagem como esperado. Devido a isso, algumas pessoas 
+# preferem fazer de outra forma, sendo:
+
+class NovaDirecao(enum.Enum):
+    # no caso de uma criacao manual, será necessário adicionar value e name de
+    # forma manual, sendo:
+
+    ESQUERDA = 1
+    DIREITA = 2
+    
+    # caso deseje que value seja definido de forma automatica, pode utilizar 
+    # enum.auto da seguinte forma:
+    CIMA = enum.auto
+    BAIXO = enum.auto
+
+# e por fim, a tipagem passa a aparecer.
+# print(NovaDirecao...)
+
+##########################################
+
+
+

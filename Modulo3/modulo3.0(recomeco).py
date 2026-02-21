@@ -1274,8 +1274,8 @@ print(quatro.mro()) # [<class '__main__.quatro'>, <class '__main__.dois'>, <clas
 ###############################################################################
 # POO - Abstração.
 ## Abstração é o ato de focar no que o objeto faz, e não em como ele faz. 
-# Nesse sentido, reduzimos a complexidade mostrando apenas o que é essencial para o uso.
-# Toda a implementação detalhada fica oculta.
+# Nesse sentido, reduzimos a complexidade mostrando apenas o que é essencial 
+# para o uso. Toda a implementação detalhada fica oculta.
 #
 # Exemplo: você não precisa entender de motores para dirigir um carro. Ou seja,
 # toda a complexidade foi abstraída, restando apenas o necessário para o uso.
@@ -1364,15 +1364,18 @@ LogFileMixin().log_sucess('aí sim, nome maneiro!')
 class Log:
     def log(self, msg): 
         # Esse método serve apenas como modelo para as subclasses.
-        raise NotImplementedError('Você não deve usar essa classe diretamente. Use a classe filha.')
+        raise NotImplementedError(
+        'Você não deve usar essa classe diretamente. Use a classe filha.'
+        )
 '''
 
 # O exemplo acima é uma forma válida de criar uma classe abstrata devido a 
-# chamada de um erro (raise) com a justificativa "NotImplementedError" (como foi falado antes).
+# chamada de um erro (raise) com a justificativa "NotImplementedError"
+# (como foi falado antes).
 # No entanto, há abordagens mais claras, coesas e padronizadas para isso.
-# Uma delas é utilizando o módulo "abc" (Abstract Base Classes), que faz uso de uma metaclasse —
-# um tipo especial de classe responsável por controlar a criação de outras classes.
-# (O conceito de metaclasse será abordado mais adiante.)
+# Uma delas é utilizando o módulo "abc" (Abstract Base Classes), que faz uso
+# de uma metaclasse, que é um tipo especial de classe responsável por controlar
+# a criação de outras classes (metaclasses serão abordadas mais adiante).
 
 # para chamar o módulo, basta fazer da seguinte forma:
 from abc import ABC, abstractmethod
@@ -1391,11 +1394,10 @@ class LogAprimorado(ABC):
 try:
     LogAprimorado().exibir_na_tela()
 except TypeError:
-   print('deu erro.')  # Can't instantiate abstract class LogAprimorado with abstract 
-   # method exibir_na_tela
-
-# Para utilizar essa classe, , é preciso criar uma classe filha que implemente o método 
-# abstrato. Ex:
+   print('deu erro.')  # Can't instantiate abstract class LogAprimorado with
+                       # abstract method exibir_na_tela
+# Para utilizar essa classe, é preciso criar uma classe filha que reescreva
+# o método abstrato. Ex:
 
 class LogDemonstrar(LogAprimorado):
     # e aqui, eu refaço o método.
@@ -1405,9 +1407,10 @@ class LogDemonstrar(LogAprimorado):
 # agora eu conseguirei chamar a classe abstrata através de sua classe filha.
 LogDemonstrar().exibir_na_tela('hello world')
 
-#######################################################################################
+# @___
 # método abstrato -> método sem corpo, utilizado somente por classes filhas. 
-# método concreto -> métodos com corpo, podendo ser utilizado em classes mães e filhas.
+# método concreto -> métodos com corpo, podendo ser utilizado em classes mães
+# e filhas.
 
 # Abstractmethod + Getter(property) e setter.
 class Banco(ABC):
@@ -1416,23 +1419,25 @@ class Banco(ABC):
         self.nome = nome
         self._saldo = saldo
 
-    # Para atribuir ou visualizar o valor de saldo quando está encapsulado fora da 
-    # classe foi definido que será necessário utilizar um getter. Ou seja, um método
-    # que acessa o atributo em questão. Em python, temos um meio mais simples para a
-    # criação de um getter, que é uma property (método que se comporta como atributo).
+    # Para atribuir ou visualizar o valor de saldo quando está encapsulado 
+    # fora da classe foi definido que será necessário utilizar um getter.
+    # Ou seja, um método que acessa o atributo em questão. Em python, temos 
+    # um meio mais simples para a criação de um getter, que é uma property
+    # (método que se comporta como atributo).
     #
-    # Relembrado isso, a property nada mais é que um decorator. Assim como o abstractmethod.
-    # Para utilizar uma propery em paralelo com abstractmethod é muito simples, basta colocar
-    # um acima do outro na criação do método, de forma hierárquica, ou seja, do mais relevante
-    # ao menos relevante de baixo para cima. Nesse caso, como queremos tornar um método
-    # abstrato, o mais relevante seria o abstractmethod. Logo, faremos da seguinte forma:
+    # Relembrado isso, a property nada mais é que um decorator. Assim como o
+    # abstractmethod. Para utilizar uma propery em paralelo com abstractmethod
+    # é muito simples, basta colocar um acima do outro na criação do método,
+    # de forma hierárquica, ou seja, do mais relevante ao menos relevante de
+    # baixo para cima. Nesse caso, como queremos tornar um método  abstrato,
+    # o mais relevante seria o abstractmethod. Logo, faremos da seguinte forma:
     
     @property
     @abstractmethod
     def saldo(self): ...
 
-    # Como o método acima vai ser sobreposto quando eu chamar uma classe filha, não precisarei
-    # do setter.
+    # Como o método acima vai ser sobreposto quando eu chamar uma classe filha,
+    # não precisarei do setter.
 
     #####
     # No caso do classmethod também. O mais relevante seria o abstractmethod.
@@ -1442,7 +1447,8 @@ class Banco(ABC):
 
 
 class BancoDoBrasil(Banco):
-    # Aqui será necessário chamar a classe abstrata da superclass e definir seu corpo.
+    # Aqui será necessário chamar a classe abstrata da superclass e definir
+    # seu corpo.
     @property
     def saldo(self):
         return self._saldo
@@ -1477,15 +1483,15 @@ print(p2.saldo)
 
 # override = sobreposição de métodos
 
-#######################################
+###############################################################################
 # Polimorfismo, type hints e princípios
 #
 # Polimorfismo, é o princípio que permite que
 # classes deridavas de uma mesma superclasse
 # tenham métodos iguais (com mesma assinatura)
 # mas comportamentos diferentes.
-# Assinatura do método = Mesmo nome e quantidade
-# de parâmetros (retorno não faz parte da assinatura academicamente) + princípios
+# Assinatura do método = Mesmo nome e quantidade de 
+# parâmetros (retorno não faz parte da assinatura academicamente) + princípios
 # que contam. Sendo: Assinatura do método: nome, parâmetros e retorno iguais
 #
 # Princípios que contam:
@@ -1498,24 +1504,25 @@ print(p2.saldo)
 
 # Liskov Substitution Principle (Princípio da Substituição de Liskov): Objetos
 # de uma superclasse devem ser substituíveis
-# por objetos de uma subclasse sem quebrar a aplicação. (Onde você usar uma superclasse,
-# uma subclasse deve conseguir substituir sem quebrar a aplicação).
+# por objetos de uma subclasse sem quebrar a aplicação. (Onde você usar uma
+# superclasse, uma subclasse deve conseguir substituir sem quebrar a aplicação).
 
 from abc import ABC, abstractmethod
 
-# Notificação é algo aobstrato, pois pode ser notificação de sms, wpp, e-mail, etc. 
+# Notificação é algo aobstrato, pois pode ser notificação de sms, wpp,
+# e-mail, etc. 
 class Notificacao(ABC):
     # Em python, há algo que chamamos de type hints, que seria determinar
     # o tipo ou retorno de um método. Logo, podemos utilizar esse princípio
     # para indicar o retorno de um método ou o tipo de dado que algum parâmetro
-    # irá receber. Por padrão, o init retorna None, mas para demonstração, iremos
-    # fazer isso manualmente.  
+    # irá receber. Por padrão, o init retorna None, mas para demonstração,
+    # iremos fazer isso manualmente.  
     def __init__(self, mensagem) -> None:
         self.mensagem = mensagem
         # Obs: Isso não siginifica que se essa função retornar algo diferente
         # de None o código vai quebrar. Em python, funcionaria normalmente até
-        # que um código que precise dela e trate ela como None (pois era o esperado)
-        # para talvez quebrar. 
+        # que um código que precise dela e trate ela como 
+        # None (pois era o esperado) para talvez quebrar. 
 
     # enviar será um método abstrato, mas vamos definir que seu retorno será bool.
     @abstractmethod
@@ -1523,11 +1530,12 @@ class Notificacao(ABC):
 
 # subclasse de notificação 1
 class NotificacaoEmail(Notificacao):
-    # Outra vantagem do Type Hints é que quando definimos o tipo de um parâmetro 
-    # ou retorno em uma função ou método, o interpretador e as ferramentas de
-    # desenvolvimento conseguem mostrar automaticamente como essa função deve ser usada.
-    # Ou seja, ao chamar o método em outra parte do código, o editor exibe a assinatura
-    # da função, com os tipos esperados e o que ela retorna, facilitando o entendimento e reduzindo erros no uso.
+    # Outra vantagem do Type Hints é que quando definimos o tipo de um 
+    # parâmetro ou retorno em uma função ou método, o interpretador e as
+    # ferramentas de desenvolvimento conseguem mostrar automaticamente como
+    # essa função deve ser usada. Ou seja, ao chamar o método em outra parte
+    # do código, o editor exibe a assinatura da função, com os tipos esperados
+    # e o que ela retorna, facilitando o entendimento e reduzindo erros no uso.
     
     def enviar(self) -> bool:
         print(f'E-mail: enviando - {self.mensagem}')
@@ -1539,32 +1547,37 @@ class NotificacaoSMS(Notificacao):
         print(f'SMS: enviando - {self.mensagem}')
         return False
 
-# No caso acima, notificação é a superclass, enquanto notificaçãoEmail e NotificacaoSMS
-# são subclass. Se você analisar bem, é perceptível que a assinatura do método e o retorno
-# são iguais para as subclass, divergendo apenas o conteúdo no corpo (leve polimofirsmo). 
-# Nesse caso, o Liskov Substitution Principle está sendo cumprido, pois se eu chamar a classe
-# filha 1, passando os alguns argumentos no init e depois chamar a filha 2 e passar o mesmo 
-# argumento, o código não vai quebrar. Exemplo:
+# No caso acima, notificação é a superclass, enquanto notificaçãoEmail e
+# NotificacaoSMS são subclass. Se você analisar bem, é perceptível que a
+# assinatura do método e o retorno são iguais para as subclass, divergendo
+# apenas o conteúdo no corpo (leve polimofirsmo). Nesse caso,
+# o Liskov Substitution Principle está sendo cumprido, pois se eu chamar a 
+# classe filha um, passando os alguns argumentos no init e depois chamar a 
+# filha dois e passar o mesmo argumento, o código não vai quebrar. Exemplo:
 
 NotificacaoEmail('Opaaa').enviar() # E-mail: enviando - Opaaa
 NotificacaoSMS('Opaaa').enviar() #SMS: enviando - Opaaa
 
 # Por mais que o conteúdo retornado (polimofirmo) tenha sido diferente, 
-# os filhos de uma superclasse não quebrou quando eu passei os mesmos argumentos. 
+# os filhos de uma superclasse não quebrou quando eu passei os mesmos
+# argumentos. 
 # Ademais, o retorno também cumpriu seu objeto, retornando true||false.
 
 # E no caso do Polimorfismo, as classes acimas são derivadas de uma superclass,
-# considerando que manteram as mesmas assinaturas (principalmente por conta do princípio),
-# os métodos e por fim, tiveram objetivos diferentes em seu corpo, que nesse caso,
-# foi no escopo do método enviar. 
+# considerando que manteram as mesmas 
+# assinaturas (principalmente por conta do princípio), os métodos e por fim,
+# tiveram objetivos diferentes em seu corpo, que nesse caso, foi no escopo
+# do método enviar. 
 
 ###
 # Para deixar o conceito de polimorfismo mais claro,
-# vamos criar uma função que recebe qualquer objeto do tipo Notificacao (ou suas subclasses).
+# vamos criar uma função que recebe qualquer objeto do tipo 
+# Notificacao (ou suas subclasses).
 
-# Usando type hints, indicamos que o parâmetro 'msg' deve ser uma instância de 'Notificacao'.
-# Isso permite que o editor reconheça automaticamente os métodos e atributos disponíveis
-# dentro do escopo da função.
+# Usando type hints, indicamos que o parâmetro 'msg' deve ser uma instância de
+# 'Notificacao'.
+# Isso permite que o editor reconheça automaticamente os métodos e atributos
+# disponíveis dentro do escopo da função.
 def notificacao(msg: Notificacao) -> None:
     # Como 'msg' é do tipo Notificacao (ou uma subclasse dela),
     # podemos chamar o método 'enviar' normalmente.
@@ -1575,11 +1588,13 @@ def notificacao(msg: Notificacao) -> None:
         print('notificação enviada')
     else:
         print('notificação não enviada')
-# Ao chamar a função 'notificacao' passando subclasses diferentes (Email ou SMS),
-# o código continua funcionando sem erros. Isso demonstra claramente:
-# - Polimorfismo → as subclasses têm o mesmo método, mas comportamentos diferentes.
-# - Liskov Substitution Principle (LSP) → as subclasses podem substituir a superclasse
-#   sem quebrar o funcionamento da aplicação.
+# Ao chamar a função 'notificacao' passando subclasses 
+# diferentes (Email ou SMS),o código continua funcionando sem erros.
+# Isso demonstra claramente:
+# - Polimorfismo → as subclasses têm o mesmo método, mas comportamentos
+#   diferentes.
+# - Liskov Substitution Principle (LSP) → as subclasses podem substituir a
+#   superclasse sem quebrar o funcionamento da aplicação.
 
 notificacao(NotificacaoEmail('teste email')) # notificação enviada
 notificacao(NotificacaoSMS('teste sms')) # notificação não enviada
@@ -1601,7 +1616,8 @@ class ComplementoDivisaoError(Exception):...
 
 # Vou criar uma função que realizará uma divisão.
 def divisao(numero: int):
-    if numero is 2: # 'is' faz a mesma comparação que '=='. Por algum motivo, '==' tá bugado.
+    if numero is 2: # 'is' faz a mesma comparação que '=='. Por algum motivo,
+                    # '==' tá bugado.
         raise DivisaoPorDoisError('Você não deve dividir por dois')
     return 10 / numero
 
@@ -1610,8 +1626,8 @@ print(divisao(divisao(5)))
 # mas se eu coloco 2, vai lançar uma exessão e por isso, irei tratar.
 try:
     print(divisao(2))
-# para demonstrar com mais clareza, a excessão vai tratar dois erros, sendo o meu
-# (DivisaoPorDoisError) e ZeroDivisionError. 
+# para demonstrar com mais clareza, a excessão vai tratar dois erros, sendo o
+#  meu (DivisaoPorDoisError) e ZeroDivisionError. 
 except (ZeroDivisionError, DivisaoPorDoisError) as error:
     # Se quisermos descobrir qual foi a exceção capturada,
     # basta acessar a classe associada ao erro e, em seguida, seu nome:
@@ -1651,8 +1667,8 @@ except (ZeroDivisionError, DivisaoPorDoisError) as error:
     
     # raise erro1_divisao from outro_error
 
-    # Caso você tire o comentário e depois execute o código, o seguinte erro vai 
-    # aparecer:
+    # Caso você tire o comentário e depois execute o código, o seguinte erro
+    #  vai aparecer:
 
     '''
     __main__.ComplementoDivisaoError: Você realmente não pode dividir por dois.
@@ -1669,9 +1685,9 @@ except (ZeroDivisionError, DivisaoPorDoisError) as error:
 
     # Portanto, você agora acaba complementar (encadear) um erro com outro.
     
-# Além disso, para criação de erros, temos também as notas, que podem ser utilizadas
-# para passar algumas dicas para os desenvolvedores que utilizam da sua classe, ou
-# coisa do tipo. 
+# Além disso, para criação de erros, temos também as notas, que podem ser
+# utilizadas para passar algumas dicas para os desenvolvedores que utilizam
+# da sua classe, ou coisa do tipo. 
 
 meu_erro_novamente = DivisaoPorDoisError('você não pode dividir por dois amigo')
 
@@ -1688,7 +1704,8 @@ print(meu_erro_novamente.__notes__) # ['Pare de tentar dividir por dois, tente p
 cls()
 # E para ver isso no traceback:
 try:
-    # raise meu_erro_novamente # para ver na pratica, basta tirar isso como um comomentário.
+    # raise meu_erro_novamente # para ver na pratica, basta tirar isso como um
+    # comentário.
     ...
 except ComplementoDivisaoError as error:
     print(error)
@@ -1706,8 +1723,9 @@ except ComplementoDivisaoError as error:
 
 ###########################################################
 
-# Quando criamos uma classe e instanciamos um objeto, ao imprimir esse objeto o Python
-# mostra uma representação padrão, herdada de `object`, que inclui o módulo, a classe
+# Quando criamos uma classe e instanciamos um objeto, ao imprimir esse objeto
+# o Python mostra uma representação padrão, herdada de `object`, que inclui o
+# módulo, a classe
 # e o endereço de memória. Ex:
 
 class Ponto:
@@ -1720,17 +1738,18 @@ p1 = Ponto(10,20)
 print(p1) # <__main__.Ponto object at 0x749bfda72660>
 
 # Como eu disse, será possível ver apenas a posição da memória.
-# E se quiséssemos trocar essa informação por algo mais amigável? temos alguns dunder methods/Magic methods
-# que podemos utilizar para isso.
+# E se quiséssemos trocar essa informação por algo mais amigável? temos alguns
+# dunder methods/Magic methods que podemos utilizar para isso.
 
-# __repr__ -> representation - # Representação oficial do objeto. Deve ser o mais precisa possível e mostrar informações
-# relevantes do estado da instância. É a melhor opção para debugging.
+# __repr__ -> representation - # Representação oficial do objeto. Deve ser o 
+# mais precisa possível e mostrar informações relevantes do estado da 
+# instância. É a melhor opção para debugging.
 
-# __str__ -> string - apenas um simples texto de mudança para diferenciar o texto padrão, que é a informação do
-# edereço de memória. 
+# __str__ -> string - apenas um simples texto de mudança para diferenciar o 
+# texto padrão, que é a informação do edereço de memória. 
 
-# Detalhe -> str tem mais prioridade que o repr, ou seja, se ambos existirem na classe e forem chamadas por uma print,
-# quem vai aparecer é o str.
+# Detalhe -> str tem mais prioridade que o repr, ou seja, se ambos existirem
+# na classe e forem chamadas por uma print, quem vai aparecer é o str.
 
 # forma de uso:
 
@@ -1742,13 +1761,16 @@ class Ponto:
 
     def __repr__(self):
         nome_classe = type(self) 
-        # nome_classe = __class__.__name__ # assim você também pega o nome da classe, mas em caso de herança ou 
-        # mixin, pode ser falho.
-        #
-        # esse método deverá retornar uma string, sendo que ela deve ser o mais completa possível
+        # nome_classe = __class__.__name__ # assim você também pega o nome da
+                                           # classe, mas em caso de herança ou 
+                                           # mixin, pode ser falho.
+        # esse método deverá retornar uma string, sendo que ela deve ser o 
+        # mais completa possível
         return f'{nome_classe}(x={self.x}, y={self.y}, z={self.z})'
 
-    # caso queira ver o repr, comente a linha abaixo. (str tem mais prioridade que repr)
+    # caso queira ver o repr, comente a linha abaixo.
+    # (str tem mais prioridade que repr)
+    
     # def __str__(self):
     #     return 'opaaaa'
 
@@ -1756,8 +1778,9 @@ p2 = Ponto(10,20)
 
 print(p2) # <class '__main__.Ponto'>(x=50, y=60, z='string') || 'opaaaa'
 
-# Mas, percebe que no caso rep, a string fica parecendo um objeto? isso pode causar confusão e para resolver isso,
-# poderíamos colocar o parâmetro "z" entre parênteses. No entanto, há um jeito muito mais fácil de resolver isso, 
+# Mas, percebe que no caso rep, a string fica parecendo um objeto? isso pode
+# causar confusão e para resolver isso, poderíamos colocar o parâmetro "z"
+# entre parênteses. No entanto, há um jeito muito mais fácil de resolver isso, 
 # sendo através da formatação rep. Vou demonstrar abaixo.
 
 class Ponto:
@@ -1766,16 +1789,19 @@ class Ponto:
         self.y = y
         self.z = z
 
-    # para indicar a formatação rep, utilizamos (!r). Assim, o python saberá lidar com strings
-    # e não criará uma confusão na hora de demonstrar o rep.
+    # para indicar a formatação rep, utilizamos (!r). Assim, o python saberá
+    # lidar com strings e não criará uma confusão na hora de demonstrar o rep.
     def __repr__(self):
         nome_classe = type(self) 
         return f'{nome_classe}(x={self.x!r}, y={self.y!r}, z={self.z!r})' # retorno: <class '__main__.Ponto'>(x=50, y=60, z='string')
         return f'{nome_classe}(x={self.x}, y={self.y}, z={self.z})' # retorno: <class '__main__.Ponto'>(x=50, y=60, z=string)
-        # utilizei dois retornos distintos para demonstrar como iria retornar com e sem formatação. 
-        # no primeiro retorno, string retorna em aspas, como se realmente fosse uma string.
-        # no segundo retorno também é uma string, mas seria fácil de confundir com qualquer tipo 
-        # de dado, pois não tem aspas especificando que é uma string.
+        # utilizei dois retornos distintos para demonstrar como iria retornar
+        # com e sem formatação. no primeiro retorno, string retorna em aspas,
+        #  como se realmente fosse uma string.
+        #
+        # No segundo retorno também é uma string, mas seria fácil de confundir
+        # com qualquer tipo de dado, pois não tem aspas especificando que é
+        # uma string.
 
     # para formatar a string, podemos utilizar
     def __str__(self):
@@ -1785,8 +1811,9 @@ class Ponto:
 p3 = Ponto(50,60)
 print(p3)  # <class '__main__.Ponto'>(x=50, y=60, z='string') || 'string'
 
-# caso você tenha definido string e rep em uma classe, saberá que str tem mais preferência
-# que rep. Mas, e se fosse necessário ver o rep de alguma forma? temos as seguintes formas:
+# caso você tenha definido string e rep em uma classe, saberá que str tem mais
+# preferência que rep. Mas, e se fosse necessário ver o rep de alguma forma?
+# temos as seguintes formas:
 
 #através da função rep.
 print(repr(p3)) # <class '__main__.Ponto'>(x=50, y=60, z='string')
@@ -1794,7 +1821,7 @@ print(repr(p3)) # <class '__main__.Ponto'>(x=50, y=60, z='string')
 # através da formatação rep.
 print(f'{p3!r}') # <class '__main__.Ponto'>(x=50, y=60, z='string')
 
-################################################################
+###############################################################################
 # Exemplo de uso de dunder methods (métodos mágicos)
 # __lt__(self,other) - self < other
 # __le__(self,other) - self <= other

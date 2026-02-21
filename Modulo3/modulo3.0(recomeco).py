@@ -724,11 +724,11 @@ cla = Cara(nome='Joao')
     
 class Persona:
     def __init__(self, nome, idade, genero):
-        #atributo de instância public
+        # atributo de instância public
         self.nome = nome
-        #atributo de instância protected
+        # a tributo de instância protected
         self._idade = idade
-        #atributo de instância private
+        # atributo de instância private
         self.__genero = genero
 
     # método public
@@ -3323,4 +3323,12 @@ class NovaDirecao(enum.Enum):
 
 
 cls()
-##########################################
+# ########################
+# Há um exercicio resolvido na pasta aulaExs158... se quiser dar uma olhada, pode
+# ir lá. Considere que é sobre tudo um pouco do que foi abordado aqui, logo, é
+# deveras útil... principalmente para verificar se há deficiencia em algum 
+# conceito ou aplicação.
+#
+#
+#
+###############################################################################

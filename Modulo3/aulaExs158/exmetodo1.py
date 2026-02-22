@@ -4,7 +4,7 @@
 
 # conta corrente e poupanca serão duas classes
 # Contas têm agência, número da conta e saldo
-#  Contas devem ter método para 
+#  Contas devem ter método para
 # Conta (super classe) deve ter o método sacar abstrato (Abstração e
 # polimorfismo - as subclasses que implementam o método sacar)
 
@@ -23,10 +23,10 @@
 
 from abc import ABC, abstractmethod
 
+
 ####################
 ###    Pessoa    ###
 ####################
-
 # Pessoa será o usuário comum
 class Pessoa(ABC):
     @abstractmethod
@@ -38,16 +38,16 @@ class Pessoa(ABC):
     @property
     def nome(self):
         return self._nome
-    
+
     # exibe a idade do usuário
     @property
     def idade(self):
         return self._idade
 
-####################
-###    Contas    ###
-####################
 
+####################
+# Contas    ### noqa:E266
+####################
 class Conta(ABC):
     '''
     Conta será a classe mãe irá originar duas classes filhas que serão dadas 
@@ -57,33 +57,34 @@ class Conta(ABC):
     em questão (CONSIDERE QUE ESTA CLASSE É ABSTRATA).
     '''
     @abstractmethod
-    def __init__(self, agencia, numero, saldo=0):
+    def __init__(self, agencia: str, numero: str, saldo: float = 0):
         self._agencia = agencia
         self._numero = numero
         self._saldo = saldo
-    
-    @ abstractmethod
+
+    @abstractmethod
     def sacar(self, valor): ...
 
     @property
     def agencia(self):
         return self._agencia
 
-    def depositar(self, valor): 
+    def depositar(self, valor):
         # verifica se o valor a ser depositado é positivo
         if valor > 0:
             print(f' {valor} foi depositado com sucesso! ')
             self._saldo += valor
         else:
             print('valor inválido')
-##
+
+
 class ContaCorrente(Conta):
     '''
     Conta corrente herda de Conta e seu limite_extra é dado como 50,
     sendo considerado no saque.
     '''
-    limite_extra = 50
-    
+    limite_extra = 50.0
+
     def __init__(self, agencia: str, numero: str, saldo: float = 0):
         super().__init__(agencia, numero, saldo)
 
@@ -94,7 +95,7 @@ class ContaCorrente(Conta):
         usuário quer sacar, então o saque será realizado. Caso contrário,
         a tentativa de saque será inválida.
         '''
-        
+
         # se houver saldo, então será realizado o saque normalmente
         if self._saldo >= valor and valor >= 1:
             print(f' {valor} foi sacado com sucesso! ')
@@ -114,14 +115,14 @@ class ContaCorrente(Conta):
             self.limite_extra += self._saldo
             self._saldo = 0
 
-        #  se o valor do saldo for 0        
+        #  se o valor do saldo for 0
         elif valor == 0:
             print(f'Não é possível sacar {valor} reais. Mínimo: 1 Real.')
 
         # caso o usuário realmente não tenha saldo nem limite, não poderá sacar
         else:
             print('sinto muito, saldo insuficiente.')
-##
+
 
 class ContaPoupanca(Conta):
     '''
@@ -129,15 +130,16 @@ class ContaPoupanca(Conta):
     é dado como 0.
 
     '''
-    def __init__(self, agencia: str, numero:str, saldo: float = 0):
+
+    def __init__(self, agencia: str, numero: str, saldo: float = 0):
         super().__init__(agencia, numero, saldo)
-    
+
     # redifinição do sacar da classe mãe.
     def sacar(self, valor):
         if self._saldo >= valor and valor >= 1:
             print(f' {valor} foi sacado com sucesso! ')
             self._saldo -= valor
-        
+
         elif valor == 0:
             print(f'Não é possível sacar {valor} reais. Mínimo: 1 Real.')
 
@@ -148,21 +150,22 @@ class ContaPoupanca(Conta):
 ###   Clientes   ###
 ####################
 
+
 class Clientes(Pessoa):
     '''
     A classe cliente irá apenas realizar uma estrutura dos dados do usuário com
     agregação, com o intuito de garantir um controle melhor.
     '''
+
     def __init__(
-                self,
-                nome: str,
-                idade: int,
-                conta: ContaPoupanca | ContaCorrente
-        ):
-        
+        self,
+        nome: str,
+        idade: int,
+        conta: ContaPoupanca | ContaCorrente
+    ):
+
         self.conta = conta
         super().__init__(nome, idade)
-    
 
 
 ####################
@@ -172,29 +175,29 @@ class Clientes(Pessoa):
 class Banco:
     '''
     O banco será o lugar por onde o usuário vai fazer solicitações, como:
-    
-    - sacar 
+
+    - sacar
     - depositar
     - autenticar
     - adicionar cliente
-    - adicionar conta 
+    - adicionar conta
 
     O usuário poderá gerenciar sua conta através dessa classe, contanto que
-    realize os requisitos necessários. 
+    realize os requisitos necessários.
 
-    Um dos requisitos é a autenticação para realizar o saque ou depósito. 
-    Caso o usuário não tenha uma conta, ele pode criar normalmente para 
+    Um dos requisitos é a autenticação para realizar o saque ou depósito.
+    Caso o usuário não tenha uma conta, ele pode criar normalmente para
     depois sim realizar a autenticação para usar sua conta como quiser.
-    
+
     '''
-    
-    # agencias definidas por padrão pelo banco em questão quando a classe 
+
+    # agencias definidas por padrão pelo banco em questão quando a classe
     # inicializar
     def __init__(self):
         self.agencias = ['0001', '0002']
         self.contas = []
         self.clientes = []
-    
+
     # como o próprio nome já diz: adiciona um próprio cliente após ele ter
     # sido criado pela classe Clientes.
     def adicionar_cliente(self, cliente: Clientes):
@@ -205,19 +208,19 @@ class Banco:
     def adicionar_conta(self, conta: ContaCorrente | ContaPoupanca):
         self.contas.append(conta)
 
-    # autenticação da conta do usuário (não chame fora da classe)    
+    # autenticação da conta do usuário (não chame fora da classe)
     def _autenticar(
             self,
             cliente: Clientes,
             conta: ContaCorrente | ContaPoupanca,
             agencia: str,
-            ):
-        
+    ):
+
         # verificação de existência.
         cliente_bool = cliente in self.clientes
         conta_bool = conta in self.contas
         agencia_bool = agencia in self.agencias
-        
+
         if cliente_bool and conta_bool and agencia_bool:
             return True
         return False
@@ -235,9 +238,9 @@ class Banco:
         if not autenticacao:
             return 'não autencicado'
         cliente.conta.sacar(valor=valor)
-        
+
     # pode realizar o depósito + realiza autenticação
-    def depositar(self, cliente: Clientes, valor): 
+    def depositar(self, cliente: Clientes, valor):
         # realizando autenticação
         autenticacao = self._autenticar(
             cliente=cliente,
@@ -249,7 +252,8 @@ class Banco:
         if not autenticacao:
             return 'não autencicado'
         cliente.conta.depositar(valor=valor)
-        
+
+
 # criando o primeiro cliente
 c1 = Clientes(
     'joao',
@@ -260,7 +264,7 @@ c1 = Clientes(
     )
 )
 
-# criando o banco 
+# criando o banco
 banco_umcex = Banco()
 
 # incrementando cliente no banco
@@ -271,10 +275,3 @@ banco_umcex.adicionar_conta(c1.conta)
 banco_umcex.sacar(c1, 20)
 banco_umcex.depositar(c1, 50)
 banco_umcex.sacar(c1, 20)
-
-import os
-
-banco_umcex.adicionar_cliente('oi')
-
-
-

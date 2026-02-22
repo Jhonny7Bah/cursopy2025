@@ -30,7 +30,7 @@ from abc import ABC, abstractmethod
 # Pessoa será o usuário comum
 class Pessoa(ABC):
     @abstractmethod
-    def __init__(self, nome, idade):
+    def __init__(self, nome: str, idade: int):
         self._nome = nome
         self._idade = idade
 
@@ -46,14 +46,14 @@ class Pessoa(ABC):
 
 
 ####################
-# Contas    ### noqa:E266
+###    Contas    ###
 ####################
 class Conta(ABC):
     '''
-    Conta será a classe mãe irá originar duas classes filhas que serão dadas 
-    como poupança e corrente. Seu objetivo é permitir a criação da conta do 
-    usuário em uma dessas duas vertentes. Ademais, será permitido também 
-    realizar o saque e depósito de forma controlada pós criação das contas 
+    Conta será a classe mãe irá originar duas classes filhas que serão dadas
+    como poupança e corrente. Seu objetivo é permitir a criação da conta do
+    usuário em uma dessas duas vertentes. Ademais, será permitido também
+    realizar o saque e depósito de forma controlada pós criação das contas
     em questão (CONSIDERE QUE ESTA CLASSE É ABSTRATA).
     '''
     @abstractmethod

@@ -1,3 +1,7 @@
+# flake8: noqa
+# mypy: ignore-errors
+# type: ignore
+
 #####################
 def cls() -> None:
     # importando os módulos necessários
@@ -384,6 +388,8 @@ print(EP2.nome)
 
 #### Vamos dar um pouco mais de utilidade a esse Factories Methods: 
 import json
+# import dataclasses
+# from attr import dataclass
 
 class Pessoa3:
     #definindo o construtor
@@ -3332,3 +3338,35 @@ cls()
 #
 #
 ###############################################################################
+# doc: https://docs.python.org/3/library/dataclasses.html
+#
+# Dataclasses - é um módulo que fornece decoradores, funções e métodos mágicos
+# para crianção de classes. Dentre eles, há o decorador dataclass que pode
+# ser utilizado para inicializar uma classe sem necessariamente definir o init,
+# pois por padrão, o init já vem pronto, juntamente com o __repr__ e, __eq__.e
+# consequentemente, a tipagem.
+
+from dataclasses import dataclass
+
+@dataclass
+class Pessoa:
+    # Para utilizar na classe, basta apenas importar o módulo dataclass e 
+    # no lugar que era para ser o init, inicializamos os parametros apenas 
+    # com o atributo e sua tipagem.
+    nome: str
+    idade: int
+
+#  a classe pessoa agora já está pronta, bastando apenas instanciar.
+p1 = Pessoa('Pedro', 18)
+
+# quando p1 for printado, será possível verificar o __repr__
+print(p1) # Pessoa(nome='Pedro', idade=18)
+
+# e como em uma classe qualquer, será possível ver os atribitos.
+print(p1.nome) # Pedro
+
+# para verificar o __eq__, nesse caso, será necessário inicializar outra
+# instância, sendo:
+p2 = Pessoa('Pedro', 18)
+
+print(p1 == p2) # true

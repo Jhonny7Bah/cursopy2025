@@ -1,3 +1,9 @@
+# Ignorar tipos 
+
+# flake8: noqa
+# mypy: ignore-errors
+# type: ignore
+
 #módulo três iniciado!!
 #programação orientada a objetos (POO)
 

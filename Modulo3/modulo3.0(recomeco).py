@@ -389,6 +389,8 @@ print(EP2.nome)
 #### Vamos dar um pouco mais de utilidade a esse Factories Methods: 
 import dataclasses
 import json
+
+# from attr import field
 # from ast import Compare, compare
 # from http.client import ImproperConnectionState
 # from random import randint
@@ -3378,12 +3380,15 @@ class Pessoa:
     _sobrenome: str | None = dataclasses.field(
         default=None, repr=False, compare=False,
         )
+    _id: int | None = dataclasses.field(
+        default=None, repr=False, compare=False,
+    )
     
     # caso seja necessário realizar alguma ação após o init (algo como um
     # pós init), no dataclass é possível chamar um método mágico e lá dentro,
     # informar o que desejar.
     def __post_init__(self):
-        self.id = self._gerar_id() 
+        self._id = self._gerar_id() 
 
     # assim como também é possível criar métodos
     def _gerar_id(self) -> int:
@@ -3428,6 +3433,11 @@ class Pessoa:
         if not isinstance(valor, str):
             raise TypeError (f'Somente será aceito str. Informado: {type(valor)}')
         self._sobrenome = valor
+    
+    # getters para o id
+    @property
+    def id(self):
+        return self._id
 
 #  a classe pessoa agora já está pronta, bastando apenas instanciar.
 p1 = Pessoa('Pedro', 18)
@@ -3459,17 +3469,62 @@ cls()
 # Também é possível criar uma classe passando 'false' como argumento no 
 # parâmetro init do decorator 'dataclass'. Não sei exatamente porque alguém
 # faria isso, mas tem como fazer e vai funcionar perfeitamene. No entanto,
-# o método mágico '__post_init__' claramente não vai funcionar. 
-@dataclasses.dataclass(init=False)
+# o método mágico '__post_init__' claramente não vai funcionar.
+# Ademais, também é possível desativar o __repr__ e o __eq__.  
+@dataclasses.dataclass(init=False, eq=False, order=False)
 class Filme:
     def __init__(self, nome_do_filme: str, classificacao: float) -> None:
         self.nome_do_filme = nome_do_filme
         self.classificacao = classificacao
 
+# definindo o primeiro filme
 f1 = Filme(
     'Como Treinar o seu Dragão', 
     4.5
 )
 
+# definindo o segundo filme (que vou colocar o mesmo, porém com outra instancia)
+f2 = Filme(
+    'Como Treinar o seu Dragão', 
+    4.5
+)
+
+# como é visível, ambos os parametros são os idênticos. Porém, como o eq está
+# desativado, não vai funcionar como esperado. (Se quiser testar, defina o 
+# argumento eq como True na função)
+print(f1 == f2) # False
+
+# os argumentos já foram passados na instância e atualmente são:
 print(f1.nome_do_filme, f1.classificacao) # Como Treinar o seu Dragão 4.5
 
+### @___
+# Também há métodos como frozen e order, sendo que:
+# frozen -> se True, quando os argumentos definirem os abributos do init,  não
+# será possível alterar os atributos. (nem mesmo com getter)
+#
+# order: se True, permite que métodos como sorted sejam utilizados de forma
+# instantânea, sem necessariamente precisar definir o parâmetro key no sorted.
+@dataclasses.dataclass(frozen=True, order=True)
+class Alfabeto:
+    letras: str
+
+l1 = Alfabeto('acbfedg')
+print(l1.letras) # acbfedg
+
+# tentando realizar a troca após ter habilitado o frozen.
+try:
+    # Aqui será realizada uma tentativa de reatribuição, porém, o código vai
+    # quebrar porque não será possível fazer isso com o frozen dado como True.
+    # Segundo o processor, isso é uma boa prática, pois:
+    # "Sempre é melhor criar uma nova variável que alterar uma variável existente".
+    l1.letras = 'a'
+except Exception as e:
+    print(f'error: {e}') # error: cannot assign to field 'letras'
+
+# organizando automaticamente os elementos com o sorted:
+letras_organizadas = sorted(l1.letras)
+
+# portanto, a lista de letras será organizada, porém se transformará em uma 
+# lista. No entanto, por recomendação do professor, o  ideal deixar como False
+# mesmo e se precisar, fazer sua própria organização.
+print(letras_organizadas) # ['a', 'b', 'c', 'd', 'e', 'f', 'g']

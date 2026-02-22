@@ -387,7 +387,14 @@ print(EP2.idade)
 print(EP2.nome)
 
 #### Vamos dar um pouco mais de utilidade a esse Factories Methods: 
+import dataclasses
 import json
+# from ast import Compare, compare
+# from http.client import ImproperConnectionState
+# from random import randint
+# from typing import Any
+
+# from attr import field
 # import dataclasses
 # from attr import dataclass
 
@@ -3346,15 +3353,73 @@ cls()
 # pois por padrão, o init já vem pronto, juntamente com o __repr__ e, __eq__.e
 # consequentemente, a tipagem.
 
-from dataclasses import dataclass
+import dataclasses # módulo dataclass e field estarão aqui
+from random import choice # útil para realizar o sorteio
 
-@dataclass
+
+@dataclasses.dataclass
 class Pessoa:
     # Para utilizar na classe, basta apenas importar o módulo dataclass e 
     # no lugar que era para ser o init, inicializamos os parametros apenas 
     # com o atributo e sua tipagem.
     nome: str
     idade: int
+
+    # Como será utilizado um atributo protegido abaixo, será necessário 
+    # utilizar o método field do módulo dataclasses. Como o field funciona? 
+    # Simplesmente o field será utilizado na atribuição.
+    # Field tem 6 parâmetros (hoje), mas o que vai importar para esse momento
+    # serão apenas três, sendo eles:
+    # 
+    # defalt -> valor padrão inicial
+    # repr: True | False -> indica se o atributo deve ou não aparecer no repr
+    # compare: True | False -> como em dataclass existe __eq__, é possível 
+    # informar se há necessidade de comparar o atributo.
+    _sobrenome: str | None = dataclasses.field(
+        default=None, repr=False, compare=False,
+        )
+    
+
+    # assim como também é possível criar métodos
+    def gerador_de_sobrenome(self) -> None:
+
+        # lista de sobrenomes
+        lista_de_sobrenomes = [
+            'Pereira',
+            'Ferreira',
+            'Lima',
+            'Alves',
+            'Rodrigues',
+            'Costa',
+            'Almeida',
+            'Nascimento',
+            'Ribeiro',
+            'Jesus',
+            'Carvalho',
+        ]
+
+        # sortear
+        self._sobrenome = choice(lista_de_sobrenomes)
+        
+        #
+        print(f'seu sobrenome agora é: {self._sobrenome}')
+    
+    # também é possível utilizar getters
+    @property
+    def sobrenome(self):
+        if not self._sobrenome is None:
+            return self._sobrenome
+        raise ValueError(
+            'Sobrenome ainda não definido. Por favor, chame o método ' \
+            'gerador_de_sobrenome ou o método sobrenome para definir.'
+            )
+    
+    # assim como também é possível utilizar setters.
+    @sobrenome.setter
+    def sobrenome(self, valor: str):
+        if not isinstance(valor, str):
+            raise TypeError (f'Somente será aceito str. Informado: {type(valor)}')
+        self._sobrenome = valor
 
 #  a classe pessoa agora já está pronta, bastando apenas instanciar.
 p1 = Pessoa('Pedro', 18)
@@ -3369,4 +3434,14 @@ print(p1.nome) # Pedro
 # instância, sendo:
 p2 = Pessoa('Pedro', 18)
 
-print(p1 == p2) # true
+print(p1 == p2) # True
+
+p2.gerador_de_sobrenome() # seu sobrenome agora é: Costa
+
+print(p2.sobrenome) # Costa
+
+p2.sobrenome = 'Silva'
+
+print(p2.sobrenome) # Silva
+
+

@@ -866,3 +866,55 @@
 22/02/2026 10:06:07 -> Sucess: aí sim, nome maneiro!
 22/02/2026 10:07:12 -> Error: Não gostei do nome da variável
 22/02/2026 10:07:12 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:20:55 -> Error: Não gostei do nome da variável
+22/02/2026 10:20:55 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:21:24 -> Error: Não gostei do nome da variável
+22/02/2026 10:21:24 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:21:52 -> Error: Não gostei do nome da variável
+22/02/2026 10:21:52 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:22:01 -> Error: Não gostei do nome da variável
+22/02/2026 10:22:01 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:23:53 -> Error: Não gostei do nome da variável
+22/02/2026 10:23:53 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:24:15 -> Error: Não gostei do nome da variável
+22/02/2026 10:24:15 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:28:21 -> Error: Não gostei do nome da variável
+22/02/2026 10:28:21 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:28:31 -> Error: Não gostei do nome da variável
+22/02/2026 10:28:31 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:30:52 -> Error: Não gostei do nome da variável
+22/02/2026 10:30:52 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:31:13 -> Error: Não gostei do nome da variável
+22/02/2026 10:31:13 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:32:20 -> Error: Não gostei do nome da variável
+22/02/2026 10:32:20 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:32:26 -> Error: Não gostei do nome da variável
+22/02/2026 10:32:26 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:34:32 -> Error: Não gostei do nome da variável
+22/02/2026 10:34:32 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:37:37 -> Error: Não gostei do nome da variável
+22/02/2026 10:37:37 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:38:16 -> Error: Não gostei do nome da variável
+22/02/2026 10:38:16 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:39:36 -> Error: Não gostei do nome da variável
+22/02/2026 10:39:36 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:40:33 -> Error: Não gostei do nome da variável
+22/02/2026 10:40:33 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:40:42 -> Error: Não gostei do nome da variável
+22/02/2026 10:40:42 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:46:31 -> Error: Não gostei do nome da variável
+22/02/2026 10:46:31 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:47:10 -> Error: Não gostei do nome da variável
+22/02/2026 10:47:10 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:49:00 -> Error: Não gostei do nome da variável
+22/02/2026 10:49:00 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:49:35 -> Error: Não gostei do nome da variável
+22/02/2026 10:49:35 -> Sucess: aí sim, nome maneiro!
+22/02/2026 10:50:22 -> Error: Não gostei do nome da variável
+22/02/2026 10:50:22 -> Sucess: aí sim, nome maneiro!
+22/02/2026 11:01:02 -> Error: Não gostei do nome da variável
+22/02/2026 11:01:02 -> Sucess: aí sim, nome maneiro!
+22/02/2026 11:17:22 -> Error: Não gostei do nome da variável
+22/02/2026 11:17:22 -> Sucess: aí sim, nome maneiro!
+22/02/2026 11:25:11 -> Error: Não gostei do nome da variável
+22/02/2026 11:25:11 -> Sucess: aí sim, nome maneiro!

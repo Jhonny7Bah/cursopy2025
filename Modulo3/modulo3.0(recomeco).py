@@ -3528,3 +3528,5 @@ letras_organizadas = sorted(l1.letras)
 # lista. No entanto, por recomendação do professor, o  ideal deixar como False
 # mesmo e se precisar, fazer sua própria organização.
 print(letras_organizadas) # ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+###@___ mais sobre

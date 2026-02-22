@@ -390,6 +390,7 @@ print(EP2.nome)
 import dataclasses
 import json
 
+# from attr import dataclass
 # from attr import field
 # from ast import Compare, compare
 # from http.client import ImproperConnectionState
@@ -3516,7 +3517,8 @@ try:
     # Aqui será realizada uma tentativa de reatribuição, porém, o código vai
     # quebrar porque não será possível fazer isso com o frozen dado como True.
     # Segundo o processor, isso é uma boa prática, pois:
-    # "Sempre é melhor criar uma nova variável que alterar uma variável existente".
+    # "Sempre é melhor criar uma nova variável que alterar uma variável
+    #  existente".
     l1.letras = 'a'
 except Exception as e:
     print(f'error: {e}') # error: cannot assign to field 'letras'
@@ -3529,4 +3531,40 @@ letras_organizadas = sorted(l1.letras)
 # mesmo e se precisar, fazer sua própria organização.
 print(letras_organizadas) # ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 
-###@___ mais sobre
+cls()
+###@___ Ademais, dataclass é tão útil que é possível também converter o 
+# conteúdo (instância) de uma dataclass em outros tipos de dados, como 
+# dicionário e também tupla, sendo útil caso haja necessidade de remontar 
+# uma instância
+
+# convertendo o objeto l1 para dicionário
+converter_para_dicionario = dataclasses.asdict(l1)
+print(converter_para_dicionario) # {'letras': 'acbfedg'}
+
+# e como já foi mostrado antes, é possível remontar uma instância assim:
+l2 = Alfabeto(converter_para_dicionario)
+
+print(l2.letras) # {'letras': 'acbfedg'}
+
+# convertendo o objeto p1 em tupla
+converter_para_tupla = dataclasses.astuple(p1) 
+
+print(converter_para_tupla) # ('Pedro', 18, None, 113)
+
+# Detalhe importante: Converter para tupla ou dicionário usando o método 
+# astuple ou asdict só é possível se a classe realmente for um dataclass.
+# caso contrário, a conversão se encerra com um item vazio. Ex:
+
+class Carro:
+    def __init__(self, nome) -> None:
+        self.nome = nome
+
+c1 = Carro('corsa')
+print(c1.nome) # corsa
+
+try:
+    converter2 = dataclasses.asdict(c1)
+except Exception as e:
+    print(f'error: {e}')# error: asdict() should be called on dataclass instances
+
+###############

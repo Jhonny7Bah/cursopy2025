@@ -3354,7 +3354,7 @@ cls()
 # consequentemente, a tipagem.
 
 import dataclasses # módulo dataclass e field estarão aqui
-from random import choice # útil para realizar o sorteio
+import random # útil para realizar o sorteio
 
 
 @dataclasses.dataclass
@@ -3379,8 +3379,16 @@ class Pessoa:
         default=None, repr=False, compare=False,
         )
     
+    # caso seja necessário realizar alguma ação após o init (algo como um
+    # pós init), no dataclass é possível chamar um método mágico e lá dentro,
+    # informar o que desejar.
+    def __post_init__(self):
+        self.id = self._gerar_id() 
 
     # assim como também é possível criar métodos
+    def _gerar_id(self) -> int:
+        return random.randint(100, 150)
+    # 
     def gerador_de_sobrenome(self) -> None:
 
         # lista de sobrenomes
@@ -3399,7 +3407,7 @@ class Pessoa:
         ]
 
         # sortear
-        self._sobrenome = choice(lista_de_sobrenomes)
+        self._sobrenome = random.choice(lista_de_sobrenomes)
         
         #
         print(f'seu sobrenome agora é: {self._sobrenome}')
@@ -3444,4 +3452,24 @@ p2.sobrenome = 'Silva'
 
 print(p2.sobrenome) # Silva
 
+print(p2.id) # 136
+
+cls()
+### @___
+# Também é possível criar uma classe passando 'false' como argumento no 
+# parâmetro init do decorator 'dataclass'. Não sei exatamente porque alguém
+# faria isso, mas tem como fazer e vai funcionar perfeitamene. No entanto,
+# o método mágico '__post_init__' claramente não vai funcionar. 
+@dataclasses.dataclass(init=False)
+class Filme:
+    def __init__(self, nome_do_filme: str, classificacao: float) -> None:
+        self.nome_do_filme = nome_do_filme
+        self.classificacao = classificacao
+
+f1 = Filme(
+    'Como Treinar o seu Dragão', 
+    4.5
+)
+
+print(f1.nome_do_filme, f1.classificacao) # Como Treinar o seu Dragão 4.5
 

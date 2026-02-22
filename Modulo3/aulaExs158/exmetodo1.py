@@ -62,13 +62,13 @@ class Conta(ABC):
         self._numero = numero
         self._saldo = saldo
     
+    @ abstractmethod
+    def sacar(self, valor): ...
+
     @property
     def agencia(self):
         return self._agencia
 
-    @ abstractmethod
-    def sacar(self, valor): ...
-        
     def depositar(self, valor): 
         # verifica se o valor a ser depositado é positivo
         if valor > 0:
@@ -84,10 +84,10 @@ class ContaCorrente(Conta):
     '''
     limite_extra = 50
     
-    def __init__(self, agencia: str, numero: str, saldo: int = 0):
+    def __init__(self, agencia: str, numero: str, saldo: float = 0):
         super().__init__(agencia, numero, saldo)
 
-    def sacar(self, valor: int | float):
+    def sacar(self, valor: float):
         '''
         O método sacar irá realizar uma análise tanto do saldo do usuário como
         do limite_extra. Se um desses dois for maior ou igual ao valor que o
@@ -96,10 +96,9 @@ class ContaCorrente(Conta):
         '''
         
         # se houver saldo, então será realizado o saque normalmente
-        if self._saldo > 0 and valor >= 1:
+        if self._saldo >= valor and valor >= 1:
             print(f' {valor} foi sacado com sucesso! ')
             self._saldo -= valor
-
 
         # se o saldo for insuficiente, mas o usuário tem limite_extra sobrando
         # então também será possível realizar o saque.
@@ -130,12 +129,12 @@ class ContaPoupanca(Conta):
     é dado como 0.
 
     '''
-    def __init__(self, agencia: str, numero:str, saldo: str = 0):
+    def __init__(self, agencia: str, numero:str, saldo: float = 0):
         super().__init__(agencia, numero, saldo)
     
     # redifinição do sacar da classe mãe.
     def sacar(self, valor):
-        if self._saldo > 0 and valor >= 1:
+        if self._saldo >= valor and valor >= 1:
             print(f' {valor} foi sacado com sucesso! ')
             self._saldo -= valor
         
@@ -273,10 +272,9 @@ banco_umcex.sacar(c1, 20)
 banco_umcex.depositar(c1, 50)
 banco_umcex.sacar(c1, 20)
 
+import os
 
-
-
-
+banco_umcex.adicionar_cliente('oi')
 
 
 

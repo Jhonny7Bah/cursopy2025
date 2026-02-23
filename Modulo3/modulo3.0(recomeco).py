@@ -3542,9 +3542,9 @@ converter_para_dicionario = dataclasses.asdict(l1)
 print(converter_para_dicionario) # {'letras': 'acbfedg'}
 
 # e como já foi mostrado antes, é possível remontar uma instância assim:
-l2 = Alfabeto(converter_para_dicionario)
+l2 = Alfabeto(**converter_para_dicionario)
 
-print(l2.letras) # {'letras': 'acbfedg'}
+print(l2.letras) # 'acbfedg'
 
 # convertendo o objeto p1 em tupla
 converter_para_tupla = dataclasses.astuple(p1) 
@@ -3553,7 +3553,7 @@ print(converter_para_tupla) # ('Pedro', 18, None, 113)
 
 # Detalhe importante: Converter para tupla ou dicionário usando o método 
 # astuple ou asdict só é possível se a classe realmente for um dataclass.
-# caso contrário, a conversão se encerra com um item vazio. Ex:
+# caso contrário, o código quebra. Ex:
 
 class Carro:
     def __init__(self, nome) -> None:
@@ -3567,4 +3567,42 @@ try:
 except Exception as e:
     print(f'error: {e}')# error: asdict() should be called on dataclass instances
 
-###############
+###@___
+# Ainda falando sobre dataclass, há uma informação extremamente importante.
+# Sobre atribuição de dados no init: não é possível definir valores pré 
+# definidos para valores mutáveis (listas, tuplas, etc). Porém, há meios 
+# de iniciar uma lista vazia ou algo do tipo: 
+@dataclasses.dataclass
+class Produtos:
+    marca: str = 'Vazio'
+    # produto: list[str] = [] -> se for feito dessa forma, o código vai quebrar
+                            #    se quiser testar a veracidade da informação,
+                            #    comente o código abaixo e descomente 
+                            #    essa linha.
+    # Da forma acima o código vai quebrar, então, como seria 
+    # possível definir uma lista vazia? Simples: o método field (usado
+    # anteriormente) tem um parâmetro que é responsável por isso, porém deverá
+    # ser expresso de forma literal. Veja:
+    produto: list[str] = dataclasses.field(default_factory=list)
+    # logo, passando dessa forma, o código ira'funcionar normalmente.
+
+# definindo instancia
+lista_produto1 = Produtos()
+print(lista_produto1.marca, lista_produto1.produto) # Vazio []
+# Ademais, é possível realizar o check de field, verificando o que foi definido
+# no field da criação da dataclass e o que não foi, mostrando informações como:
+# status do frozen, init, order, eq, etc. Veja abaixo:
+print(dataclasses.fields(lista_produto1))
+'''
+Retorno:
+(Field(name='marca',type=<class 'str'>,default='Vazio',
+default_factory=<dataclasses._MISSING_TYPE object at 0x7fdf997ce060>,
+init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),
+kw_only=False,_field_type=_FIELD), Field(name='produto',type=list[str],
+default=<dataclasses._MISSING_TYPE object at 0x7fdf997ce060>,
+default_factory=<class 'list'>,init=True,repr=True,hash=None,compare=True,
+metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD))
+
+'''
+
+#####################

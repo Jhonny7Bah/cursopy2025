@@ -387,6 +387,7 @@ print(EP2.idade)
 print(EP2.nome)
 
 #### Vamos dar um pouco mais de utilidade a esse Factories Methods: 
+from collections import namedtuple
 import dataclasses
 import json
 
@@ -3441,17 +3442,17 @@ class Pessoa:
         return self._id
 
 #  a classe pessoa agora já está pronta, bastando apenas instanciar.
-p1 = Pessoa('Pedro', 18)
+p1 = Pessoa('Juana', 18)
 
 # quando p1 for printado, será possível verificar o __repr__
-print(p1) # Pessoa(nome='Pedro', idade=18)
+print(p1) # Pessoa(nome='Juana', idade=18)
 
 # e como em uma classe qualquer, será possível ver os atribitos.
-print(p1.nome) # Pedro
+print(p1.nome) # Juana
 
 # para verificar o __eq__, nesse caso, será necessário inicializar outra
-# instância, sendo:
-p2 = Pessoa('Pedro', 18)
+# instância (será criada com os mesmos argumentos), sendo:
+p2 = Pessoa('Juana', 18)
 
 print(p1 == p2) # True
 
@@ -3568,10 +3569,12 @@ except Exception as e:
     print(f'error: {e}')# error: asdict() should be called on dataclass instances
 
 ###@___
+# obs: tupla é um valor imutável!!!
+#  
 # Ainda falando sobre dataclass, há uma informação extremamente importante.
 # Sobre atribuição de dados no init: não é possível definir valores pré 
-# definidos para valores mutáveis (listas, tuplas, etc). Porém, há meios 
-# de iniciar uma lista vazia ou algo do tipo: 
+# definidos para valores mutáveis (listas, dicionários, sets, etc).
+# Porém, há meios de iniciar uma lista vazia ou algo do tipo:
 @dataclasses.dataclass
 class Produtos:
     marca: str = 'Vazio'
@@ -3605,4 +3608,231 @@ metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD))
 
 '''
 
-#####################
+###############################################################################
+# https://docs.python.org/3/library/collections.html#collections.namedtuple
+# https://docs.python.org/3/library/typing.html#typing.NamedTuple
+# namedtuples - cria subclasses de tuplas onde os campos tem nomes. 
+# obs: essas subclasses de tuplas após criadas se tornarão imutáveis.
+# o que ela faz basicamente: cria um argupamento de atributos que podem ser
+# facilmente localizados como se fosse uma classe normal. Por exemplo:
+# quando há necessidade de trabalhar com listas, normalmente é utilizado o 
+# índice para navegar sobre elas, correto? assim:
+
+lista_completa = ['valor_a', 'valor_b', 'valor_c', 'valor_d ']
+print(lista_completa[0]) # valor_a
+print(lista_completa[3]) # valor_d
+
+# o método acima pode ser muito útil, mas quando passamos números para acessar
+# tal informação, pode não ser muito visual ou intuitivo depois de um tempo,
+# fazendo com que a pessoa que escreveu o código volte na lista para revisitar
+# seus componentes, ou coisa do tipo...Logo, pode ser criado uma namedtuple
+# para facilitar o trabalho.
+#
+# Para criar um namedtuple, será necessário importar o módulo collections e 
+# posteriomente, o método namedtuple
+
+import collections
+
+# para adicionar os valores, de um lado será incrementado o nome do item (key)
+# e após a vírgula, o valor, que será uma lista de valores. Lembrando que aqui
+# não vai criar sua lista ainda, está apenas sendo o molde para elas, sendo
+# semelhante a criação de uma função, onde será definido apenas os parâmetros.
+lista_completa2 = collections.namedtuple(
+    'lista_completa2', ['primeiro', 'segundo', 'terceiro', 'quarto'],
+
+    # também é possível adicionar defaults para os valores, caso eles acabem
+    # não sendo definidos. Por exemplo, se for incrementado um argumento para
+    # primeiro e quarto, como ficaria o segundo e terceiro? assim como numa
+    # função ou classe é possível definir argumentos pré-definidos, aqui em
+    # namedtuple também é. veja como: 
+    defaults=['um', 'dois', 'três', 'quatro']
+)
+
+# por fim, incremento os meus dados através dos meus 'argumentos'.
+minha_lista = lista_completa2('valor_a', quarto='valor_d')
+ 
+print(minha_lista) # lista_completa2(primeiro='valor_a', segundo='valor_b',
+                   #  terceiro='valor_c', quarto='valor_d')
+print(minha_lista.primeiro) # valor_a
+print(minha_lista.quarto) # valor_d
+
+# Ademais, é possível realizar outras coisas com o namedtuple, como verificar
+# os fields (os campos), converter pra dicionário, verificar quais
+# foram os defalts definidos, etc. Veja:
+
+# verificando os fileds
+print(minha_lista._fields) # ('primeiro', 'segundo', 'terceiro', 'quarto')
+
+# verificando quais são os defaults.
+print(minha_lista._field_defaults) # {'primeiro': 'um', 'segundo': 'dois',
+                                   # 'terceiro': 'três', 'quarto': 'quatro'}
+# para segundo e terceiro está como dois e três, que é o que vai está agora
+# se eu chamar esses 'índices', pois eu não defini na criação da instância.
+print(minha_lista.segundo) # dois
+print(minha_lista.terceiro) # três
+
+# convertendo para dicionário:
+nametuple_para_dicionario = minha_lista._asdict()
+print(nametuple_para_dicionario) # {'primeiro': 'valor_a', 'segundo': 'dois',
+                                   # 'terceiro': 'três', 'quarto': 'valor_d'}
+
+# Ademais, como pode ver, os métodos e atributos de namedtuple vem com um _
+# inicialmente, certo? idealmente, isso seria protegido... mas no geral,
+# segundo a doc, isso serve para não misturar com os atributos ou métodos do
+# próprio python ou módulo semelhante e por fim, acabar ocasionando em uma dor
+# de cabeça.
+
+# Por fim, também há outra forma de criar um namedtuple através do módulo 
+# typing, que vai acabar funcionando da mesma forma:
+
+import typing
+
+# após importar o módulo typing, basta herdar a classe NamedTuple
+class ListaCompleta3(typing.NamedTuple):
+    primeiro: str = 'um'
+    segundo: str = 'dois'
+    terceiro: str = 'três'
+    quarto: str = 'quatro'
+
+# inicializando a instância
+minha_listinha = ListaCompleta3('valor_a', quarto='valor_d')
+
+print(minha_listinha.primeiro) # valor_a
+print(minha_listinha.segundo) # dois
+print(minha_listinha.terceiro) # três
+print(minha_listinha.quarto) # valor_d
+
+# e funciona do mesmo jeito que a anterior. Veja: 
+help(minha_listinha)
+'''
+retorno:
+Help on ListaCompleta3 in module __main__ object:
+
+class ListaCompleta3(builtins.tuple)
+ |  ListaCompleta3(primeiro: str = 'um', segundo: str = 'dois', terceiro: str = 'três', quarto: str = 'quatro')
+ |
+ |  ListaCompleta3(primeiro, segundo, terceiro, quarto)
+ |
+ |  Method resolution order:
+ |      ListaCompleta3
+ |      builtins.tuple
+ |      builtins.object
+ |
+ |  Methods defined here:
+ |
+ |  __getnewargs__(self)
+ |      Return self as a plain tuple.  Used by copy and pickle.
+ |
+ |  __repr__(self)
+ |      Return a nicely formatted representation string
+ |
+ |  _asdict(self)
+ |      Return a new dict which maps field names to their values.
+ |
+ |  _replace(self, /, **kwds)
+ |      Return a new ListaCompleta3 object replacing specified fields with new values
+ |
+ |  ----------------------------------------------------------------------
+ |  Class methods defined here:
+ |
+ |  _make(iterable) from builtins.type
+ |      Make a new ListaCompleta3 object from a sequence or iterable
+ |
+ |  ----------------------------------------------------------------------
+ |  Static methods defined here:
+ |
+ |  __new__(_cls, primeiro: str = 'um', segundo: str = 'dois', terceiro: str = 'três', quarto: str = 'quatro')
+ |      Create new instance of ListaCompleta3(primeiro, segundo, terceiro, quarto)
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  primeiro
+ |      Alias for field number 0
+ |
+ |  segundo
+ |      Alias for field number 1
+ |
+ |  terceiro
+ |      Alias for field number 2
+ |
+ |  quarto
+ |      Alias for field number 3
+ |
+ |  ----------------------------------------------------------------------
+ |  Data and other attributes defined here:
+ |
+ |  __annotations__ = {'primeiro': <class 'str'>, 'quarto': <class 'str'>,...
+ |
+ |  __match_args__ = ('primeiro', 'segundo', 'terceiro', 'quarto')
+ |
+ |  __orig_bases__ = (<function NamedTuple>,)
+ |
+ |  _field_defaults = {'primeiro': 'um', 'quarto': 'quatro', 'segundo': 'd...
+ |
+ |  _fields = ('primeiro', 'segundo', 'terceiro', 'quarto')
+ |
+ |  ----------------------------------------------------------------------
+ |  Methods inherited from builtins.tuple:
+ |
+ |  __add__(self, value, /)
+ |      Return self+value.
+ |
+ |  __contains__(self, key, /)
+ |      Return bool(key in self).
+ |
+ |  __eq__(self, value, /)
+ |      Return self==value.
+ |
+ |  __ge__(self, value, /)
+ |      Return self>=value.
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __getitem__(self, key, /)
+ |      Return self[key].
+ |
+ |  __gt__(self, value, /)
+ |      Return self>value.
+ |
+ |  __hash__(self, /)
+ |      Return hash(self).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __le__(self, value, /)
+ |      Return self<=value.
+ |
+ |  __len__(self, /)
+ |      Return len(self).
+ |
+ |  __lt__(self, value, /)
+ |      Return self<value.
+ |
+ |  __mul__(self, value, /)
+ |      Return self*value.
+ |
+ |  __ne__(self, value, /)
+ |      Return self!=value.
+ |
+ |  __rmul__(self, value, /)
+ |      Return value*self.
+ |
+ |  count(self, value, /)
+ |      Return number of occurrences of value.
+ |
+ |  index(self, value, start=0, stop=9223372036854775807, /)
+ |      Return first index of value.
+ |
+ |      Raises ValueError if the value is not present.
+ |
+ |  ----------------------------------------------------------------------
+ |  Class methods inherited from builtins.tuple:
+ |
+ |  __class_getitem__(...) from builtins.type
+ |      See PEP 585
+
+'''
+

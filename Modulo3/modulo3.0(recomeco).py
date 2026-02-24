@@ -391,6 +391,7 @@ from collections import namedtuple
 import dataclasses
 import json
 
+# from concurrent.interpreters import list_all
 # from attr import dataclass
 # from attr import field
 # from ast import Compare, compare
@@ -3850,10 +3851,110 @@ Resumo da Ópera (NamedTuple vs Dataclass):
   métodos mágicos costumizados (__post_init__) e herança mais elaborada.
 '''
 
+cls()
+###############################################################################
+# https://docs.python.org/3/library/collections.abc.html
+# Protocolo de iteração do python
+# Remodelando os protocolos da lista em python a partir de uma classe.
+# Para isso, será utilizado o módulo collection.abc, sendo a classe Sequence.
+# Quando alguma classe herda de Sequence, há uma espécie de 'contrato' com  o
+# python, onde é informado que qualquer coisa que envolva índices na classe
+# será responsabilidade de quem a escreveu, como o append (adicionar item),
+# getitem (pegar item com base no item), setitem (setar item com base no indice),
+# etc. Ademais, quando essa classe é herdada, é obrigatório ter dois métodos
+# mágicos na classe, sendo eles: __getitem__ e __len__, caso contrário, será
+# apresentado um erro no terminal: 
+#
+# "TypeError: Can't instantiate abstract class ata without an implementation
+# for abstract methods '__getitem__', '__len__" 
+#
+# Portando, será definido todos esses métodos e o objetivo real será observar
+# como funciona uma 'lista' e seus protocolos.
+import collections.abc
 
-# import collections.abc
+class MyList(collections.abc.Sequence):
+    def __init__(self):
+        # dados será um dicionário que irá armazenar chave (índice) e 
+        # valor (dado que o usuaŕio quer armazenar).
+        self._dados = {}
+        
+        # índice será útil para o len e append, controlando os valores que 
+        # serão incrementados como key em _dados.
+        self._indice = 0 
 
-# class MyList(collections.abc.Sequence):
-#     ...
+        # para controle por parte do for, será necessário também um atributo
+        # extra para previr se o próximo item será válido.
+        self._proximo_indice = 0
 
+    # método que vamos utilizar para alimentar os dados que estão sendo 
+    # armazenados em _dados.
+    def append(self, valor):
+        self._dados[self._indice] = valor
+        self._indice += 1
+
+    # método mágico que é chamado quando a instância é chamada com colchetes.
+    # Ex: lista[0] 
+    def __getitem__(self, indice):
+        return self._dados[indice]
+    
+    # método mágico que é chamado quando o desenvolvedor tenta reatribuir um
+    # valor com base no índice. Ex: lista[0] = 'nova_informação'
+    def __setitem__(self, indice, valor):
+        self._dados[indice] = valor
+    
+    # método mágico que é chamado quando é chamado o len para verificar a 
+    # quantidade de itens da lista. ex: len(lista)
+    def __len__(self):
+        return self._indice
+    
+    # Nesse exato momento, se o for acabar sendo chamado, ele irá inicializar.
+    # Porém, quando a iteração esgotar, o código vai quebrar. Portanto, será
+    # necessário refatorar o código do iterator e do next. Veja:
+    def __iter__(self):
+        # Ele retorna self porque self é o lugar onde o __next__ se encontra.
+        # Por exemplo, se o método __next__ estivesse dentro de append (o que
+        # não faz sentido e claramente não vai está, pois é apenas uma analogia
+        # e os métodos mágicos não estão dentro da classe, eles pertencem a 
+        # classe), seria algo como "self.append" e logo o iter iria
+        # encontrar o next.
+        return self
+    
+    # Por fim, o next... que sempre que for utilizado um for que vai iterar
+    # nos elementos da lista, o next será chamado várias vezes (devido ao iter).
+    def __next__(self):
+        # faz uma verificação em relação com o próximo item, com o intuito
+        # de parar o loop caso os índices tenha esgotado.
+        if self._proximo_indice >= self._indice:
+            # refefino o próximo index como 0 novamente, para caso haja uma 
+            # segunda chamada.
+            self._proximo_indice = 0
+            # por fim, o raise para parar
+            raise StopIteration
+        
+        # se ainda não esgotou:
+
+        # armazena o valor do índice a ser chamado numa variável
+        valor = self._dados[self._proximo_indice]
+        # incrementa mais um no 'proximo_índice', para a próxima execução
+        self._proximo_indice += 1
+        # retorna o valor em questão
+        return valor
+
+
+# por fim, definir a nova instancia
+lista = MyList()
+
+# adicionando valores como se fosse em uma lista normal
+lista.append(10)
+print(lista[0]) # 10 
+lista.append(20) 
+print(lista[1]) # 20
+
+# assim como em uma lista normal, posso alterar valores com base no índice
+lista[1] = 30
+print(lista[1]) # 30 
+
+for i in lista:
+    print(i) # 10
+             # 30
 

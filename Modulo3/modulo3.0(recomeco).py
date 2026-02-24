@@ -3651,8 +3651,8 @@ lista_completa2 = collections.namedtuple(
 # por fim, incremento os meus dados através dos meus 'argumentos'.
 minha_lista = lista_completa2('valor_a', quarto='valor_d')
  
-print(minha_lista) # lista_completa2(primeiro='valor_a', segundo='valor_b',
-                   #  terceiro='valor_c', quarto='valor_d')
+print(minha_lista) # lista_completa2(primeiro='valor_a', segundo='dois',
+                   # terceiro='três', quarto='valor_d')
 print(minha_lista.primeiro) # valor_a
 print(minha_lista.quarto) # valor_d
 
@@ -3705,8 +3705,8 @@ print(minha_listinha.segundo) # dois
 print(minha_listinha.terceiro) # três
 print(minha_listinha.quarto) # valor_d
 
-# e funciona do mesmo jeito que a anterior. Veja: 
-help(minha_listinha)
+# e funciona do mesmo jeito que a anterior. Veja(descomente o cod abaixo): 
+# help(minha_listinha)
 '''
 retorno:
 Help on ListaCompleta3 in module __main__ object:
@@ -3850,5 +3850,10 @@ Resumo da Ópera (NamedTuple vs Dataclass):
   métodos mágicos costumizados (__post_init__) e herança mais elaborada.
 '''
 
+
+# import collections.abc
+
+# class MyList(collections.abc.Sequence):
+#     ...
 
 

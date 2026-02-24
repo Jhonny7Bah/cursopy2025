@@ -3682,8 +3682,11 @@ print(nametuple_para_dicionario) # {'primeiro': 'valor_a', 'segundo': 'dois',
 # próprio python ou módulo semelhante e por fim, acabar ocasionando em uma dor
 # de cabeça.
 
-# Por fim, também há outra forma de criar um namedtuple através do módulo 
-# typing, que vai acabar funcionando da mesma forma:
+### @___
+# 2. O JEITO MODERNO (Módulo typing) -> Recomendado!
+# A partir do Python 3.6, o módulo 'typing' trouxe uma forma de criar 
+# namedtuples que suporta Type Hints (dicas de tipo), ficando com uma sintaxe
+# praticamente idêntica à de uma dataclass.
 
 import typing
 
@@ -3835,4 +3838,17 @@ class ListaCompleta3(builtins.tuple)
  |      See PEP 585
 
 '''
+###@___
+'''
+Resumo da Ópera (NamedTuple vs Dataclass):
+- Use NamedTuple: Quando quiser algo muito simples, leve na memória,
+  estritamente imutável e que se comporte exatamente como uma tupla
+  (desempacotamento, iteração), principalmente se você quiser trabalhar
+  somente com dados, sem precisar necessariamente de métodos ou coisas 
+  complexas no geral.
+- Use Dataclass: Quando precisar de métodos complexos, atributos mutáveis, 
+  métodos mágicos costumizados (__post_init__) e herança mais elaborada.
+'''
+
+
 

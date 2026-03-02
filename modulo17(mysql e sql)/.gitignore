@@ -1,1 +1,18 @@
+# Jupyter
+.ipynb_checkpoints/
+
+# Ambientes Virtuais
+.venv/
+
+# Bancos de Dados
+*.db
+*.sqlite3
+
+# Python Cache
+__pycache__/
+
+# Segredos e configs locais do Docker
 docker-compose.yml
+
+# Rascunhos do Jupyter
+Untitled*.ipynb

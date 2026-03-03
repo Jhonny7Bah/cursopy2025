@@ -16,3 +16,6 @@ docker-compose.yml
 
 # Rascunhos do Jupyter
 Untitled*.ipynb
+
+# apenas anotações internas
+lembre-se.md
